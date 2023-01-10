@@ -15,8 +15,6 @@ import javax.swing.JOptionPane;
 import joinFrame.JoinFrame;
 import listPanel.TotalListPanel;
 import loginframe.LoginFrame;
-import mainframe.ImagePanel;
-import mainframe.MyButton;
 import menuFrame.MenuFrame;
 import productListFrame.ProductListFrame;
 
@@ -39,7 +37,6 @@ public class MainFrame {
 	public MainFrame() {
 		myBtn = new MyButton();
 		f = new MyFrame("먹기 전에 비교하자! 식품비교프로그램 [뉴트리베터]");
-//		scroll = new JScrollBar(1, 450, 0, 0, 600);
 		// 0 - 수평방향, 1 - 수직방향 / 바의 생성 위치, 바의 채워짐 정도, 최소값은0, 최댓값은 바가 생성되는 곳의 길이
 		mfont = new MyFont();
 		mfont.setTf("제품명을 검색하세요!");
@@ -70,8 +67,6 @@ public class MainFrame {
 		btnHome = new JButton(myBtn.changeImageSize(imgHome, 200, 200));
 		btnSearch = new JButton(myBtn.changeImageSize(imgSearch, 30, 30));
 
-		// DB 에서 가져온 상품 이름과 상품 칼로리 가지고와 생성자 매개 변수로 넣기
-//		defaultTable = new DefaultTableModel();
 	}
 	public MainFrame(String name, String gender, String age){
 		f = new MyFrame("먹기 전에 비교하자! 식품비교프로그램 [뉴트리베터]");
@@ -93,8 +88,6 @@ public class MainFrame {
 		imgHome = new ImageIcon("./Button_image/NutriBetter_Title.PNG");
 		imgHomeC = new ImageIcon("./Button_image/NutriBetterC_Title.PNG");
 		
-//		imgFrame = new ImageIcon("./Frame_image/Frame_Background.PNG");
-//		imgBack = myBtn.changeImageSize(imgFrame, 500, 600).getImage();
 		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
 	
 		cHome = myBtn.changeImageSize(imgHomeC, 200, 200);
@@ -125,9 +118,6 @@ public class MainFrame {
 		btnSearch.setBounds(390, 255, 30, 30);
 		
 		
-//		lbList1.setLocation(15, 300);
-//		btnMore1.setBounds(410, 300, 100, 30);
-//		tlPanel.getPanel().setBounds(10, 330, 480, 250);
 
 		myBtn.buttonOption(btnMenu, cMenu);
 
@@ -141,15 +131,6 @@ public class MainFrame {
 
 			}
 		});
-
-//		btnMenu.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				MenuFrame mf = new MenuFrame();
-//				mf.startFrame();
-//			}
-//		});
-
-
 
 		tlPanel = new TotalListPanel();
 		tlPanel.startTotalPanel("과자");
@@ -253,10 +234,6 @@ public class MainFrame {
 		f.getMyFrame().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
-//	public void setTotalDAO(TotalDAO dao) {
-//		this.totalDao = dao;
-//	}
-
 	public JFrame getFrame() {
 		return f.getMyFrame();
 	}

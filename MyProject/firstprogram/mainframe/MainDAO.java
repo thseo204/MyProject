@@ -11,10 +11,7 @@ import java.util.Date;
 
 import listPanel.BigCtgVo;
 import listPanel.ProcessedFoodVo;
-import oracle.net.aso.j;
 import productCompareFrame.NutrientVo;
-import productCompareFrame.Nutry;
-import productListFrame.NutrientDietaryReferenceVo;
 
 public class MainDAO {
 	static String driver = "oracle.jdbc.driver.OracleDriver";
@@ -33,16 +30,13 @@ public class MainDAO {
 	private int slcCtgN;
 	private ArrayList<ProcessedFoodVo> list;
 
-//	private Nutry[] nutri = new Nutry[73];
-	private ArrayList<NutrientVo> nutriList;
+//	private ArrayList<NutrientVo> nutriList;
 
 	// memberDao 로그인 시 필요한 쿼리, 사용자 이름 반환
 	public String listLoginIdPw(String id, String pw) {
 		String name = "";
 
 		try {
-//				connDB();
-
 			String query = "SELECT * FROM MEMBER_INFO ";
 			if (id != null && pw != null) {
 				query += "where id = '" + id + "' and pwd = '" + pw + "'";
@@ -118,7 +112,7 @@ public class MainDAO {
 		
 		String useryy = barth.substring(0, 2);
 		String usermm = barth.substring(2, 4);
-		String userdd = barth.substring(4, 6);
+//		String userdd = barth.substring(4, 6);
 		
 		if(barth.charAt(0) - '0' > yy.charAt(0) - '0') {
 			useryy = "19" + useryy;
@@ -173,8 +167,6 @@ public class MainDAO {
 		boolean result = false;
 
 		try {
-//			connDB();
-
 			String query = "insert into member_info";
 			if (id.equals(null) || pwd.equals(null) || email.equals(null) || name.equals(null) || gender.equals(null)
 					|| barth.equals(null)) {
@@ -199,8 +191,6 @@ public class MainDAO {
 		boolean possible = false;
 
 		try {
-//			connDB();
-
 			String query = "SELECT * FROM MEMBER_INFO ";
 			if (id != null) {
 				query += "where id = '" + id + "'";
@@ -230,8 +220,6 @@ public class MainDAO {
 	public ArrayList<BigCtgVo> bigCtgList() throws SQLException, ClassNotFoundException {
 		ArrayList<BigCtgVo> bigCtg = new ArrayList<BigCtgVo>();
 
-//		connDB();
-
 		String sql = "SELECT distinct big_CTG FROM PROCESSED_FOOD";
 		rs = stmt.executeQuery(sql);
 
@@ -253,8 +241,6 @@ public class MainDAO {
 	// 해당 카테고리 별 갯수
 	public String ctgNum(String ctgStr) {
 		try {
-//			connDB();
-
 			String sql = "SELECT Food_code FROM PROCESSED_FOOD where Big_ctg = '" + ctgStr + "'";
 			rs = stmt.executeQuery(sql);
 
@@ -276,8 +262,6 @@ public class MainDAO {
 		bigCtglist = new ArrayList<BigCtgVo>();
 
 		try {
-//			connDB();
-
 			String query = "SELECT distinct big_CTG \n" + "FROM PROCESSED_FOOD";
 
 			System.out.println("SQL2 : " + query);
@@ -309,10 +293,6 @@ public class MainDAO {
 		return bigCtglist;
 	}
 
-//		public int getN() {
-//			return n;
-//		}
-
 	public ArrayList<BigCtgVo> getbigCtgList() {
 		return bigCtglist;
 	}
@@ -320,11 +300,9 @@ public class MainDAO {
 	// processedFoodDAO
 	// 해당 카테고리에 전체 항목 조회(list 프레임에 사용)
 	public ArrayList<ProcessedFoodVo> listMainShow(String big_ctg) {
-//			String big_ctg = "가공두부";
 		list = new ArrayList<ProcessedFoodVo>();
 
 		try {
-//			connDB();
 
 			String query2 = "SELECT pf.food_code, FOOD_NAME, pf.DETAIL_CTG, pf.MANUFACTURER, n.\"Kcal\" \n"
 					+ "FROM PROCESSED_FOOD pf, NUTRIENT n ";
@@ -339,7 +317,6 @@ public class MainDAO {
 			System.out.println("listMainShow().rs1.getRow() : " + rs.getRow());
 			// big_ctg 항목이 몇개인지 rs.getRow() 를 통해 알 수 있음.
 
-//			n = rs.getRow();
 			if (rs.getRow() == 0) {
 
 			} else {
@@ -355,8 +332,7 @@ public class MainDAO {
 
 					System.out.println("[food_code = " + foodCode + "][food_name = " + foodName + "][detail_Ctg = "
 							+ detailCtg + "][manufacturer = " + manufacturer + "][kcal = " + kcal + "]");
-//						
-//						
+						
 					ProcessedFoodVo data = new ProcessedFoodVo(foodCode, foodName, detailCtg, manufacturer, kcal);
 					list.add(data);
 				}
@@ -369,11 +345,9 @@ public class MainDAO {
 	}
 
 	public ArrayList<ProcessedFoodVo> list(String big_ctg) {
-//			String big_ctg = "가공두부";
 		list = new ArrayList<ProcessedFoodVo>();
 
 		try {
-//			connDB();
 
 			String query2 = "SELECT pf.food_code, FOOD_NAME, pf.DETAIL_CTG, pf.MANUFACTURER, n.\"Kcal\" \n"
 					+ "FROM PROCESSED_FOOD pf, NUTRIENT n ";
@@ -393,7 +367,6 @@ public class MainDAO {
 
 			} else {
 				rs.beforeFirst(); // 커서를 처음으로 되돌리기
-//					rs1.previous(); // 커서를 이전 위치로 되돌리기
 
 				while (rs.next()) { // 해당 결과가 있으면 조회해오는 것
 					String foodCode = rs.getString("FOOD_CODE");
@@ -424,7 +397,6 @@ public class MainDAO {
 		String query1 = "";
 		String query2 = "";
 		try {
-//			connDB();
 			// g or mL 단위 알아오는 쿼리
 			query1 = "SELECT UNIT\n" + "FROM NUTRIENT \n" + "WHERE FOOD_CODE = '" + Food_code + "'";
 
@@ -452,14 +424,13 @@ public class MainDAO {
 			rs = stmt.executeQuery(query2);
 			rs.last();
 			System.out.println("rs1.getRow() : " + rs.getRow());
-//				
-			int rowN = rs.getRow();
+
+//			int rowN = rs.getRow();
 			if (rs.getRow() == 0) {
-//					
+					
 			} else {
 				rs.beforeFirst(); // 커서를 처음으로 되돌리기
-////					rs1.previous(); // 커서를 이전 위치로 되돌리기
-//					
+					
 				while (rs.next()) { // 해당 결과가 있으면 조회해오는 것
 					String manufacturer = rs.getString("MANUFACTURER");
 					String foodName = rs.getString("FOOD_NAME");
@@ -487,74 +458,6 @@ public class MainDAO {
 		}
 		return slcData;
 	}
-
-	// nutrient DB
-//	public ArrayList<NutrientVo> nutriList(String FoodCode1, String FoodCode2, String unit) {
-//		ArrayList<NutrientVo> nutriList = new ArrayList<NutrientVo>();
-//		String query1 = "";
-//		NutrientVo vo = null;
-//		
-//		try {
-//			// foodCode1,2 의 영양소 내역 추출
-//			query1 = "SELECT *\n" + 
-//					"FROM NUTRIENT\n" + 
-//					"WHERE FOOD_CODE = 'KorName' or FOOD_CODE = '" + FoodCode1
-//					+ "' or FOOD_CODE = '" + FoodCode2 + "'";
-//
-//			rs = stmt.executeQuery(query1);
-//
-//			System.out.println("SQL 1 : " + query1);
-//
-//
-//			// 해당 단위에 알맞은 쿼리 실행
-//			System.out.println("------------------");
-//			rs.last();
-//			System.out.println("rs.getRow() : " + rs.getRow());
-//			
-//			int k = 0;
-//			if (rs.getRow() == 0) {
-//////						
-//			} else {
-//				rs.beforeFirst(); // 커서를 처음으로 되돌리기
-//
-//				while (rs.next()) { // 해당 결과가 있으면 조회해오는 것
-//					System.out.println("+++++++" + k +"+++++++++");
-//					String[] nutri = new String[73];
-//					
-//					String foodCode = rs.getString("FOOD_CODE");
-//					int PortionSize = rs.getInt("PORTION_SIZE");
-//					String total = "";
-//					
-//					
-//					if (unit.equals("g")) {
-//						total = rs.getString("TOTAL_G");
-//					} else if (unit.equals("mL")) {
-//						total = rs.getString("TOTAL_ML");
-//					}
-//					
-//					int kcal = rs.getInt("Kcal");
-//
-//					for (int i = 0; i < nutri.length; i++) {
-//						nutri[i] = (rs.getString("nutry" + i)); // 각영양소의 값 가지고오기
-//					}
-//
-//					System.out.print("코드 = [" + foodCode + "], 1회제공량 = [" + PortionSize + "], total = [" + total
-//							+ "],\nkcal = [" + kcal + "],");
-//
-//					for (int i = 0; i < nutri.length; i++) {
-//						System.out.println("영양소[" + i + "] = [" + nutri[i] + "]");
-//
-//					}
-//					vo = new NutrientVo(foodCode, PortionSize, total, kcal, nutri);
-//					nutriList.add(vo);
-//					k++;
-//				}
-//			}
-//		} catch (Exception e) {
-//
-//		}
-//		return nutriList;
-//	}
 
 	public ArrayList<NutrientVo> nutriList(String FoodCode1, String FoodCode2, String unit) {
 		ArrayList<NutrientVo> nutriList = new ArrayList<NutrientVo>();
@@ -707,7 +610,6 @@ public class MainDAO {
 	// user NutrientDietaryReferenceVo 성별.연령별 권장 섭취량DB
 	// 해당 유저의 1일 섭취 kcal 반환
 	public int userKcal(String gender, String age) {
-//		double percent = 0.0;
 		int kcal = 0;
 		try {
 			String query = "SELECT * \n"

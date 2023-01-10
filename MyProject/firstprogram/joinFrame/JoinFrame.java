@@ -424,9 +424,4 @@ public class JoinFrame {
 			genderStr = "여";
 		}
 	}
-	
-//	public static void main(String[] args) {
-//		JoinFrame jf = new JoinFrame();
-//		jf.startFrame();
-//	}
 }

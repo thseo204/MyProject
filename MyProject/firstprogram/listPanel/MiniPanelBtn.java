@@ -65,17 +65,5 @@ public class MiniPanelBtn {
 	public JButton getMiniBtn() {
 		return btn;
 	}
-	
-//	public void setLb(String name, String ctg, String manu, String kcal) {
-//		lbName = new JLabel(name, JLabel.LEFT);
-//		lbCtg = new JLabel(ctg, JLabel.RIGHT);
-//		lbManu = new JLabel(manu, JLabel.LEFT);
-//		lbKcal = new JLabel(kcal + "Kcal", JLabel.RIGHT);
-//	}
-	
-//	public static void main(String[] args) {
-//		MiniPanelBtn mp = new MiniPanelBtn();
-//		
-//	}
 }
 

@@ -9,16 +9,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 //import listPanel.ProcessedFoodDAO;
 import listPanel.ProcessedFoodVo;
-import mainframe.Main;
 import mainframe.MainDAO;
-import oracle.net.aso.c;
 
 public class TotalCardListPanel {
 	private JPanel[] cardP;

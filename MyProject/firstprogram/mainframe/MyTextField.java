@@ -22,7 +22,6 @@ public class MyTextField {
 		jTf.setForeground(Color.DARK_GRAY);
 		jTf.setText(str);
 		jTf.setEditable(false);
-		
 	}
 	
 	public void setMTfColor(Color c) {

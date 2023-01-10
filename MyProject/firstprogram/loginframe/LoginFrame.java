@@ -15,7 +15,6 @@ import mainframe.ImagePanel;
 import mainframe.MainFrame;
 import mainframe.MyButton;
 import mainframe.MainDAO;
-import mainframe.MainFrame;
 import mainframe.MyFont;
 import mainframe.MyFrame;
 

@@ -107,9 +107,4 @@ public class TotalListPanel extends BigCtgComboBox {
 	public JButton getBtnMore() {
 		return btnMore;
 	}
-
-//	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-//		TotalListPanel tlp = new TotalListPanel();
-//		tlp.startTotalPanel();
-//	}
 }

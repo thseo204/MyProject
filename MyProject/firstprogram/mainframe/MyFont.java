@@ -42,12 +42,6 @@ public class MyFont {
 		return font;
 	}
 	
-//	public Font setFont3() {
-//		Font font = new Font("monospaced", Font.BOLD, 11);
-//		
-//		return font;
-//	}
-	
 	public Font setFont4() {
 		Font font = new Font("monospaced", Font.PLAIN, 8);
 		
