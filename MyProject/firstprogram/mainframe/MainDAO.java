@@ -607,6 +607,45 @@ public class MainDAO {
 		return nutriList;
 	}
 	
+	// Detail 식품 항목 조회DB
+	public String[] nutriList(String FoodCode) {
+		String query1 = "";
+		String[] nutri = null;
+
+		try {
+			// foodCode1 의 영양소 내역 추출
+			query1 = "SELECT *\n" + "FROM NUTRIENT\n" + "WHERE FOOD_CODE = '" + FoodCode + "'";
+
+			rs = stmt.executeQuery(query1);
+			System.out.println("SQL 1 : " + query1);
+
+			System.out.println("------------------");
+			rs.last();
+			System.out.println("rs.getRow() : " + rs.getRow());
+
+			int k = 0;
+			rs.beforeFirst(); // 커서를 처음으로 되돌리기
+
+			while (rs.next()) { // 해당 결과가 있으면 조회해오는 것
+				System.out.println("+++++++" + k + "+++++++++");
+				nutri = new String[73];
+
+				for (int i = 0; i < nutri.length; i++) {
+					nutri[i] = (rs.getString("nutry" + i)); // 각영양소의 값 가지고오기
+				}
+
+				for (int i = 0; i < nutri.length; i++) {
+					System.out.println("영양소[" + i + "] = [" + nutri[i] + "]");
+
+				}
+				k++;
+			}
+		} catch(Exception e) {
+			
+		}
+		return nutri;
+	}
+	
 	// user NutrientDietaryReferenceVo 성별.연령별 권장 섭취량DB
 	// 해당 유저의 1일 섭취 kcal 반환
 	public int userKcal(String gender, String age) {
@@ -687,7 +726,7 @@ public class MainDAO {
 
 	}
 
-	static void connDB() {
+	public static void connDB() {
 		try {
 			Class.forName(driver);
 			System.out.println("jdbc driver loading success.");

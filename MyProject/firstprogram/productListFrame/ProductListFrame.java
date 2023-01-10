@@ -60,7 +60,6 @@ public class ProductListFrame extends JPanel implements ActionListener {
 	private boolean slcB1, slcB2;
 	private LineBorder borderOrange, borderGray;
 
-//	private ProcessedFoodDAO dao;
 	private MainDAO DAO = new MainDAO();
 	private ArrayList<ProcessedFoodVo> listFood;
 	private Iterator<ProcessedFoodVo> iter;
@@ -108,15 +107,12 @@ public class ProductListFrame extends JPanel implements ActionListener {
 		borderGray = new LineBorder(Color.lightGray, 3, true);
 
 		ctgStr = comboBox.getComboBoxItem();
-//		listFood = DAO.list(ctgStr);
+		
 		setListFood(ctgStr);
 		this.ctgNum = DAO.getSlcCtgN();
 //		setCtgNum();
 		setCardArr();
 		setListPBtnArr();
-
-//		dao = new ProcessedFoodDAO();
-//		DAO = new MainDAO();//
 
 	}
 
@@ -296,8 +292,8 @@ public class ProductListFrame extends JPanel implements ActionListener {
 	}
 
 	public void setListCardP(int j) {
-		int n = DAO.getSlcCtgN();
-		System.out.println("********해당 카테고리 <<" + ctgStr + ">> 의 행 갯수" + n);
+//		int n = DAO.getSlcCtgN();
+		System.out.println("********해당 카테고리 <<" + ctgStr + ">> " );
 
 		System.out.println("ListPBtn 생성 완료");
 		Iterator<ProcessedFoodVo> iter = listFood.iterator();
@@ -331,7 +327,7 @@ public class ProductListFrame extends JPanel implements ActionListener {
 					index[j] = j;
 					listPBtn[j].setListPanel(manu, name, kcal, percentStr, code);
 					listPBtn[j].startListPanel();
-					System.out.println("[" + n + "]");
+					
 					listPBtn[j].getPanel().setBounds(20, 80 * g++, 460, 75);
 //					listPBtn[j].getMiniBtn().setLabel(name);
 					listPBtn[j].getMiniBtn().setLabel("" + j);

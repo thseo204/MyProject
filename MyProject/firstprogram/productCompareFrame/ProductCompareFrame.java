@@ -2,6 +2,8 @@ package productCompareFrame;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -40,16 +42,17 @@ public class ProductCompareFrame {
 	private JButton btnApply;
 	private MyTextField manuTf1, manuTf2, nameTf1, nameTf2, vs, nutriCompareTf, gTf;
 	private String codeStr1, codeStr2;
-//	private ProcessedFoodDAO dao = new ProcessedFoodDAO();
+	
 	private MainDAO DAO = new MainDAO();
 	private ProcessedFoodVo slcData1, slcData2;
-	private JLabel lbTotal1, lbTotal2, lbKcal1, lbKcal2;
+//	private JLabel lbTotal1, lbTotal2, lbKcal1, lbKcal2;
 
 	private String[] header = { " ", " " };
 	private String[] header2 = { " ", " ", " ", " ", " " };
 
 	private String gender, age;
 	private int userKcal;
+	private double divNum1, divNum2;
 
 	public ProductCompareFrame() {
 		f = new MyFrame("제품 리스트_[뉴트리베터]");
@@ -63,10 +66,11 @@ public class ProductCompareFrame {
 		nutriCompareTf = new MyTextField("영양성분별 비교       g", 12);
 		tf = new JTextField();
 		btnApply = new JButton("적용");
-		lbTotal1 = new JLabel("lbtotal1");
-		lbTotal2 = new JLabel("lbtotal2");
-		lbKcal1 = new JLabel("lbkcal1");
-		lbKcal2 = new JLabel("lbkcal2");
+		
+//		lbTotal1 = new JLabel("lbtotal1");
+//		lbTotal2 = new JLabel("lbtotal2");
+//		lbKcal1 = new JLabel("lbkcal1");
+//		lbKcal2 = new JLabel("lbkcal2");
 
 	}
 
@@ -79,7 +83,7 @@ public class ProductCompareFrame {
 		northP.setBounds(0, 70, 500, 200);
 		northP.setBackground(Color.white);
 		southP.setLayout(null);
-		southP.setBounds(0, 270, 500, 285);
+		southP.setBounds(0, 270, 500, 295);
 		southP.setBackground(Color.white);
 
 		manuTf1 = new MyTextField(slcData1.getManufacturer(), 11);
@@ -101,10 +105,10 @@ public class ProductCompareFrame {
 		manuTf2.getJTf().setBounds(270, 15, 60, 15);
 		nameTf2.getJTf().setBounds(335, 10, 150, 30);
 
-		lbTotal1.setBounds(150, 100, 50, 10);
-		lbTotal2.setBounds(450, 100, 50, 10);
-		lbKcal1.setBounds(150, 175, 50, 10);
-		lbKcal2.setBounds(450, 175, 50, 10);
+//		lbTotal1.setBounds(150, 100, 50, 10);
+//		lbTotal2.setBounds(450, 100, 50, 10);
+//		lbKcal1.setBounds(150, 175, 50, 10);
+//		lbKcal2.setBounds(450, 175, 50, 10);
 		
 		nutriCompareTf.getJTf().setBounds(20, 5, 180, 15);
 		nutriCompareTf.getJTf().setFont(mfont.setFont(15));
@@ -116,6 +120,31 @@ public class ProductCompareFrame {
 //		btnApply.setBackground(Color.DARK_GRAY);
 		btnApply.setBorder(new LineBorder(Color.DARK_GRAY, 2, true));
 		btnApply.setFocusPainted(true);
+		
+		
+		// "적용"버튼 눌렀을 때  각 영양소별 비율 값 구하기 아직 구현 못함.
+//		btnApply.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				String tfStr = tf.getText();
+//				double tfNum = Double.parseDouble(tfStr);
+//				System.out.println(tfNum);
+//				
+//				// slc1 나눌 값의 비율 구하기
+//				String slcTotalStr1 = slcData1.getTotal();
+//				double slcTotalNum1 = Double.parseDouble(slcTotalStr1);
+//				
+//				String divStr1 = (tfNum / slcTotalNum1) + "." + (tfNum % slcTotalNum1);
+//				divNum1 = Double.parseDouble(divStr1);
+//				
+//				// slc2 나눌 값의 비율 구하기
+//				String slcTotalStr2 = slcData2.getTotal();
+//				double slcTotalNum2 = Double.parseDouble(slcTotalStr2);
+//				
+//				String divStr2 = (tfNum / slcTotalNum2) + "." + (tfNum % slcTotalNum2);
+//				divNum2 = Double.parseDouble(divStr2);
+//			}
+//		});
+		
 
 		Border border = new LineBorder(Color.white, 2, true);
 		// slcData1
