@@ -23,15 +23,16 @@ import listPanel.BigCtgComboBox;
 //import listPanel.BigCtgDAO;
 //import listPanel.ProcessedFoodDAO;
 import listPanel.ProcessedFoodVo;
-import mainframe.MyButton;
-import mainframe.ImagePanel;
-import mainframe.Main;
-import mainframe.MainDAO;
-import mainframe.MyFont;
-import mainframe.MyFrame;
-import mainframe.MyTextField;
+import mainFrame.ImagePanel;
+import mainFrame.Main;
+import mainFrame.MainDAO;
+import mainFrame.MyButton;
+import mainFrame.MyFont;
+import mainFrame.MyFrame;
+import mainFrame.MyTextField;
 import menuFrame.MenuFrame;
 import productCompareFrame.ProductCompareFrame;
+import productDetailInfoFrame.ProducDetailFrame;
 
 // 해당 카테고리의 총 제품 갯수가 5 이하일때 갯수 이외의 CardListPBtn 은 나오지 않게 해야함!
 public class ProductListFrame extends JPanel implements ActionListener {
@@ -45,34 +46,31 @@ public class ProductListFrame extends JPanel implements ActionListener {
 	private MyFont mfont;
 	private MyButton myBtn;
 	private ImageIcon imgMenu, imgMenuC, cMenu, imgSearch, imgSearchC, cSearch;
-	private JButton btnMenu, btnSearch, btnNext, btnPre;
+	private JButton btnMenu, btnSearch, btnNext, btnPre, btnCompare;
 	private MyTextField totalNum, slcTf1, slcTf2;
-	private JButton btnCompare;
-	private String ctgStr;
 	private int ctgNum, cardNum;
 
 	private BigCtgComboBox comboBox;
 	private ProductListFrame cardDemo;
 	private ListPanelBtn[] listPBtn;
-	private int j = 0, k = 0, dex;
+	private int j = 0, k = 0, dex, userKcal;
 	private int[] index;
-	private String slcStr1, slcStr2, codeStr1, codeStr2;
+	private String ctgStr, slcStr1, slcStr2, codeStr1, codeStr2, name, id, gender, age;
 	private boolean slcB1, slcB2;
 	private LineBorder borderOrange, borderGray;
 
 	private MainDAO DAO = new MainDAO();
 	private ArrayList<ProcessedFoodVo> listFood;
 	private Iterator<ProcessedFoodVo> iter;
-	
-	private String gender;
-	private String age;
-	private int userKcal;
 
-	public ProductListFrame(String gender, String age) {
+
+	public ProductListFrame(String name, String id, String gender, String age) {
+		this.name = name;
+		this.id = id;
 		this.gender = gender;
 		this.age = age;
 		this.userKcal = DAO.userKcal(gender, age);
-		
+
 		f = new MyFrame("제품 리스트_[뉴트리베터]");
 		p = new ImagePanel(new ImageIcon(f.getBackNorthImg()).getImage());
 
@@ -89,8 +87,6 @@ public class ProductListFrame extends JPanel implements ActionListener {
 		slcTf2 = new MyTextField("", 10);
 		btnCompare = new JButton("비교하기");
 
-		comboBox = new BigCtgComboBox();
-
 		imgMenu = new ImageIcon("./Button_image/Button_menu.PNG");
 		imgMenuC = new ImageIcon("./Button_image/ButtonC_img.PNG");
 		imgSearch = new ImageIcon("./Button_image/Search_img.PNG");
@@ -106,21 +102,27 @@ public class ProductListFrame extends JPanel implements ActionListener {
 		borderOrange = new LineBorder(Color.orange, 3, true);
 		borderGray = new LineBorder(Color.lightGray, 3, true);
 
-		ctgStr = comboBox.getComboBoxItem();
 		
-		setListFood(ctgStr);
-		this.ctgNum = DAO.getSlcCtgN();
+//		ctgStr = comboBox.getComboBoxItem();
+//		setListFood("과자");
+//		this.ctgNum = 11097;
 //		setCtgNum();
-		setCardArr();
-		setListPBtnArr();
 
 	}
 
 	public void startFrame() {
 		f.startMyFrmae();
 		f.backBtnDispose();
-//		f.getMyFrame().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		cardDemo = new ProductListFrame(gender, age);
+		f.getMyFrame().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		comboBox = new BigCtgComboBox();
+		ctgStr = comboBox.getList(0);
+		setListFood(ctgStr);
+		this.ctgNum = DAO.getSlcCtgN();
+		setCardArr();
+		setListPBtnArr();
+		
+		cardDemo = new ProductListFrame(name, id, gender, age);
 		cardDemo.setOpaque(true);
 		f.getMyFrame().setLocationRelativeTo(null);
 		f.getMyFrame().setSize(500, 600);
@@ -141,16 +143,18 @@ public class ProductListFrame extends JPanel implements ActionListener {
 		totalNum.getJTf().setBounds(30, 130, 120, 20);
 		totalNum.getJTf().setBorder(null);
 		slcTf1.getJTf().setFont(mfont.setFont(10));
-		slcTf1.getJTf().setBounds(180, 125, 200, 13);
+		slcTf1.getJTf().setBounds(205, 125, 200, 13);
 		slcTf1.getJTf().setBorder(null);
 		slcTf1.getJTf().setForeground(new Color(204, 102, 0));
 		slcTf1.getJTf().setHorizontalAlignment(JLabel.RIGHT);
 		slcTf2.getJTf().setFont(mfont.setFont(10));
-		slcTf2.getJTf().setBounds(180, 140, 200, 13);
+		slcTf2.getJTf().setBounds(205, 140, 200, 13);
 		slcTf2.getJTf().setBorder(null);
 		slcTf2.getJTf().setForeground(new Color(204, 51, 0));
 		slcTf2.getJTf().setHorizontalAlignment(JLabel.RIGHT);
-		btnCompare.setBounds(390, 120, 80, 40);
+		btnCompare.setBounds(410, 120, 60, 35);
+		btnCompare.setFont(mfont.setFont(12));
+		btnCompare.setBorder(new LineBorder(new Color(210,180,140), 3, true));
 
 		setListCardP(j);
 
@@ -171,6 +175,8 @@ public class ProductListFrame extends JPanel implements ActionListener {
 		btnMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				MenuFrame mf = new MenuFrame();
+				mf.setGenderAge(id, gender, age);
+				mf.setNameLb(name);
 				mf.startFrame(true);
 			}
 		});
@@ -183,9 +189,18 @@ public class ProductListFrame extends JPanel implements ActionListener {
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 //					cl.first(cardPanel);
+					slcB1 = false;
+					slcB2 = false;
+					slcTf1.getJTf().setText("");
+					slcTf2.getJTf().setText("");
+					
 					for (int i = 0; i < 5; i++) {
-						listPBtn[i].getMiniBtn().setText("선택");
+//						listPBtn[i].getMiniBtn().setText("선택");
+//						listPBtn[i].getMiniBtn().setBorder(borderGray);
+						
 						listPBtn[i].getMiniBtn().setBorder(borderGray);
+						listPBtn[i].setLbSelect("선택");
+						listPBtn[i].getLbSelect().setForeground(Color.black);
 
 					}
 					try {
@@ -236,10 +251,13 @@ public class ProductListFrame extends JPanel implements ActionListener {
 				}
 			}
 		});
+		
 
 		for (int i = 0; i < cardNum; i++) {
 			cardPanel.add(card[i]);
 		}
+		cardPanel.setBackground(new Color(255,250,240));
+		cardDemo.setBackground(new Color(255,250,240));
 		// 영역확인하기 위해 색 지정 하였음.
 //		cardDemo.setBackground(Color.DARK_GRAY);
 //		cardDemo.setBackground(Color.white);
@@ -278,6 +296,8 @@ public class ProductListFrame extends JPanel implements ActionListener {
 		for (int i = 0; i < cardNum; i++) {
 			card[i] = new JPanel();
 			card[i].setLayout(null);
+//			card[i].setBackground(Color.white);
+			card[i].setBackground(new Color(255,250,240));
 		}
 	}
 
@@ -288,12 +308,16 @@ public class ProductListFrame extends JPanel implements ActionListener {
 			listPBtn[i] = new ListPanelBtn();
 			listPBtn[i].getMiniBtn().addActionListener(this);
 			listPBtn[i].getMiniBtn().setBorder(borderGray);
+			
+			listPBtn[i].getTotalBtn().setText("버튼" + i);
+			listPBtn[i].getTotalBtn().setBackground(null);;
+			listPBtn[i].getTotalBtn().addActionListener(this);
 		}
 	}
 
 	public void setListCardP(int j) {
 //		int n = DAO.getSlcCtgN();
-		System.out.println("********해당 카테고리 <<" + ctgStr + ">> " );
+		System.out.println("********해당 카테고리 <<" + ctgStr + ">> ");
 
 		System.out.println("ListPBtn 생성 완료");
 		Iterator<ProcessedFoodVo> iter = listFood.iterator();
@@ -317,95 +341,117 @@ public class ProductListFrame extends JPanel implements ActionListener {
 					double percent = ((Double.valueOf(kcal)) / userKcal) * 100;
 //					String percentStr = String.valueOf(percent).substring(0, 4);
 					String percentStr = String.valueOf(percent);
-					if(percentStr.length() >= 5) {
+					if (percentStr.length() >= 5) {
 						percentStr = percentStr.substring(0, 5);
 					}
-					System.out.println("****************" + j + "***************");
+					System.out.println("************" + j + "***************");
 					System.out.print(manu + "\t");
 					System.out.print(name + "\t");
 					System.out.println(kcal + "\t");
 					index[j] = j;
 					listPBtn[j].setListPanel(manu, name, kcal, percentStr, code);
 					listPBtn[j].startListPanel();
-					
+
 					listPBtn[j].getPanel().setBounds(20, 80 * g++, 460, 75);
 //					listPBtn[j].getMiniBtn().setLabel(name);
 					listPBtn[j].getMiniBtn().setLabel("" + j);
 					card[k].add(listPBtn[j].getPanel());
+					
+//					listPBtn[i].getTotalBtn().setText("버튼" + i);
+//					listPBtn[i].getTotalBtn().addActionListener(this);
+//					listPBtn[i].setFoodCode(code);
 				} catch (Exception e) {
 
 				}
 				j++;
 			}
 		}
-
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		for (int i = 0; i < listPBtn.length; i++) {
+
+		String eStr = e.getActionCommand();
+		
+		if (Character.isDigit(eStr.charAt(0))) {
+			for (int i = 0; i < listPBtn.length; i++) {
 //			listFood.get(i)
 
-			if (e.getActionCommand().equals("" + i)) {
-				dex = i;
+				if (e.getActionCommand().equals("" + i)) {
+					dex = i;
+				}
 			}
-		}
-		System.out.println("dex = [" + dex + "]");
-//		System.out.println(e.hashCode() + "\t" +  listPBtn[dex].getMiniBtn().hashCode());
-		if (slcStr1.equals(listPBtn[dex].getLbName())) {
-			slcStr1 = "";
-			codeStr1 = "";
-			slcB1 = false;
-			slcTf1.getJTf().setText("");
-//			listPBtn[dex].getMiniBtn().setText(""+ dex);
-			listPBtn[dex].getMiniBtn().setBorder(borderGray);
+			System.out.println("dex = [" + dex + "]");
 
-			System.out.println("버튼 [0]개 선택, 선택된 제품 은 [" + slcStr1 + "]");
-			System.out.println("              선택된 코드는 [" + codeStr1 + "]");
+			if (slcStr1.equals(listPBtn[dex].getLbName())) {
+				slcStr1 = "";
+				codeStr1 = "";
+				slcB1 = false;
+				slcTf1.getJTf().setText("");
+				listPBtn[dex].getMiniBtn().setBorder(borderGray);
+				listPBtn[dex].setLbSelect("선택");
+				listPBtn[dex].getLbSelect().setForeground(Color.black);
 
-		} else if (slcStr2.equals(listPBtn[dex].getLbName())) {
-			slcStr2 = "";
-			codeStr2 = "";
-			slcB2 = false;
-			slcTf2.getJTf().setText("");
-//			listPBtn[dex].getMiniBtn().setText(""+ dex);
-			listPBtn[dex].getMiniBtn().setBorder(borderGray);
+				System.out.println("버튼 [0]개 선택, 선택된 제품 은 [" + slcStr1 + "]");
+				System.out.println("              선택된 코드는 [" + codeStr1 + "]");
 
-			System.out.println("버튼 [1]개 선택, 선택된 제품 은 [" + slcStr1 + "]");
-			System.out.println("              선택된 코드는 [" + codeStr1 + "]");
-
-		} else if (slcStr1.equals("")) {
-			if (e.getActionCommand().equals(""+ dex)) {
-				slcStr1 = listPBtn[dex].getLbName();
-				codeStr1 = listPBtn[dex].getCodeStr();
-				slcB1 = true;
-				slcTf1.getJTf().setText("[1] " + slcStr1);
-//				p.add(slcTf1.getJTf());
-//				listPBtn[dex].getMiniBtn().setText("V");
-				listPBtn[dex].getMiniBtn().setBorder(borderOrange);
+			} else if (slcStr2.equals(listPBtn[dex].getLbName())) {
+				slcStr2 = "";
+				codeStr2 = "";
+				slcB2 = false;
+				slcTf2.getJTf().setText("");
+				listPBtn[dex].getMiniBtn().setBorder(borderGray);
+				listPBtn[dex].setLbSelect("선택");
+				listPBtn[dex].getLbSelect().setForeground(Color.black);
 
 				System.out.println("버튼 [1]개 선택, 선택된 제품 은 [" + slcStr1 + "]");
 				System.out.println("              선택된 코드는 [" + codeStr1 + "]");
-			}
-		} else if (!slcStr1.equals("") && slcStr2.equals("")) {
-			if (e.getActionCommand().equals(""+ dex)) {
-				slcStr2 = listPBtn[dex].getLbName();
-				codeStr2 = listPBtn[dex].getCodeStr();
-				slcB2 = true;
-				slcTf2.getJTf().setText("[2] " + slcStr2);
-//				p.add(slcTf2.getJTf());
-//				listPBtn[dex].getMiniBtn().setText("V");
-				listPBtn[dex].getMiniBtn().setBorder(borderOrange);
 
-				System.out.println("버튼 [2]개 선택, 선택된 제품 은 [" + slcStr1 + "], [" + slcStr2 + "]");
-				System.out.println("              선택된 코드는 [" + codeStr1 + "], [" + codeStr2 + "]");
+			} else if (slcStr1.equals("")) {
+				if (e.getActionCommand().equals("" + dex)) {
+					slcStr1 = listPBtn[dex].getLbName();
+					codeStr1 = listPBtn[dex].getBtnFoodCode();
+					slcB1 = true;
+					slcTf1.getJTf().setText("[1] " + slcStr1);
+					listPBtn[dex].getMiniBtn().setBorder(borderOrange);
+					listPBtn[dex].setLbSelect("v");
+					listPBtn[dex].getLbSelect().setForeground(Color.orange);
 
+					System.out.println("버튼 [1]개 선택, 선택된 제품 은 [" + slcStr1 + "]");
+					System.out.println("              선택된 코드는 [" + codeStr1 + "]");
+				}
+			} else if (!slcStr1.equals("") && slcStr2.equals("")) {
+				if (e.getActionCommand().equals("" + dex)) {
+					slcStr2 = listPBtn[dex].getLbName();
+					codeStr2 = listPBtn[dex].getBtnFoodCode();
+					slcB2 = true;
+					slcTf2.getJTf().setText("[2] " + slcStr2);
+					listPBtn[dex].getMiniBtn().setBorder(borderOrange);
+					listPBtn[dex].setLbSelect("v");
+					listPBtn[dex].getLbSelect().setForeground(Color.orange);
+
+					System.out.println("버튼 [2]개 선택, 선택된 제품 은 [" + slcStr1 + "], [" + slcStr2 + "]");
+					System.out.println("              선택된 코드는 [" + codeStr1 + "], [" + codeStr2 + "]");
+//				System.out.println("-------버튼 넘버 : " + listPBtn[dex].getMiniBtn().getText());
+				}
+			} else if (slcB1 == true && slcB2 == true) {
+				JOptionPane.showMessageDialog(null, "2가지 제품만 선택 가능합니다.");
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "2가지 제품만 선택 가능합니다.");
+				System.out.println("선택된 버튼 번호 : " + e.getActionCommand());
+				eStr = eStr.substring(2);
+				int i = Integer.valueOf(eStr);
+				System.out.println("선택된 버튼 i : " + i);
+				String foodCode = listPBtn[i].getBtnFoodCode();
+				
+				System.out.println("선택된 푸드 코드 " + foodCode);
+				ProducDetailFrame df = new ProducDetailFrame();
+				df.setFoodCode(foodCode);
+				df.setGenderAge(id, gender, age);
+				df.startFrame();
 		}
 	}
-	
-	public void setListFood(String ctgStr){
+
+	public void setListFood(String ctgStr) {
 		listFood = DAO.list(ctgStr);
 	}
 

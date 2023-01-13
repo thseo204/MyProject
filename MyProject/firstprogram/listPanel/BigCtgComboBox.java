@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import javax.swing.JComboBox;
 
-import mainframe.MainDAO;
-import mainframe.MyFont;
+import mainFrame.MainDAO;
+import mainFrame.MyFont;
 
 public class BigCtgComboBox {
 	private JComboBox comboBox;
@@ -37,5 +37,9 @@ public class BigCtgComboBox {
 	public String getList(int index) {
 		BigCtgVo vo = list.get(index);
 		return vo.getBigCtg();
+	}
+	
+	public ArrayList<BigCtgVo> getComboBoxList(){
+		return list;
 	}
 }

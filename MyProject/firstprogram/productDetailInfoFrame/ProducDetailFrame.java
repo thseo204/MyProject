@@ -2,14 +2,23 @@ package productDetailInfoFrame;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.awt.TextField;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
@@ -19,12 +28,11 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
 import listPanel.ProcessedFoodVo;
-import mainframe.ImagePanel;
-import mainframe.MainDAO;
-import mainframe.MyFont;
-import mainframe.MyFrame;
-import mainframe.MyTextField;
-import productCompareFrame.NutrientVo;
+import mainFrame.ImagePanel;
+import mainFrame.MainDAO;
+import mainFrame.MyFont;
+import mainFrame.MyFrame;
+import mainFrame.MyTextField;
 
 public class ProducDetailFrame {
 	private MyFrame f;
@@ -34,14 +42,17 @@ public class ProducDetailFrame {
 	private MyFont mfont;
 	private JTable slcTable, nutriTable;
 	private JScrollPane slcPane, nutriPane;
-
+	private JTextField tf;
 	private String codeStr;
-
+	private JButton btnApply, btnAddEat;
 	private String[] header1 = { " ", " ", " ", " ", " " };
 	private String[] header2 = { " ", " ", " ", " " };
-
-	private String gender, age;
-	private int userKcal;
+	private String[] nutri;
+	private String[] percentColValue;
+	
+	DefaultTableModel model1, model2;
+	private String id, gender, age;
+	private int userKcal, startCount;
 
 	private MainDAO DAO = new MainDAO();
 	private ProcessedFoodVo slcData;
@@ -54,7 +65,11 @@ public class ProducDetailFrame {
 		northP = new JPanel();
 		southP = new JPanel();
 		mfont = new MyFont();
+		tf = new JTextField();
+		btnApply = new JButton("적용");
+		btnAddEat = new JButton("오늘 섭취 음식 저장");
 
+		
 	}
 
 	public void startFrame() {
@@ -73,16 +88,36 @@ public class ProducDetailFrame {
 
 		manuTf = new MyTextField(slcData.getManufacturer(), 13);
 		nameTf = new MyTextField(slcData.getFoodName(), 23);
-		nutriListTf = new MyTextField("영양성분별 분류", 15);
+		nutriListTf = new MyTextField("영양성분별 분류        g/mL", 15);
 
 		nameTf.getJTf().setFont(mfont.setFont(23));
 		manuTf.getJTf().setFont(mfont.setFont(13));
 		manuTf.getJTf().setForeground(Color.GRAY);
-		manuTf.getJTf().setBounds(40, 20, 100, 15);
-		nameTf.getJTf().setBounds(150, 15, 220, 30);
+		manuTf.getJTf().setBounds(40, 4, 420, 15);
+		manuTf.getJTf().setHorizontalAlignment(JLabel.LEFT);
+		nameTf.getJTf().setBounds(40, 18, 420, 30);
+		nameTf.getJTf().setHorizontalAlignment(JLabel.CENTER);
 		nutriListTf.getJTf().setFont(mfont.setFont(15));
-		nutriListTf.getJTf().setBounds(22, 5, 120, 17);
+		nutriListTf.getJTf().setBounds(22, 5, 220, 17);
+		
+//		tf.setBounds(245, 45, 50, 27);
+		tf.setBounds(140, 0, 50, 27);
+		tf.setFont(mfont.setFont(13));
+		tf.setBorder(new LineBorder(Color.LIGHT_GRAY, 2, true));
+		
+//		btnApply.setBounds(315, 45, 30, 27);
+		btnApply.setBounds(235, 0, 30, 27);
+		btnApply.setForeground(Color.darkGray);
+		btnApply.setBorder(new LineBorder(Color.DARK_GRAY, 3, true));
+		//		btnApply.setFocusable(true);
+//		btnApply.setContentAreaFilled(false);
+//		btnApply.setFocusPainted(false);
+		
+		btnAddEat.setBounds(360, 0, 120, 27);
+		btnAddEat.setForeground(Color.darkGray);
+		btnAddEat.setBorder(new LineBorder(Color.DARK_GRAY, 3, true));
 
+		
 		double portionValue = Double.parseDouble(slcData.getPortionSize());
 		double totalKcal = slcData.getKcal();
 		String totalStr = slcData.getTotal();
@@ -103,13 +138,13 @@ public class ProducDetailFrame {
 			portionKcalStr = "-";
 		}
 
-		Border border = new LineBorder(Color.white, 2, true);
+		Border border = new LineBorder(new Color(210,180,140), 1, true);
 
 		String contents1[][] = { { "유형[대/소분류]", "총 내용량", "1회 제공량", "총 열량", "1회 제공 열량" },
 				{ "[" + slcData.getBigCtg() + "] " + slcData.getDetailCtg(), totalValueStr,
 						portionValue + slcData.getUnit(), totalKcal + "Kcal", portionKcalStr } };
 
-		DefaultTableModel model1 = new DefaultTableModel(contents1, header1);
+		model1 = new DefaultTableModel(contents1, header1);
 		slcTable = new JTable(model1) {
 			private static final long serialVersionUID = 1L;
 
@@ -129,8 +164,10 @@ public class ProducDetailFrame {
 
 		};
 		tableCellCenter(slcTable);
-
+//		slcTable.isCellEditable(0, 2);
 		slcTable.setBorder(border);
+		slcTable.getTableHeader().setReorderingAllowed(false); //  컬럼의 이동 불가.
+		slcTable.getTableHeader().setResizingAllowed(false); // 컬럼의 사이즈 변경 불가.
 		// 행 높이 지정
 		slcTable.setRowHeight(45);
 		slcTable.setFont(mfont.setFont(12));
@@ -143,19 +180,20 @@ public class ProducDetailFrame {
 
 		slcPane = new JScrollPane(slcTable);
 		slcPane.setBounds(15, 50, 470, 110);
-		slcPane.setBorder(border);
+		slcPane.setBorder(new LineBorder(Color.white));
 
 		String[][] contents2 = new String[75][header2.length];
 		for (int i = 0; i < contents2.length; i++) {
 			for (int j = 0; j < contents2[i].length; j++) {
-				contents2[i][j] = "//";
+				contents2[i][j] = "-";
 				contents2[i][3] = "(권장섭취량 없음)";
 			}
 		}
 		// nutryPane
 		contents2[0][0] = "영양성분(단위)";
 		contents2[0][1] = "함량";
-		contents2[0][2] = "TEXTFIELD";
+		contents2[0][2] = "  ";
+//		contents2[0][2] = "  "+ slcData.getUnit();
 		contents2[0][3] = "1일영양성분기준대비(%)";
 
 		contents2[1][0] = "총열량(Kcal)";
@@ -170,7 +208,7 @@ public class ProducDetailFrame {
 		kcalPerStr += "%";
 		contents2[1][3] = kcalPerStr;
 
-		String[] nutri = DAO.nutriList(codeStr);
+		nutri = DAO.nutriList(codeStr);
 		String[] userNutriList = DAO.userNutriList(gender, age);
 		String[] userKorNutriList = DAO.userNutriList("성별", "나이");
 
@@ -186,7 +224,7 @@ public class ProducDetailFrame {
 			System.out.println(contents2[i + 2][1] + "\t");
 		}
 		
-		DefaultTableModel model2 = new DefaultTableModel(contents2, header2);
+		model2 = new DefaultTableModel(contents2, header2);
 		nutriTable = new JTable(model2) {
 			private static final long serialVersionUID = 1L;
 
@@ -221,7 +259,8 @@ public class ProducDetailFrame {
 		nutriTable.setShowHorizontalLines(true); // 셀 수평선 유무
 		nutriTable.setShowVerticalLines(false); // 셀 수직선 유무
 		nutriTable.setGridColor(Color.LIGHT_GRAY);
-
+		nutriTable.getTableHeader().setReorderingAllowed(false); //  컬럼의 이동 불가.
+		nutriTable.getTableHeader().setResizingAllowed(false); // 컬럼의 사이즈 변경 불가.
 		// null 값인 행 삭제
 		for (int i = 2; i < model2.getRowCount(); i++) {
 			System.out.println(
@@ -232,6 +271,8 @@ public class ProducDetailFrame {
 			}
 		}
 		
+		percentColValue = new String[model2.getRowCount()];
+
 		// 식품 영양성분 & user의 권장 섭취량 비교 (1일 영양성분 기준 대비 %) 
 		for (int i = 2; i < model2.getRowCount(); i++) {
 			for (int k = 0; k < userKorNutriList.length; k++) {
@@ -268,18 +309,94 @@ public class ProducDetailFrame {
 		nutriTable.setFont(mfont.setFont(13));
 		nutriTable.setBorder(border);
 
-//		nutriTable.getColumnModel().getColumn(0).setPreferredWidth(50);
-		nutriTable.getColumnModel().getColumn(1).setPreferredWidth(50);
-		nutriTable.getColumnModel().getColumn(2).setPreferredWidth(70); // -35
-		nutriTable.getColumnModel().getColumn(3).setPreferredWidth(100); // -55
+		nutriTable.getColumnModel().getColumn(0).setPreferredWidth(110);
+//		nutriTable.getColumnModel().getColumn(1).setPreferredWidth(70);
+		nutriTable.getColumnModel().getColumn(2).setPreferredWidth(90); // -35
+		nutriTable.getColumnModel().getColumn(3).setPreferredWidth(120); // -55
 
+		tf.addKeyListener(new KeyAdapter() {
+			public void keyTyped(KeyEvent ke) {
+				try {
+					char c = ke.getKeyChar();
+					JTextField src = (JTextField) ke.getSource();
+					
+					if(src.getText().length() >= 5) { // 값 길이 제한
+						ke.consume();
+					} else if(!Character.isDigit(c)) { // 숫자만 입력받을 수 있도록!
+						ke.consume();
+					}
+				} catch(ClassCastException e) {
+						
+					
+				}
+			}
+		});
+		
+		btnApply.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(startCount == 0) {
+					// 적용버튼 클릭 시 처음 column 값 세이브 해놓기
+					for(int i = 1; i < model2.getRowCount(); i++) {
+						percentColValue[i] = model2.getValueAt(i, 3) + "";
+					}
+				}
+				
+				System.out.println(tf.getText());
+				
+				if(!tf.getText().isEmpty()) {
+					model2.setValueAt(tf.getText() + slcData.getUnit() + " 당", 0, 2);
+					
+					String portionStr = slcData.getPortionSize();
+					double tfNum = Double.parseDouble(tf.getText());
+					double portionNum = Double.parseDouble(portionStr);
+					
+					setTfColume(tfNum, portionNum);
+					startCount++;
+				} else {
+					JOptionPane.showMessageDialog(null, "입력 값이 없습니다.");
+				}
+			}
+		});
+		
+		// textField 에 입력한 그람수에 따른 영양소 섭취량 저장하기!!!
+		// DB 에 섭취한 양의 컬럼 생성?
+		btnAddEat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SimpleDateFormat format = new SimpleDateFormat("YYYYMMDD");
+				String today = format.format(new Date()); // 현재날짜 가져오기
+				String[] addNutriKorArr = new String[model2.getRowCount()];
+				String[] addNutriArr = new String[model2.getRowCount()];
+				for(int i = 1; i < model2.getRowCount(); i++) {
+					addNutriKorArr[i - 1] = model2.getValueAt(i, 0) + "";
+					addNutriArr[i - 1] = model2.getValueAt(i, 2) + "";
+					System.out.println(addNutriKorArr[i - 1] + "--" + addNutriArr[i - 1]);
+				}
+				
+				System.out.println("날짜["+today+"] 아이디["+ id + "] 코드[" + codeStr + "] 섭취량[" + tf.getText() + slcData.getUnit() + "] 섭취칼로리[" + model2.getValueAt(1, 2) + "]");
+				JOptionPane.showMessageDialog(null, "섭취하신 양 " + tf.getText() + slcData.getUnit() + "을 저장합니다.");
+				
+				
+				boolean addResult = DAO.listAddNutriInsert(today, id, codeStr, tf.getText() + slcData.getUnit(), addNutriKorArr, addNutriArr);
+				if(addResult == true) {
+					JOptionPane.showMessageDialog(null, "오늘 섭취 내역에 저장되었습니다.");
+				} else {
+					System.out.println("저장 실패");
+				}
+			}
+		});
+		
 		nutriPane = new JScrollPane(nutriTable);
 		nutriPane.setBounds(10, 20, 480, 280);
-		nutriPane.setBorder(border);
+		nutriPane.setBorder(new LineBorder(Color.white));
 
 		northP.add(manuTf.getJTf());
 		northP.add(nameTf.getJTf());
 		northP.add(slcPane);
+		
+		southP.add(tf);
+		southP.add(btnApply);
+		southP.add(btnAddEat);
 
 		southP.add(nutriListTf.getJTf());
 		southP.add(nutriPane);
@@ -306,17 +423,81 @@ public class ProducDetailFrame {
 		slcData = DAO.compareData(codeStr);
 	}
 
-	public void setGenderAge(String gender, String age) {
+	public void setGenderAge(String id, String gender, String age) {
+		this.id = id;
 		this.gender = gender;
 		this.age = age;
 	}
-
-	public static void main(String[] args) {
-		MainDAO.connDB();
-
-		ProducDetailFrame plf = new ProducDetailFrame();
-		plf.setFoodCode("P084743");
-		plf.setGenderAge("여", "32");
-		plf.startFrame();
+	
+	public void setTfColume(double tfNum, double portionNum) {
+		double divNum = 0.0;
+		for(int i = 1; i < model2.getRowCount(); i++) {
+			model2.setValueAt(percentColValue[i], i, 3);
+		}
+		
+		if(tfNum > portionNum) {
+			divNum = portionNum / tfNum;
+			
+			for(int i = 1; i < model2.getRowCount(); i++) {
+				double nutriNum = Double.parseDouble(model2.getValueAt(i, 1) + "");
+				double result = nutriNum / divNum;
+				String resultStr = result + "";
+				if(resultStr.length() >= 6) {
+					resultStr = resultStr.substring(0, 6);
+				}
+				model2.setValueAt(resultStr, i, 2);
+				
+				String pColStr = model2.getValueAt(i, 3) + "";
+				if(pColStr.length() < 8) {
+					pColStr = pColStr.substring(0, pColStr.length()-1);
+					double resultPercent = Double.parseDouble(pColStr) / divNum;
+					String resultPercentStr = resultPercent + "";
+					if(resultPercentStr.length() >= 6) {
+						resultPercentStr = resultPercentStr.substring(0, 5);
+					}
+					model2.setValueAt(resultPercentStr + "%", i, 3);
+				}
+			}
+		} else if(tfNum < portionNum) {
+			divNum = tfNum / portionNum;
+			
+			for(int i = 1; i < model2.getRowCount(); i++) {
+				double nutriNum = Double.parseDouble(model2.getValueAt(i, 1) + "");
+				double result = nutriNum * divNum;
+				String resultStr = result + "";
+				if(resultStr.length() >= 6) {
+					resultStr = resultStr.substring(0, 6);
+				}
+				model2.setValueAt(resultStr, i, 2);
+				
+				String pColStr = model2.getValueAt(i, 3) + "";
+				if(pColStr.length() < 8) {
+					pColStr = pColStr.substring(0, pColStr.length()-1);
+					double resultPercent = Double.parseDouble(pColStr) * divNum;
+					String resultPercentStr = resultPercent + "";
+					if(resultPercentStr.length() >= 6) {
+						resultPercentStr = resultPercentStr.substring(0, 5);
+					}
+					model2.setValueAt(resultPercentStr + "%", i, 3);
+				}
+			}
+		} else {
+			for(int i = 1; i < model2.getRowCount(); i++) {
+				String resultStr = model2.getValueAt(i, 1) + "";
+				if(resultStr.length() >= 6) {
+					resultStr = resultStr.substring(0, 6);
+				}
+				model2.setValueAt(resultStr, i, 2);
+			}
+		}
 	}
+
+//	public static void main(String[] args) {
+//		MainDAO.connDB();
+//
+//		ProducDetailFrame plf = new ProducDetailFrame();
+//		plf.setFoodCode("P084743");
+//		plf.setGenderAge("여", "32");
+//		plf.startFrame();
+//	}
 }

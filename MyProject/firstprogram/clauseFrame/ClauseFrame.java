@@ -12,10 +12,10 @@ import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
 import joinFrame.JoinFrame;
-import mainframe.ImagePanel;
-import mainframe.MyFont;
-import mainframe.MyFrame;
-import mainframe.MyTextField;
+import mainFrame.ImagePanel;
+import mainFrame.MyFont;
+import mainFrame.MyFrame;
+import mainFrame.MyTextField;
 
 public class ClauseFrame extends JoinFrame{
 	private MyFrame f;

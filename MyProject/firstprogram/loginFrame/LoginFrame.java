@@ -1,4 +1,4 @@
-package loginframe;
+package loginFrame;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -11,12 +11,12 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import joinFrame.JoinFrame;
-import mainframe.ImagePanel;
-import mainframe.MainFrame;
-import mainframe.MyButton;
-import mainframe.MainDAO;
-import mainframe.MyFont;
-import mainframe.MyFrame;
+import mainFrame.ImagePanel;
+import mainFrame.MainDAO;
+import mainFrame.MainFrame;
+import mainFrame.MyButton;
+import mainFrame.MyFont;
+import mainFrame.MyFrame;
 
 public class LoginFrame extends MainFrame {
 	private MyFrame f;
@@ -86,10 +86,10 @@ public class LoginFrame extends MainFrame {
 					resTf.setText("아이디 혹은 비밀번호가 일치하지 않습니다.");
 				} else {
 					LOGON = true;
-					
+					String id = mTfId.getTf().getText();
 					String gender = DAO.listGender(mTfId.getTf().getText());
 					String age = DAO.listAge(mTfId.getTf().getText());
-					MainFrame mf = new MainFrame(name, gender, age);
+					MainFrame mf = new MainFrame(id, name, gender, age);
 					mf.startFrame();
 					f.getMyFrame().setVisible(false);
 //					stopMain();

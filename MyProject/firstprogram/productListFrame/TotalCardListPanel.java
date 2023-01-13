@@ -15,7 +15,7 @@ import javax.swing.border.TitledBorder;
 
 //import listPanel.ProcessedFoodDAO;
 import listPanel.ProcessedFoodVo;
-import mainframe.MainDAO;
+import mainFrame.MainDAO;
 
 public class TotalCardListPanel {
 	private JPanel[] cardP;

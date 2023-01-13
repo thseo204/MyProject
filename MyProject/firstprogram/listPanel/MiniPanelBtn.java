@@ -1,10 +1,13 @@
 package listPanel;
 
+import java.awt.Color;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
-import mainframe.MyFont;
+import mainFrame.MyFont;
 
 public class MiniPanelBtn {
 	private JPanel p;
@@ -12,10 +15,15 @@ public class MiniPanelBtn {
 	private JLabel lbName, lbCtg, lbManu, lbKcal;
 	private MyFont mfont;
 	
+	private String foodCode;
+	
 	public MiniPanelBtn() {
 		p = new JPanel();
 		p.setSize(220, 90);
 		p.setLayout(null);
+		p.setBackground(Color.white);
+//		p.setBackground(new Color(255,250,240));
+//		p.setBackground(new Color(255,255,240));
 		
 		mfont = new MyFont();
 		
@@ -24,6 +32,9 @@ public class MiniPanelBtn {
 		btn.setBorderPainted(true);
 		btn.setOpaque(true);
 		btn.isRolloverEnabled();
+		
+//		btn.setBorder(new LineBorder(new Color(210,180,140), 2, false));
+
 	
 		lbName = new JLabel("", JLabel.LEFT);
 		lbCtg = new JLabel("", JLabel.RIGHT);
@@ -33,7 +44,8 @@ public class MiniPanelBtn {
 //		startMiniPanel();
 	}
 	
-	public void setMiniPanel(String name, String ctg, String manu, String kcal) {
+	public void setMiniPanel(String foodCode, String name, String ctg, String manu, String kcal) {
+		this.foodCode = foodCode;
 		lbName.setText(name);
 		lbCtg.setText(ctg);
 		lbManu.setText(manu);
@@ -46,13 +58,13 @@ public class MiniPanelBtn {
 	public void startMiniPanel() {
 		
 		lbName.setFont(mfont.setFont(11));
-		lbName.setBounds(15, 20, 140, 16);
+		lbName.setBounds(15, 22, 140, 16);
 		lbManu.setFont(mfont.setFont4());
-		lbManu.setBounds(15, 8, 100, 8);
+		lbManu.setBounds(15, 10, 100, 8);
 		lbCtg.setFont(mfont.setFont4());
-		lbCtg.setBounds(125, 8, 80, 8);
+		lbCtg.setBounds(125, 10, 80, 8);
 		lbKcal.setFont(mfont.setFont(11));
-		lbKcal.setBounds(125, 20, 80, 16);
+		lbKcal.setBounds(125, 22, 80, 16);
 		
 		p.add(lbName);
 		p.add(lbCtg);
@@ -64,6 +76,10 @@ public class MiniPanelBtn {
 	
 	public JButton getMiniBtn() {
 		return btn;
+	}
+	
+	public String getBtnFoodCode() {
+		return foodCode;
 	}
 }
 

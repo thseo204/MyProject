@@ -21,12 +21,12 @@ import javax.swing.border.Border;
 
 import clauseFrame.ClauseFrame;
 import individualInfoPolicyFrame.IndividualInfoPolicyFrame;
-import loginframe.LoginFrame;
-import mainframe.ImagePanel;
-import mainframe.MainDAO;
-import mainframe.MyButton;
-import mainframe.MyFont;
-import mainframe.MyFrame;
+import loginFrame.LoginFrame;
+import mainFrame.ImagePanel;
+import mainFrame.MainDAO;
+import mainFrame.MyButton;
+import mainFrame.MyFont;
+import mainFrame.MyFrame;
 
 public class JoinFrame {
 	private MyFrame f;

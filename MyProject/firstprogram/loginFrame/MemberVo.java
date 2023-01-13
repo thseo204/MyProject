@@ -1,4 +1,4 @@
-package loginframe;
+package loginFrame;
 
 public class MemberVo {
 	private String id;

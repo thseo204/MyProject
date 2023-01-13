@@ -1,4 +1,4 @@
-package mainframe;
+package mainFrame;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -159,6 +159,128 @@ public class MainDAO {
 		}
 		
 		return gender;
+	}
+	
+	// "오늘 섭취한 음식" 영양소들 배열[] data 추출
+	public String[] listTodayEat(String yyyymmdd, String id) {
+		String[] result = new String[73];
+		try {
+			
+			String query = "";
+			if(yyyymmdd != null && id != null) {
+				for(int i = 0; i < result.length; i++) {
+					query = "SELECT sum(TO_NUMBER(NUTRY"+ i +")) AS sum\n"
+							+ "FROM MEMBER_NUTRIENT_HISTORY\n"
+							+ "WHERE YMD = '"+ yyyymmdd + "' AND id = '" + id + "'";
+					
+//					System.out.println("SQL : " + query);
+					rs = stmt.executeQuery(query);
+					rs.next();
+					result[i] = rs.getString("sum");
+//					System.out.println(result[i]);
+				}
+			}
+			
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		
+		return result;
+	}
+	
+	// "오늘 섭취한 음식" 총섭취량, 총칼로리 data 추출
+	public int listTodayEat(String yyyymmdd, String id, char gOrK) {
+		int result = 0;
+		try {
+			
+			// if switch 문으로 파라매터로 구하고자 하는 컬럼명(칼로리,섭취량,영양소양등) 을 받아
+			// 그 문자열로 스위치문 조건 걸어서 해당 조건에 맞는 쿼리문 실행되게끔 만들어보기!!
+			String query = "";
+			if(yyyymmdd != null && id != null && gOrK != '\0') {
+				switch(gOrK) {
+				case 'g' :
+					query = "SELECT sum(REGEXP_REPLACE(AMOUNT, '[^0-9.-]', '')) AS sum \n"
+							+ "FROM MEMBER_NUTRIENT_HISTORY\n"
+							+ "WHERE YMD = '"+ yyyymmdd + "' AND id = '" + id + "'";
+						
+						System.out.println("// Case 'g'");
+						System.out.println("SQL : " + query);
+					
+					break;
+				case 'k' :
+					query = "SELECT sum(kcal) AS sum \n"
+							+ "FROM MEMBER_NUTRIENT_HISTORY\n"
+							+ "WHERE YMD = '"+ yyyymmdd + "' AND id = '" + id + "'";
+						
+						System.out.println("// Case 'k'");
+						System.out.println("SQL : " + query);
+					break;
+				default :
+					break;
+				}
+			}
+			
+			rs = stmt.executeQuery(query);
+			
+			rs.last();
+			System.out.println("rs.getRow() : " + rs.getRow());
+			
+			if (rs.getRow() == 0) {
+				
+			} else {
+				rs.previous(); // 커서를 이전 위치로 되돌리기
+				rs.next();
+				result = rs.getInt("sum");
+				
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		
+		return result;
+	}
+	
+	// "오늘 섭취 음식 저장" 버튼 클릭 시 당일 날짜에 해당 아이디에 섭취한 기록 저장
+	public boolean listAddNutriInsert(String yyyymmdd, String id, String foodCode, String amount,  String[] nutriKor, String[] nutri) {
+		
+		boolean result = false;
+		String[] KorNutriDB = userNutriList("성별", "나이");
+		String[] addNutriArr = new String[73];
+		try {
+			String query = "INSERT INTO MEMBER_NUTRIENT_HISTORY";
+			if (yyyymmdd.equals(null) || id.equals(null) || foodCode.equals(null) || amount.equals(null) || nutri[0].equals(null)) {
+				result = false;
+			} else {
+				query += " values ('" + yyyymmdd + "', '" + id + "', '" + foodCode +"', '" + amount + "', " + nutri[0];
+				for(int i = 0; i < KorNutriDB.length; i++) {
+					for(int j = 1; j < nutri.length - 1; j++) {
+						if(KorNutriDB[i].equals(nutriKor[j])) {
+							addNutriArr[i] = nutri[j];
+							break;
+						} else {
+							addNutriArr[i] = null;
+						}
+					}
+				}
+				
+				for(int i = 0; i < addNutriArr.length; i++) {
+					if(addNutriArr[i] == null ) {
+						query += ", " + null + " ";
+					} else {
+						query += ", '" + addNutriArr[i] + "' ";
+					}
+				}
+				query += ")";
+				result = true;
+			}
+			System.out.println("SQL : " + query);
+			
+			stmt.execute(query);
+			
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		return result;
 	}
 
 	// join DAO 회원가입시 필요한 쿼리
@@ -745,8 +867,11 @@ public class MainDAO {
 ////		dao.nutriList("P053364", "P010002", "g");
 ////		int age = dao.listAge("aaa123");
 ////		String gender = dao.listGender("syh");
-//		int kcal = dao.userKcal("여", "32");
-//		String[] str = dao.userNutriList("여", "32");
-////		System.out.println(kcal);
+////		int kcal = dao.userKcal("여", "32");
+////		String[] str = dao.userNutriList("여", "32");
+////		int sumKcal = dao.listTodayEat("20230112", "sth", 'k');
+//		dao.listTodayEat("20230112", "sth");
+//		
+////		System.out.println(sumKcal);
 //	}
 }

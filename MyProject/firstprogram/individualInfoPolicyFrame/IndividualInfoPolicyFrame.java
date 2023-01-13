@@ -11,10 +11,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
-import mainframe.ImagePanel;
-import mainframe.MyFont;
-import mainframe.MyFrame;
-import mainframe.MyTextField;
+import mainFrame.ImagePanel;
+import mainFrame.MyFont;
+import mainFrame.MyFrame;
+import mainFrame.MyTextField;
 
 public class IndividualInfoPolicyFrame {
 	private MyFrame f;
@@ -96,9 +96,9 @@ public class IndividualInfoPolicyFrame {
 				+ "\n"
 				+ "▶ 개인정보 보호책임자\n"
 				+ "\n"
-				+ "성명 : 신효민\n"
-				+ "소속 및 직위 : Product 본부 / CTO\n"
-				+ "연락처 : 010-8591-7780, fbi4768@gmail.com\n"
+				+ "성명 : 서태화\n"
+				+ "소속 및 직위 : Product 본부 / 소프트웨어개발자\n"
+				+ "연락처 : 010-7677-1754, thseo204@gmail.com\n"
 				+ "\n"
 				+ "기타 개인정보침해에 관한 신고나 상담이 필요하신 경우에는 아래 기관에 문의하여 주시기 바랍니다.\n"
 				+ "개인정보침해신고센터(privacy.kisa.or.kr / 국번없이 118)\n"

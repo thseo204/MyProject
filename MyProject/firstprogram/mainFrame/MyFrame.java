@@ -1,4 +1,4 @@
-package mainframe;
+package mainFrame;
 
 import java.awt.BorderLayout;
 import java.awt.Image;

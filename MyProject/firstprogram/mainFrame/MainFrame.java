@@ -1,4 +1,4 @@
-package mainframe;
+package mainFrame;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -11,10 +11,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import joinFrame.JoinFrame;
 import listPanel.TotalListPanel;
-import loginframe.LoginFrame;
+import loginFrame.LoginFrame;
 import menuFrame.MenuFrame;
 import productListFrame.ProductListFrame;
 
@@ -22,17 +23,17 @@ public class MainFrame {
 	public static boolean LOGON;
 
 	private MyFrame f;
+	private JPanel listP;
 	private MyButton myBtn;
 	private MyFont mfont;
 	private TotalListPanel tlPanel;
-	private ImagePanel p, listP;
+	private ImagePanel p;// listP;
 	private ImageIcon imgMenu, imgMenuC, cMenu, imgLogin, imgLoginC, cLogin, imgJoin, imgJoinC, cJoin, imgSearch,
 			imgSearchC, cSearch, imgHome, imgHomeC, cHome;
 	private JButton btnMenu, btnLogin, btnJoin, btnHome, btnSearch;
 
 	private JLabel nameLb, welcomLb;
-	private String gender;
-	private String age;
+	private String id, gender, age;
 	
 	public MainFrame() {
 		myBtn = new MyButton();
@@ -53,7 +54,8 @@ public class MainFrame {
 		imgHomeC = new ImageIcon("./Button_image/NutriBetterC_Title.PNG");
 
 		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
-		listP = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
+//		listP = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
+		listP = new JPanel();
 
 		cMenu = myBtn.changeImageSize(imgMenuC, 30, 30);
 		cLogin = myBtn.changeImageSize(imgLoginC, 50, 42);
@@ -68,9 +70,10 @@ public class MainFrame {
 		btnSearch = new JButton(myBtn.changeImageSize(imgSearch, 30, 30));
 
 	}
-	public MainFrame(String name, String gender, String age){
+	public MainFrame(String id, String name, String gender, String age){
 		f = new MyFrame("먹기 전에 비교하자! 식품비교프로그램 [뉴트리베터]");
-		listP = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
+//		listP = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
+		listP = new JPanel();
 
 		myBtn = new MyButton();
 		mfont = new MyFont();
@@ -78,6 +81,7 @@ public class MainFrame {
 		nameLb = new JLabel(name);
 		welcomLb = new JLabel("님 환영합니다.");
 		
+		this.id = id;
 		this.gender = gender;
 		this.age = age;
 		
@@ -134,6 +138,8 @@ public class MainFrame {
 
 		tlPanel = new TotalListPanel();
 		tlPanel.startTotalPanel("과자");
+		tlPanel.setLogon(LOGON);
+		tlPanel.setGenderAge(id, gender, age);
 
 		tlPanel.getComboBox().addItemListener(new ItemListener() {
 			@Override
@@ -154,13 +160,14 @@ public class MainFrame {
 				if(LOGON == false) {
 					JOptionPane.showMessageDialog(null, "로그인 후 이용해주세요.");
 				}else {
-					ProductListFrame plf = new ProductListFrame(gender, age);
+					ProductListFrame plf = new ProductListFrame(nameLb.getText(), id, gender, age);
 					plf.startFrame();
 					
 				}
 			}
 		});
-
+		
+		
 		listP.add(tlPanel.getPanel());
 		listP.setBounds(5, 290, 500, 300);
 
@@ -175,7 +182,7 @@ public class MainFrame {
 			btnMenu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					MenuFrame mf = new MenuFrame();
-					mf.setGenderAge(gender, age);
+					mf.setGenderAge(id, gender, age);
 					mf.startFrame(LOGON);
 					f.getMyFrame().setVisible(false);
 				}
@@ -210,8 +217,10 @@ public class MainFrame {
 			btnMenu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					MenuFrame mf = new MenuFrame();
+					mf.setNameLb(nameLb.getText());
+					mf.setGenderAge(id, gender, age);
 					mf.startFrame(LOGON);;
-//					f.getMyFrame().setVisible(false);
+					f.getMyFrame().setVisible(false);
 				}
 			});
 			

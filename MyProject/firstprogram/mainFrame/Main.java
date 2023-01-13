@@ -1,4 +1,4 @@
-package mainframe;
+package mainFrame;
 
 import java.sql.SQLException;
 
