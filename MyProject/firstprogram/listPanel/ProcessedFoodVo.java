@@ -8,7 +8,6 @@ public class ProcessedFoodVo {
 	private String detail_ctg;
 	private int kcal;
 	private String total;
-//	private String total_ml;
 	private String portion_size;
 	private String unit;
 	

@@ -139,7 +139,7 @@ public class IndividualInfoPolicyFrame {
 		});
 		
 		
-		btnOk.setFont(mfont.setFont2());
+		btnOk.setFont(mfont.setPlainFont(12));
 		
 		mTf.getJTf().setFont(mfont.setFont(18));
 		mTf.getJTf().setBounds(25, 80, 140, 20);

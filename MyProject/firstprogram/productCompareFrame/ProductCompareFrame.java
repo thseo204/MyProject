@@ -621,7 +621,7 @@ public class ProductCompareFrame {
 //						str += "%";
 						model3.setValueAt(str + "%", i, 0);
 					}
-					
+					try {
 					if ((slcNutriValue2 != null) && (userKorNutri != null)){
 						double dSlcNutri = Double.parseDouble(slcNutri2);
 						int iUserNutri = Integer.parseInt(userNutriList[k]);
@@ -635,7 +635,8 @@ public class ProductCompareFrame {
 //						str += "%";
 						model3.setValueAt(str + "%", i, 4);
 					}
-					
+					} catch (NullPointerException e) {
+					}
 				} else {
 					continue;
 				}

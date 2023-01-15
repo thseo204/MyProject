@@ -5,7 +5,6 @@ import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
 
 import mainFrame.MyFont;
 
@@ -59,9 +58,9 @@ public class MiniPanelBtn {
 		
 		lbName.setFont(mfont.setFont(11));
 		lbName.setBounds(15, 22, 140, 16);
-		lbManu.setFont(mfont.setFont4());
+		lbManu.setFont(mfont.setPlainFont(8));
 		lbManu.setBounds(15, 10, 100, 8);
-		lbCtg.setFont(mfont.setFont4());
+		lbCtg.setFont(mfont.setPlainFont(8));
 		lbCtg.setBounds(125, 10, 80, 8);
 		lbKcal.setFont(mfont.setFont(11));
 		lbKcal.setBounds(125, 22, 80, 16);

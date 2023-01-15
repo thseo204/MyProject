@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -24,7 +25,6 @@ import listPanel.BigCtgComboBox;
 //import listPanel.ProcessedFoodDAO;
 import listPanel.ProcessedFoodVo;
 import mainFrame.ImagePanel;
-import mainFrame.Main;
 import mainFrame.MainDAO;
 import mainFrame.MyButton;
 import mainFrame.MyFont;
@@ -44,6 +44,7 @@ public class ProductListFrame extends JPanel implements ActionListener {
 	private MyFrame f;
 	private ImagePanel p;
 	private MyFont mfont;
+	private MyTextField mTf;
 	private MyButton myBtn;
 	private ImageIcon imgMenu, imgMenuC, cMenu, imgSearch, imgSearchC, cSearch;
 	private JButton btnMenu, btnSearch, btnNext, btnPre, btnCompare;
@@ -61,8 +62,11 @@ public class ProductListFrame extends JPanel implements ActionListener {
 
 	private MainDAO DAO = new MainDAO();
 	private ArrayList<ProcessedFoodVo> listFood;
-	private Iterator<ProcessedFoodVo> iter;
+//	private Iterator<ProcessedFoodVo> iter;
 
+	public ProductListFrame() {
+
+	}
 
 	public ProductListFrame(String name, String id, String gender, String age) {
 		this.name = name;
@@ -80,7 +84,8 @@ public class ProductListFrame extends JPanel implements ActionListener {
 		codeStr1 = "";
 		codeStr2 = "";
 		mfont = new MyFont();
-		mfont.setTf("제품명을 검색하세요!");
+		mTf = new MyTextField();
+		mTf.setTf("제품명을 검색하세요!");
 		myBtn = new MyButton();
 		totalNum = new MyTextField("총 11097 제품", 14);
 		slcTf1 = new MyTextField("", 10);
@@ -102,27 +107,29 @@ public class ProductListFrame extends JPanel implements ActionListener {
 		borderOrange = new LineBorder(Color.orange, 3, true);
 		borderGray = new LineBorder(Color.lightGray, 3, true);
 
-		
-//		ctgStr = comboBox.getComboBoxItem();
-//		setListFood("과자");
-//		this.ctgNum = 11097;
-//		setCtgNum();
-
-	}
-
-	public void startFrame() {
-		f.startMyFrmae();
-		f.backBtnDispose();
-		f.getMyFrame().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
 		comboBox = new BigCtgComboBox();
 		ctgStr = comboBox.getList(0);
 		setListFood(ctgStr);
 		this.ctgNum = DAO.getSlcCtgN();
 		setCardArr();
 		setListPBtnArr();
-		
-		cardDemo = new ProductListFrame(name, id, gender, age);
+		cardDemo = new ProductListFrame();
+//		cardDemo = new ProductListFrame();
+	}
+
+	public void startFrame() {
+		f.startMyFrmae();
+		f.backBtnDispose();
+		f.getMyFrame().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+//		comboBox = new BigCtgComboBox();
+//		ctgStr = comboBox.getList(0);
+//		setListFood(ctgStr);
+//		this.ctgNum = DAO.getSlcCtgN();
+//		setCardArr();
+//		setListPBtnArr();
+
+//		cardDemo = new ProductListFrame(name, id, gender, age);
 		cardDemo.setOpaque(true);
 		f.getMyFrame().setLocationRelativeTo(null);
 		f.getMyFrame().setSize(500, 600);
@@ -133,7 +140,7 @@ public class ProductListFrame extends JPanel implements ActionListener {
 		cardPanel.setPreferredSize(new Dimension(500, 395));
 
 		btnMenu.setBounds(10, 15, 30, 30);
-		mfont.getTf().setBounds(20, 80, 280, 30);
+		mTf.getTf().setBounds(20, 80, 280, 30);
 		btnSearch.setBounds(300, 80, 30, 30);
 
 		comboBox.getComboBox().setBounds(330, 80, 160, 30);
@@ -154,9 +161,36 @@ public class ProductListFrame extends JPanel implements ActionListener {
 		slcTf2.getJTf().setHorizontalAlignment(JLabel.RIGHT);
 		btnCompare.setBounds(410, 120, 60, 35);
 		btnCompare.setFont(mfont.setFont(12));
-		btnCompare.setBorder(new LineBorder(new Color(210,180,140), 3, true));
+		btnCompare.setBorder(new LineBorder(new Color(210, 180, 140), 3, true));
 
 		setListCardP(j);
+		CardLayout cl = (CardLayout) cardPanel.getLayout();
+
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+				if (mTf.getTf().getText().equals("제품명을 검색하세요!") || mTf.getTf().getText().equals(null)) {
+					JOptionPane.showMessageDialog(null, "검색할 제품 이름을 입력하세요.");
+				} else {
+					setSearchTf(mTf.getTf().getText());
+					setListCardP(j);
+					ctgNum = DAO.getSlcCtgN();
+					totalNum.getJTf().setText("총 " + ctgNum + " 제품");
+
+					if (j > 0) {
+						do {
+							cl.previous(cardPanel);
+							j -= 5;
+							k -= 1;
+							setListCardP(j);
+						} while (j != 0 && k != 0);
+					}
+				}
+				}catch(NullPointerException ne) {
+			}
+				
+			}
+		});
 
 		btnCompare.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -181,44 +215,43 @@ public class ProductListFrame extends JPanel implements ActionListener {
 			}
 		});
 
-		CardLayout cl = (CardLayout) cardPanel.getLayout();
-
 		// 해당 카테고리의 총 제품 갯수가 5 이하일때 갯수 이외의 CardListPBtn 은 나오지 않게 해야함!
 		comboBox.getComboBox().addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
+//				cl.first(cardPanel);
 				if (e.getStateChange() == ItemEvent.SELECTED) {
-//					cl.first(cardPanel);
 					slcB1 = false;
 					slcB2 = false;
 					slcTf1.getJTf().setText("");
 					slcTf2.getJTf().setText("");
-					
+
 					for (int i = 0; i < 5; i++) {
-//						listPBtn[i].getMiniBtn().setText("선택");
-//						listPBtn[i].getMiniBtn().setBorder(borderGray);
-						
 						listPBtn[i].getMiniBtn().setBorder(borderGray);
 						listPBtn[i].setLbSelect("선택");
 						listPBtn[i].getLbSelect().setForeground(Color.black);
 
 					}
 					try {
-//						k = 0;
-//						j = 0;
-//						cl.first(cardPanel);
-
-//						setCtgNum();
-//						setCardArr();
-//						setListPBtnArr();
 						ctgStr = e.getItem().toString();
-//						listFood = DAO.list(ctgStr);
 						setListFood(ctgStr);
+						ctgNum = DAO.getSlcCtgN();
+
 						System.out.println(ctgStr + "&&&&&&&&&&&");
 						// 해당 카테고리의 제품 수
-						ctgNum = DAO.getSlcCtgN();
 						setListCardP(j);
+						System.out.println("k : " + k + "|| j : " + j);
 						totalNum.getJTf().setText("총 " + ctgNum + " 제품");
+
+						// comboBox 값이 바뀌면 해당 카테고리에서 cardPanel 처음으로 이동
+						if (j > 0) {
+							do {
+								cl.previous(cardPanel);
+								j -= 5;
+								k -= 1;
+								setListCardP(j);
+							} while (j != 0 && k != 0);
+						}
 					} catch (Exception e1) {
 						e1.printStackTrace();
 					}
@@ -230,6 +263,7 @@ public class ProductListFrame extends JPanel implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
 				j += 5;
 				if (j >= ctgNum) {
+					j -= 5;
 					JOptionPane.showMessageDialog(null, "마지막 목록입니다.");
 				} else {
 					cl.next(cardPanel);
@@ -251,13 +285,12 @@ public class ProductListFrame extends JPanel implements ActionListener {
 				}
 			}
 		});
-		
 
 		for (int i = 0; i < cardNum; i++) {
 			cardPanel.add(card[i]);
 		}
-		cardPanel.setBackground(new Color(255,250,240));
-		cardDemo.setBackground(new Color(255,250,240));
+		cardPanel.setBackground(new Color(255, 250, 240));
+		cardDemo.setBackground(new Color(255, 250, 240));
 		// 영역확인하기 위해 색 지정 하였음.
 //		cardDemo.setBackground(Color.DARK_GRAY);
 //		cardDemo.setBackground(Color.white);
@@ -270,7 +303,7 @@ public class ProductListFrame extends JPanel implements ActionListener {
 		cardDemo.add(btnNext);
 
 		p.add(btnMenu);
-		p.add(mfont.getTf());
+		p.add(mTf.getTf());
 		p.add(comboBox.getComboBox());
 		p.add(btnSearch);
 		p.add(totalNum.getJTf());
@@ -297,7 +330,7 @@ public class ProductListFrame extends JPanel implements ActionListener {
 			card[i] = new JPanel();
 			card[i].setLayout(null);
 //			card[i].setBackground(Color.white);
-			card[i].setBackground(new Color(255,250,240));
+			card[i].setBackground(new Color(255, 250, 240));
 		}
 	}
 
@@ -308,27 +341,28 @@ public class ProductListFrame extends JPanel implements ActionListener {
 			listPBtn[i] = new ListPanelBtn();
 			listPBtn[i].getMiniBtn().addActionListener(this);
 			listPBtn[i].getMiniBtn().setBorder(borderGray);
-			
+
 			listPBtn[i].getTotalBtn().setText("버튼" + i);
-			listPBtn[i].getTotalBtn().setBackground(null);;
+			listPBtn[i].getTotalBtn().setBackground(null);
+			;
 			listPBtn[i].getTotalBtn().addActionListener(this);
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public void setListCardP(int j) {
-//		int n = DAO.getSlcCtgN();
 		System.out.println("********해당 카테고리 <<" + ctgStr + ">> ");
 
 		System.out.println("ListPBtn 생성 완료");
 		Iterator<ProcessedFoodVo> iter = listFood.iterator();
 		System.out.println(iter.hasNext());
 		System.out.println("[j]의 값은 -- [" + j + "] --");
+		System.out.println("[k]의 값은 -- [" + k + "] --");
 
 		int g = 0;
 
 		for (int i = 0; i < 5; i++) {
 
-//			if (listFood.isEmpty()) {
 			if (!iter.hasNext()) {
 				break;
 			} else {
@@ -356,7 +390,7 @@ public class ProductListFrame extends JPanel implements ActionListener {
 //					listPBtn[j].getMiniBtn().setLabel(name);
 					listPBtn[j].getMiniBtn().setLabel("" + j);
 					card[k].add(listPBtn[j].getPanel());
-					
+
 //					listPBtn[i].getTotalBtn().setText("버튼" + i);
 //					listPBtn[i].getTotalBtn().addActionListener(this);
 //					listPBtn[i].setFoodCode(code);
@@ -371,7 +405,7 @@ public class ProductListFrame extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		String eStr = e.getActionCommand();
-		
+
 		if (Character.isDigit(eStr.charAt(0))) {
 			for (int i = 0; i < listPBtn.length; i++) {
 //			listFood.get(i)
@@ -437,17 +471,17 @@ public class ProductListFrame extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "2가지 제품만 선택 가능합니다.");
 			}
 		} else {
-				System.out.println("선택된 버튼 번호 : " + e.getActionCommand());
-				eStr = eStr.substring(2);
-				int i = Integer.valueOf(eStr);
-				System.out.println("선택된 버튼 i : " + i);
-				String foodCode = listPBtn[i].getBtnFoodCode();
-				
-				System.out.println("선택된 푸드 코드 " + foodCode);
-				ProducDetailFrame df = new ProducDetailFrame();
-				df.setFoodCode(foodCode);
-				df.setGenderAge(id, gender, age);
-				df.startFrame();
+			System.out.println("선택된 버튼 번호 : " + e.getActionCommand());
+			eStr = eStr.substring(2);
+			int i = Integer.valueOf(eStr);
+			System.out.println("선택된 버튼 i : " + i);
+			String foodCode = listPBtn[i].getBtnFoodCode();
+
+			System.out.println("선택된 푸드 코드 " + foodCode);
+			ProducDetailFrame df = new ProducDetailFrame();
+			df.setFoodCode(foodCode);
+			df.setGenderAge(id, gender, age);
+			df.startFrame();
 		}
 	}
 
@@ -455,8 +489,18 @@ public class ProductListFrame extends JPanel implements ActionListener {
 		listFood = DAO.list(ctgStr);
 	}
 
+	public void setSearchTf(String tfText) {
+		mTf.getTf().setText(tfText);
+		setSearchListFood(tfText);
+	}
+
+	public void setSearchListFood(String tfText) {
+		listFood = DAO.listSearch(tfText);
+	}
+
 //	public static void main(String[] args) {
-//		ProductListFrame plf = new ProductListFrame("여", "32");
+//		MainDAO.connDB();
+//		ProductListFrame plf = new ProductListFrame("","", "여", "32");
 //		plf.startFrame();
 //	}
 }

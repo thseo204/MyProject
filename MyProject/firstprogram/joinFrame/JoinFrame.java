@@ -27,15 +27,16 @@ import mainFrame.MainDAO;
 import mainFrame.MyButton;
 import mainFrame.MyFont;
 import mainFrame.MyFrame;
+import mainFrame.MyTextField;
 
 public class JoinFrame {
 	private MyFrame f;
 	private MyButton myBtn;
 	private JTextField resTfId, resTfPwd, resTfEmail;
 	private MyFont mfont;
+	private MyTextField tfId, tfPwd, tfRePwd, tfEmail, tfName, tfBarth;
 	private ImagePanel p;
 	private JLabel joinTitle, lbId, lbPwd, lbRePwd, lbEmail, lbName, lbGender, lbBarth, lb1, lb2, lb3;
-	private MyFont tfId, tfPwd, tfRePwd, tfEmail, tfName, tfBarth;
 	private JButton btnCheckId, btnJoin, btnClause, btnIndividual;
 	private JRadioButton[] gender;
 	private ButtonGroup group;
@@ -61,15 +62,15 @@ public class JoinFrame {
 		lbGender = new JLabel("성별", JLabel.RIGHT);
 		lbBarth = new JLabel("생년월일", JLabel.RIGHT);
 		
-		tfId = new MyFont();
-		tfPwd = new MyFont();
-		tfRePwd = new MyFont();
-		tfEmail = new MyFont();
-		tfName = new MyFont();
+		tfId = new MyTextField();
+		tfPwd = new MyTextField();
+		tfRePwd = new MyTextField();
+		tfEmail = new MyTextField();
+		tfName = new MyTextField();
 		gender = new JRadioButton[2];
 		gender[0] = new JRadioButton("남      |");
 		gender[1] = new JRadioButton("여 ");
-		tfBarth = new MyFont();
+		tfBarth = new MyTextField();
 		
 		group = new ButtonGroup();
 		group.add(gender[0]);
@@ -177,17 +178,17 @@ public class JoinFrame {
 //		lbId.setFont(mfont.setFont());
 		
 		lbId.setSize(50, 30);
-		lbId.setFont(mfont.setFont2());
+		lbId.setFont(mfont.setPlainFont(12));
 		lbPwd.setSize(50, 30);
-		lbPwd.setFont(mfont.setFont2());
+		lbPwd.setFont(mfont.setPlainFont(12));
 		lbRePwd.setSize(80, 30);
-		lbRePwd.setFont(mfont.setFont2());
+		lbRePwd.setFont(mfont.setPlainFont(12));
 		lbEmail.setSize(50, 30);
-		lbEmail.setFont(mfont.setFont2());
+		lbEmail.setFont(mfont.setPlainFont(12));
 		lbName.setSize(50, 30);
-		lbName.setFont(mfont.setFont2());
+		lbName.setFont(mfont.setPlainFont(12));
 		lbGender.setSize(50, 30);
-		lbGender.setFont(mfont.setFont2());
+		lbGender.setFont(mfont.setPlainFont(12));
 		lbBarth.setSize(50, 30);
 		
 		joinTitle.setFont(mfont.setFont(15));
@@ -201,7 +202,7 @@ public class JoinFrame {
 		lb2.setSize(8, 10);
 		lb3.setSize(80, 10);
 		
-		lbBarth.setFont(mfont.setFont2());
+		lbBarth.setFont(mfont.setPlainFont(12));
 		myBtn.blueButtonOption(btnClause);
 		myBtn.blueButtonOption(btnIndividual);
 		

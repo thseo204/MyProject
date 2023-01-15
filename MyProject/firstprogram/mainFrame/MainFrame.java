@@ -26,6 +26,7 @@ public class MainFrame {
 	private JPanel listP;
 	private MyButton myBtn;
 	private MyFont mfont;
+	private MyTextField mTf;
 	private TotalListPanel tlPanel;
 	private ImagePanel p;// listP;
 	private ImageIcon imgMenu, imgMenuC, cMenu, imgLogin, imgLoginC, cLogin, imgJoin, imgJoinC, cJoin, imgSearch,
@@ -40,7 +41,8 @@ public class MainFrame {
 		f = new MyFrame("먹기 전에 비교하자! 식품비교프로그램 [뉴트리베터]");
 		// 0 - 수평방향, 1 - 수직방향 / 바의 생성 위치, 바의 채워짐 정도, 최소값은0, 최댓값은 바가 생성되는 곳의 길이
 		mfont = new MyFont();
-		mfont.setTf("제품명을 검색하세요!");
+		mTf = new MyTextField();
+		mTf.setTf("제품명을 검색하세요!");
 		imgMenu = new ImageIcon("./Button_image/Button_menu.PNG");
 		imgMenuC = new ImageIcon("./Button_image/ButtonC_img.PNG");
 
@@ -77,7 +79,8 @@ public class MainFrame {
 
 		myBtn = new MyButton();
 		mfont = new MyFont();
-		mfont.setTf("제품명을 검색하세요!");
+		mTf = new MyTextField();
+		mTf.setTf("제품명을 검색하세요!");
 		nameLb = new JLabel(name);
 		welcomLb = new JLabel("님 환영합니다.");
 		
@@ -118,7 +121,7 @@ public class MainFrame {
 		btnMenu.setBounds(10, 15, 30, 30);
 		
 		btnHome.setBounds(155, 90, 200, 150);
-		mfont.getTf().setBounds(110, 255, 280, 30);
+		mTf.getTf().setBounds(110, 255, 280, 30);
 		btnSearch.setBounds(390, 255, 30, 30);
 		
 		
@@ -135,6 +138,7 @@ public class MainFrame {
 
 			}
 		});
+
 
 		tlPanel = new TotalListPanel();
 		tlPanel.startTotalPanel("과자");
@@ -205,6 +209,11 @@ public class MainFrame {
 					f.getMyFrame().setVisible(false);
 				}
 			});
+			btnSearch.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					JOptionPane.showMessageDialog(null, "로그인 후 이용해주세요.");
+				}
+			});
 			
 			p.add(btnLogin);
 			p.add(btnJoin);
@@ -212,7 +221,7 @@ public class MainFrame {
 			nameLb.setBounds(360, 15, 40, 30);
 			welcomLb.setBounds(410, 15, 140, 30);
 			nameLb.setFont(mfont.setFont(15));
-			welcomLb.setFont(mfont.setFont2());
+			welcomLb.setFont(mfont.setPlainFont(12));
 			
 			btnMenu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -223,13 +232,23 @@ public class MainFrame {
 					f.getMyFrame().setVisible(false);
 				}
 			});
-			
+			btnSearch.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(mTf.getTf().getText().equals("제품명을 검색하세요!") || mTf.getTf().getText().equals(null)) {
+						JOptionPane.showMessageDialog(null, "검색할 제품 이름을 입력하세요.");
+					} else {
+						ProductListFrame plf = new ProductListFrame(nameLb.getText(), id, gender, age);
+						plf.setSearchTf(mTf.getTf().getText());
+						plf.startFrame();
+					}
+				}
+			});
 			p.add(nameLb);
 			p.add(welcomLb);
 		}
 
 		p.add(btnHome);
-		p.add(mfont.getTf());
+		p.add(mTf.getTf());
 		p.add(btnSearch);
 		p.add(listP);
 		f.getMyFrame().add(p);

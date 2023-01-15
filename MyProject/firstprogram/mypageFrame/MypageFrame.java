@@ -9,7 +9,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -48,7 +50,7 @@ public class MypageFrame extends MouseAdapter {
 	
 	private JTable nutriTable, calTable;
 	private JScrollPane nutriPane, calPane;
-	private String userId, userName, userGender, userAge, today;
+	private String userId, userName, userGender, userAge, today, yyyyStr, mmStr, ddStr;
 	private String[] header = { " ", " ", " ", " " };
 	private String[] headerCal = { " ", " ", " ", " ", " ", " ", " " };
 	private DefaultTableModel model1, model2;
@@ -92,11 +94,17 @@ public class MypageFrame extends MouseAdapter {
 		lbInBtn1 = new JLabel("영양소별 일일권장섭취량", JLabel.CENTER);
 		lbInBtn2 = new JLabel("나의 섭취 내역", JLabel.CENTER);
 
-		btnBefore = new JButton("<<");
-		btnNext = new JButton(">>");
+		btnBefore = new JButton();
+		btnNext = new JButton();
 		
 		SimpleDateFormat format = new SimpleDateFormat("YYYYMMDD");
 		today = format.format(new Date()); // 현재날짜 가져오기
+		yyyyStr = today.substring(0, 4);
+		mmStr = today.substring(4, 6);
+		ddStr = today.substring(6, 8);
+		todayYear = Integer.valueOf(yyyyStr);
+		todayMonth = Integer.valueOf(mmStr);
+		todayDate = Integer.valueOf(ddStr);
 		
 		
 	}
@@ -162,6 +170,26 @@ public class MypageFrame extends MouseAdapter {
 		btnNext.setForeground(Color.DARK_GRAY);
 		btnNext.setBorder(new LineBorder(new Color(210, 180, 140), 2, false));
 
+		JPanel panelInBeforeBtn = new JPanel();
+		JPanel panelInNextBtn = new JPanel();
+		panelInBeforeBtn.setLayout(null);
+		panelInNextBtn.setLayout(null);
+		panelInBeforeBtn.setBackground(new Color(210, 180, 140));
+		panelInNextBtn.setBackground(new Color(210, 180, 140));
+		
+		JLabel lbInBeforeBtn =  new JLabel("<", JLabel.CENTER);
+		JLabel lbInNextBtn =  new JLabel(">", JLabel.CENTER);
+		lbInBeforeBtn.setBounds(0, 0, 25, 15);
+		lbInNextBtn.setBounds(0, 0, 25, 15);
+		lbInBeforeBtn.setFont(mfont.setFont(20));
+		lbInNextBtn.setFont(mfont.setFont(20));
+		lbInBeforeBtn.setForeground(Color.white);
+		lbInNextBtn.setForeground(Color.white);
+		panelInBeforeBtn.add(lbInBeforeBtn);
+		panelInNextBtn.add(lbInNextBtn);
+		btnBefore.add(panelInBeforeBtn);
+		btnNext.add(panelInNextBtn);
+		
 		btnInP1.setLayout(null);
 		btnInP1.setBounds(0, 0, 245, 27);
 		btnInP1.setBackground(Color.DARK_GRAY);
@@ -235,6 +263,8 @@ public class MypageFrame extends MouseAdapter {
 					}
 				}
 				setCal(year, month);
+//				setKcalInTodayCal();
+				setKcalInAllDayCal();
 			}
 		});
 		btnNext.addActionListener(new ActionListener() {
@@ -258,6 +288,8 @@ public class MypageFrame extends MouseAdapter {
 					}
 				}
 				setCal(year, month);
+//				setKcalInTodayCal();
+				setKcalInAllDayCal();
 			}
 		});
 
@@ -294,9 +326,9 @@ public class MypageFrame extends MouseAdapter {
 		// 영양소 이름 0번 열에
 		for (int i = 0; i < userKorNutriList.length; i++) {
 			contents1[i + 2][0] = userKorNutriList[i];
-			System.out.print("0번 열" + contents1[i + 2][0] + "\t");
+			System.out.print("0번열 " + contents1[i + 2][0] + "\t");
 		}
-
+		System.out.println();
 		// 각 영양소의 함량 1번 열에
 		for (int i = 0; i < userNutriList.length; i++) {
 			if(userNutriList[i] != null) {
@@ -306,10 +338,10 @@ public class MypageFrame extends MouseAdapter {
 				contents1[i + 2][2] = eatNutriList[i];
 			}
 
-			System.out.print("1번 열" + contents1[i + 2][1] + "\t");
-			System.out.print("2번 열" + contents1[i + 2][2] + "\t");
+			System.out.print("1번열 " + contents1[i + 2][1] + "\t");
+			System.out.print("2번열 " + contents1[i + 2][2] + "\t");
 		}
-
+		System.out.println();
 		model1 = new DefaultTableModel(contents1, header);
 		nutriTable = new JTable(model1) {
 			private static final long serialVersionUID = 1L;
@@ -368,6 +400,8 @@ public class MypageFrame extends MouseAdapter {
 
 		// 테이블 가운데 정렬
 		tableCellCenter(nutriTable);
+//		MyDefaultTableCellRenderer();
+//		getTableCellRendererComponent();
 		// 행 높이 지정
 		nutriTable.setRowHeight(40);
 		nutriTable.setFont(mfont.setFont(13));
@@ -387,19 +421,19 @@ public class MypageFrame extends MouseAdapter {
 		// 달력 ------------------------------------------------------------------
 //		SimpleDateFormat format = new SimpleDateFormat("YYYYMMDD");
 //		String today = format.format(new Date()); // 현재날짜 가져오기
-		String yyyy = today.substring(0, 4);
-		String mm = today.substring(4, 6);
-		String dd = today.substring(6, 8);
+//		String yyyy = today.substring(0, 4);
+//		String mm = today.substring(4, 6);
+//		String dd = today.substring(6, 8);
 		System.out.println(today);
-		System.out.println("yyyy = " + yyyy);
-		System.out.println("mm = " + mm);
-		System.out.println("dd = " + dd);
-		todayYear = Integer.valueOf(yyyy);
-		todayMonth = Integer.valueOf(mm);
-		todayDate = Integer.valueOf(dd);
+		System.out.println("yyyy = " + yyyyStr);
+		System.out.println("mm = " + mmStr);
+		System.out.println("dd = " + ddStr);
+//		todayYear = Integer.valueOf(yyyyStr);
+//		todayMonth = Integer.valueOf(mmStr);
+//		todayDate = Integer.valueOf(ddStr);
 
-		yearTf = new MyTextField(yyyy, 15);
-		monthTf = new MyTextField(mm, 15);
+		yearTf = new MyTextField(yyyyStr, 15);
+		monthTf = new MyTextField(mmStr, 15);
 
 		yearTf.getJTf().setFont(mfont.setFont(18));
 		yearTf.getJTf().setForeground(new Color(210, 180, 140));
@@ -410,8 +444,10 @@ public class MypageFrame extends MouseAdapter {
 		monthTf.getJTf().setBounds(260, 15, 30, 20);
 		monthTf.getJTf().setBackground(null);
 
-		setCal(Integer.valueOf(yyyy), Integer.valueOf(mm));
+		setCal(todayYear, todayMonth);
 
+		setKcalInAllDayCal();
+		
 //		DefaultTableCellRenderer renderer = new MyDefaultTableCellRenderer();
 //		calTable.getColumn("12").setCellRenderer(renderer);
 		
@@ -498,6 +534,8 @@ public class MypageFrame extends MouseAdapter {
 				return component;
 			}
 
+			
+			
 			// 테이블 수정 불가능 하게.
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -533,25 +571,61 @@ public class MypageFrame extends MouseAdapter {
 //		System.out.println("클릭한 날짜 : " + calTable.getModel().getValueAt(row, col) + "\t");
 //	}
 	
-	// 해당 월의 date 에만 입력되어야함.
-	public void setKcal(int todayDate, String kcal) {
-		for(int i = 1; i < calTable.getRowCount(); i++) {
-			for(int j = 0; j < calTable.getColumnCount(); j++) {
-				String dateStr = (String) calTable.getModel().getValueAt(i, j);
-				if(dateStr != null && !dateStr.isEmpty() && Character.isDigit(dateStr.charAt(0))) {
-					
-					int date = Integer.valueOf(dateStr);
-//					System.out.println( "////" + calTable.getModel().getValueAt(i, j));
-//					System.out.println( "####" + date);
-					
-					if(date == todayDate) {
-						calTable.getModel().setValueAt(date + " 총 " + kcal, i, j);
-						break;
+	// 오늘 제외한 이전 날짜들 달력에 총 칼로리 표시
+	public void setKcalInAllDayCal() {
+		String[] ymdArr = DAO.listUserKcalIInCal(userId);
+
+		for(int k = 0; k < ymdArr.length; k++) {
+			String Ymd = ymdArr[k];
+			int kcal = DAO.listTodayEat(Ymd, userId, 'k');
+			String yyyy = Ymd.substring(0, 4);
+			String mm = Ymd.substring(4, 6);
+			String dd = Ymd.substring(6, 8);
+			int date = Integer.valueOf(dd);
+			
+			if(yearTf.getJTf().getText().equals(yyyy) && monthTf.getJTf().getText().equals(mm)) {
+				for(int i = 1; i < calTable.getRowCount(); i++) {
+					for(int j = 0; j < calTable.getColumnCount(); j++) {
+						String dateStr = calTable.getModel().getValueAt(i, j) + "";
+						if(dateStr.equals(date + "")) {
+							calTable.getModel().setValueAt(dateStr + " [" + kcal + "]", i, j);
+						}
 					}
 				}
 			}
 		}
 	}
+	
+	
+	
+//	public class MyDefaultTableCellRenderer extends DefaultTableCellRenderer{
+//		private static final long serialVersionUID = 1L;
+//		
+//		public MyDefaultTableCellRenderer() {
+//			setHorizontalTextPosition(JLabel.CENTER);
+//			setVerticalTextPosition(JLabel.BOTTOM);
+//			setHorizontalAlignment(JLabel.CENTER);
+//			setVerticalAlignment(JLabel.CENTER);
+//		}
+//		
+//		@Override
+//		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+//				int row, int col) {
+//			JLabel lb = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+//			for(int i = 1; i < model1.getRowCount(); i++) {
+//				for(int j = 0; j < model1.getColumnCount(); j++) {
+//					Object res = model1.getValueAt(i, j);
+//					if(res != null) {
+//						int resInt = Integer.valueOf(res+"");
+//						if(todayDate == resInt) {
+//							setText(String.valueOf(model1.getValueAt(1, 2)));
+//						}
+//					}
+//				}
+//			}
+//			return lb;
+//		}
+//	}
 	
 //	public static void main(String[] args) {
 //		MypageFrame mf = new MypageFrame();

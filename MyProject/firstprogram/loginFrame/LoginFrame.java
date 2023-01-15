@@ -15,13 +15,13 @@ import mainFrame.ImagePanel;
 import mainFrame.MainDAO;
 import mainFrame.MainFrame;
 import mainFrame.MyButton;
-import mainFrame.MyFont;
 import mainFrame.MyFrame;
+import mainFrame.MyTextField;
 
 public class LoginFrame extends MainFrame {
 	private MyFrame f;
 	private MyButton myBtn;
-	private MyFont mTfId, mTfPwd;
+	private MyTextField mTfId, mTfPwd;
 	private JTextField resTf;
 	private ImagePanel p;
 	private ImageIcon imgHome;
@@ -39,8 +39,8 @@ public class LoginFrame extends MainFrame {
 		btnLogin = new JButton("로그인 하기");
 		btnJoin = new JButton("뉴트리베터 회원가입 >");
 
-		mTfId = new MyFont();
-		mTfPwd = new MyFont();
+		mTfId = new MyTextField();
+		mTfPwd = new MyTextField();
 
 		resTf = new JTextField("") { // text field 테두리 제거
 			private static final long serialVersionUID = 1L;

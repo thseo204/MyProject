@@ -240,6 +240,47 @@ public class MainDAO {
 		return result;
 	}
 	
+	// 달력에 DB 에 저장되어있는 해당 년월일에 섭취한 총 칼로리 표시
+	public String[] listUserKcalIInCal(String id) {
+		String[] list = null;
+		try {
+			
+			String query = "";
+			if(id != null) {
+					query = "SELECT  DISTINCT ymd\n"
+							+ "FROM MEMBER_NUTRIENT_HISTORY\n"
+							+ "WHERE id = '" + id + "'";
+					
+					System.out.println("SQL : " + query);
+					
+			}
+			
+			rs = stmt.executeQuery(query);
+			
+			rs.last();
+			System.out.println("rs.getRow() : " + rs.getRow());
+			list = new String[rs.getRow()];
+			int i = 0;
+			if (rs.getRow() == 0) {
+				
+			} else {
+				rs.beforeFirst();
+
+				while(rs.next()) {
+					String yyyymmdd = rs.getString("YMD");
+					
+					list[i] = yyyymmdd;
+					System.out.println("list[" + i +"] = " + list[i]);
+					i++;
+				}
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		
+		return list;
+	}
+	
 	// "오늘 섭취 음식 저장" 버튼 클릭 시 당일 날짜에 해당 아이디에 섭취한 기록 저장
 	public boolean listAddNutriInsert(String yyyymmdd, String id, String foodCode, String amount,  String[] nutriKor, String[] nutri) {
 		
@@ -506,6 +547,53 @@ public class MainDAO {
 				}
 			}
 
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		return list;
+	}
+	
+	// 검색창 단어로 조회
+	public ArrayList<ProcessedFoodVo> listSearch(String tfText) {
+		list = new ArrayList<ProcessedFoodVo>();
+		
+		try {
+			
+			String query = "SELECT pf.food_code, FOOD_NAME, pf.DETAIL_CTG, pf.MANUFACTURER, n.\"Kcal\" \n"
+					+ "FROM PROCESSED_FOOD pf, NUTRIENT n ";
+			if (tfText != null) {
+				query += "WHERE pf.food_code = n.FOOD_CODE and FOOD_NAME like '%" + tfText + "%'\n"
+						+ "ORDER BY FOOD_NAME";
+			}
+			System.out.println("SQL : " + query);
+			
+			rs = stmt.executeQuery(query);
+			rs.last();
+			System.out.println("list().rs1.getRow() : " + rs.getRow());
+			// big_ctg 항목이 몇개인지 rs.getRow() 를 통해 알 수 있음.
+			
+			slcCtgN = rs.getRow();
+			if (rs.getRow() == 0) {
+				
+			} else {
+				rs.beforeFirst(); // 커서를 처음으로 되돌리기
+				
+				while (rs.next()) { // 해당 결과가 있으면 조회해오는 것
+					String foodCode = rs.getString("FOOD_CODE");
+					String foodName = rs.getString("FOOD_NAME");
+					String detailCtg = rs.getString("DETAIL_ctg");
+					String manufacturer = rs.getString("MANUFACTURER");
+					int kcal = rs.getInt("Kcal");
+					
+					System.out.println("[food_code = " + foodCode + "][food_name = " + foodName + "][detail_Ctg = "
+							+ detailCtg + "][manufacturer = " + manufacturer + "][kcal = " + kcal + "]");
+//						
+//						
+					ProcessedFoodVo data = new ProcessedFoodVo(foodCode, foodName, detailCtg, manufacturer, kcal);
+					list.add(data);
+				}
+			}
+			
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
