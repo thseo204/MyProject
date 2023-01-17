@@ -11,6 +11,7 @@ import java.util.Date;
 
 import listPanel.BigCtgVo;
 import listPanel.ProcessedFoodVo;
+import mypageDateFrame.MemberNutrientHistoryVo;
 import productCompareFrame.NutrientVo;
 
 public class MainDAO {
@@ -72,33 +73,32 @@ public class MainDAO {
 		}
 		return name;
 	}
-	
+
 	// 로그인한 멤버의 생년월일 추출하여 나이 반환
 	public String listAge(String id) {
 		String age = "";
 		String barth = "";
 		try {
-			
-			String query = "SELECT * FROM MEMBER_INFO " +
-					"where ID = '" + id + "'";
+
+			String query = "SELECT * FROM MEMBER_INFO " + "where ID = '" + id + "'";
 			System.out.println("SQL : " + query);
-			
+
 			rs = stmt.executeQuery(query);
-			
+
 			rs.last();
 			System.out.println("rs.getRow() : " + rs.getRow());
-			
+
 			if (rs.getRow() == 0) {
 			} else {
 				rs.previous(); // 커서를 이전 위치로 되돌리기
 				rs.next();
 				barth = rs.getString("BARTH");
-				
+
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
-		
+
 		SimpleDateFormat format = new SimpleDateFormat("YYMMDD");
 		String today = format.format(new Date());
 		String yy = today.substring(0, 2);
@@ -109,70 +109,69 @@ public class MainDAO {
 		System.out.println("mm = " + mm);
 		System.out.println("dd = " + dd);
 		System.out.println(barth.charAt(0) - '0');
-		
+
 		String useryy = barth.substring(0, 2);
 		String usermm = barth.substring(2, 4);
 //		String userdd = barth.substring(4, 6);
-		
-		if(barth.charAt(0) - '0' > yy.charAt(0) - '0') {
+
+		if (barth.charAt(0) - '0' > yy.charAt(0) - '0') {
 			useryy = "19" + useryy;
 		} else {
 			useryy = "20" + useryy;
 		}
 		yy = "20" + yy;
-		
+
 		System.out.println(Integer.valueOf(usermm) + "<" + Integer.valueOf(mm));
-		
-		if(Integer.valueOf(usermm) < Integer.valueOf(mm)) {
+
+		if (Integer.valueOf(usermm) < Integer.valueOf(mm)) {
 			System.out.println(Integer.valueOf(yy) + "-" + Integer.valueOf(useryy));
 			age = String.valueOf(Integer.valueOf(yy) - Integer.valueOf(useryy));
 		} else {
 			System.out.println(Integer.valueOf(yy) + "-" + Integer.valueOf(useryy) + "-" + 1);
 			age = String.valueOf(Integer.valueOf(yy) - Integer.valueOf(useryy) - 1);
 		}
-		
+
 		return age;
 	}
+
 	// 사용자id 로 gender 추출하여 반환
 	public String listGender(String id) {
 		String gender = "";
 		try {
-			
-			String query = "SELECT * FROM MEMBER_INFO " +
-					"where ID = '" + id + "'";
+
+			String query = "SELECT * FROM MEMBER_INFO " + "where ID = '" + id + "'";
 			System.out.println("SQL : " + query);
-			
+
 			rs = stmt.executeQuery(query);
-			
+
 			rs.last();
 			System.out.println("rs.getRow() : " + rs.getRow());
-			
+
 			if (rs.getRow() == 0) {
 			} else {
 				rs.previous(); // 커서를 이전 위치로 되돌리기
 				rs.next();
 				gender = rs.getString("GENDER");
-				
+
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
-		
+
 		return gender;
 	}
-	
+
 	// "오늘 섭취한 음식" 영양소들 배열[] data 추출
 	public String[] listTodayEat(String yyyymmdd, String id) {
 		String[] result = new String[73];
 		try {
-			
+
 			String query = "";
-			if(yyyymmdd != null && id != null) {
-				for(int i = 0; i < result.length; i++) {
-					query = "SELECT sum(TO_NUMBER(NUTRY"+ i +")) AS sum\n"
-							+ "FROM MEMBER_NUTRIENT_HISTORY\n"
-							+ "WHERE YMD = '"+ yyyymmdd + "' AND id = '" + id + "'";
-					
+			if (yyyymmdd != null && id != null) {
+				for (int i = 0; i < result.length; i++) {
+					query = "SELECT sum(TO_NUMBER(NUTRY" + i + ")) AS sum\n" + "FROM MEMBER_NUTRIENT_HISTORY\n"
+							+ "WHERE YMD = '" + yyyymmdd + "' AND id = '" + id + "'";
+
 //					System.out.println("SQL : " + query);
 					rs = stmt.executeQuery(query);
 					rs.next();
@@ -180,122 +179,191 @@ public class MainDAO {
 //					System.out.println(result[i]);
 				}
 			}
-			
+
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
-		
+
 		return result;
 	}
-	
+
 	// "오늘 섭취한 음식" 총섭취량, 총칼로리 data 추출
 	public int listTodayEat(String yyyymmdd, String id, char gOrK) {
 		int result = 0;
 		try {
-			
+
 			// if switch 문으로 파라매터로 구하고자 하는 컬럼명(칼로리,섭취량,영양소양등) 을 받아
 			// 그 문자열로 스위치문 조건 걸어서 해당 조건에 맞는 쿼리문 실행되게끔 만들어보기!!
 			String query = "";
-			if(yyyymmdd != null && id != null && gOrK != '\0') {
-				switch(gOrK) {
-				case 'g' :
+			if (yyyymmdd != null && id != null && gOrK != '\0') {
+				switch (gOrK) {
+				case 'g':
 					query = "SELECT sum(REGEXP_REPLACE(AMOUNT, '[^0-9.-]', '')) AS sum \n"
-							+ "FROM MEMBER_NUTRIENT_HISTORY\n"
-							+ "WHERE YMD = '"+ yyyymmdd + "' AND id = '" + id + "'";
-						
-						System.out.println("// Case 'g'");
-						System.out.println("SQL : " + query);
-					
+							+ "FROM MEMBER_NUTRIENT_HISTORY\n" + "WHERE YMD = '" + yyyymmdd + "' AND id = '" + id + "'";
+
+					System.out.println("// Case 'g'");
+					System.out.println("SQL : " + query);
+
 					break;
-				case 'k' :
-					query = "SELECT sum(kcal) AS sum \n"
-							+ "FROM MEMBER_NUTRIENT_HISTORY\n"
-							+ "WHERE YMD = '"+ yyyymmdd + "' AND id = '" + id + "'";
-						
-						System.out.println("// Case 'k'");
-						System.out.println("SQL : " + query);
+				case 'k':
+					query = "SELECT sum(kcal) AS sum \n" + "FROM MEMBER_NUTRIENT_HISTORY\n" + "WHERE YMD = '" + yyyymmdd
+							+ "' AND id = '" + id + "'";
+
+					System.out.println("// Case 'k'");
+					System.out.println("SQL : " + query);
 					break;
-				default :
+				default:
 					break;
 				}
 			}
-			
+
 			rs = stmt.executeQuery(query);
-			
+
 			rs.last();
 			System.out.println("rs.getRow() : " + rs.getRow());
-			
+
 			if (rs.getRow() == 0) {
-				
+
 			} else {
 				rs.previous(); // 커서를 이전 위치로 되돌리기
 				rs.next();
 				result = rs.getInt("sum");
-				
+
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
-		
+
 		return result;
 	}
-	
+
+	// 성, 연령별 일일 권장 섭취 칼로리 조회
+	public int queryKcal(String gender, String age) {
+		int kcal = 0;
+		try {
+
+			String query = "SELECT KCAL \n"
+					+ "FROM NUTRIENT_DIETARY_REFERENCE\n"
+					+ "WHERE GENDER = '"+gender+"' AND AGE = '"+age+"'";
+
+			System.out.println("SQL : " + query);
+
+			rs = stmt.executeQuery(query);
+			rs.last();
+			rs.getRow();
+			System.out.println("getRow() : " + rs.getRow());
+			if (rs.getRow() == 0) {
+
+			} else {
+				rs.beforeFirst();
+				rs.next();
+				kcal = rs.getInt("KCAL");
+				System.out.println(kcal);
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		return kcal;
+	}
+
 	// 달력에 DB 에 저장되어있는 해당 년월일에 섭취한 총 칼로리 표시
 	public String[] listUserKcalIInCal(String id) {
 		String[] list = null;
 		try {
-			
+
 			String query = "";
-			if(id != null) {
-					query = "SELECT  DISTINCT ymd\n"
-							+ "FROM MEMBER_NUTRIENT_HISTORY\n"
-							+ "WHERE id = '" + id + "'";
-					
-					System.out.println("SQL : " + query);
-					
+			if (id != null) {
+				query = "SELECT  DISTINCT ymd\n" + "FROM MEMBER_NUTRIENT_HISTORY\n" + "WHERE id = '" + id + "'";
+
+				System.out.println("SQL : " + query);
+
 			}
-			
+
 			rs = stmt.executeQuery(query);
-			
+
 			rs.last();
 			System.out.println("rs.getRow() : " + rs.getRow());
 			list = new String[rs.getRow()];
 			int i = 0;
 			if (rs.getRow() == 0) {
-				
+
 			} else {
 				rs.beforeFirst();
 
-				while(rs.next()) {
+				while (rs.next()) {
 					String yyyymmdd = rs.getString("YMD");
-					
+
 					list[i] = yyyymmdd;
-					System.out.println("list[" + i +"] = " + list[i]);
+					System.out.println("list[" + i + "] = " + list[i]);
 					i++;
 				}
 			}
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
-		
+
 		return list;
 	}
-	
+
+	// 해당일에 섭취한 음식 리스트 보여주기
+	public ArrayList<MemberNutrientHistoryVo> listUserHistoryDate(String id, String yyyymmdd) {
+		ArrayList<MemberNutrientHistoryVo> list = new ArrayList<>();
+		try {
+			String query = "";
+			if (id != null && yyyymmdd != null) {
+				query = "SELECT p.MANUFACTURER, p.FOOD_NAME, h.AMOUNT, h.Kcal \n"
+						+ "FROM MEMBER_NUTRIENT_HISTORY h, PROCESSED_FOOD p\n"
+						+ "WHERE h.FOOD_CODE = p.FOOD_CODE AND h.id = '" + id + "' AND h.YMD = '" + yyyymmdd + "'";
+
+				System.out.println("SQL : " + query);
+
+			}
+
+			rs = stmt.executeQuery(query);
+
+			rs.last();
+			slcCtgN = rs.getRow();
+			System.out.println("rs.getRow() : " + rs.getRow());
+			if (rs.getRow() == 0) {
+				list = null;
+			} else {
+				rs.beforeFirst();
+
+				while (rs.next()) {
+					String manu = rs.getString("MANUFACTURER");
+					String foodName = rs.getString("FOOD_NAME");
+					String amount = rs.getString("AMOUNT");
+					int kcal = rs.getInt("kcal");
+					System.out.println(manu + "\t" + foodName + "\t" + amount + "\t" + kcal);
+					MemberNutrientHistoryVo vo = new MemberNutrientHistoryVo(manu, foodName, amount, kcal);
+					list.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		return list;
+	}
+
 	// "오늘 섭취 음식 저장" 버튼 클릭 시 당일 날짜에 해당 아이디에 섭취한 기록 저장
-	public boolean listAddNutriInsert(String yyyymmdd, String id, String foodCode, String amount,  String[] nutriKor, String[] nutri) {
-		
+	public boolean listAddNutriInsert(String yyyymmdd, String id, String foodCode, String amount, String[] nutriKor,
+			String[] nutri) {
+
 		boolean result = false;
 		String[] KorNutriDB = userNutriList("성별", "나이");
 		String[] addNutriArr = new String[73];
 		try {
 			String query = "INSERT INTO MEMBER_NUTRIENT_HISTORY";
-			if (yyyymmdd.equals(null) || id.equals(null) || foodCode.equals(null) || amount.equals(null) || nutri[0].equals(null)) {
+			if (yyyymmdd.equals(null) || id.equals(null) || foodCode.equals(null) || amount.equals(null)
+					|| nutri[0].equals(null)) {
 				result = false;
 			} else {
-				query += " values ('" + yyyymmdd + "', '" + id + "', '" + foodCode +"', '" + amount + "', " + nutri[0];
-				for(int i = 0; i < KorNutriDB.length; i++) {
-					for(int j = 1; j < nutri.length - 1; j++) {
-						if(KorNutriDB[i].equals(nutriKor[j])) {
+				query += " values ('" + yyyymmdd + "', '" + id + "', '" + foodCode + "', '" + amount + "', " + nutri[0];
+				for (int i = 0; i < KorNutriDB.length; i++) {
+					for (int j = 1; j < nutri.length - 1; j++) {
+						if (KorNutriDB[i].equals(nutriKor[j])) {
 							addNutriArr[i] = nutri[j];
 							break;
 						} else {
@@ -303,9 +371,9 @@ public class MainDAO {
 						}
 					}
 				}
-				
-				for(int i = 0; i < addNutriArr.length; i++) {
-					if(addNutriArr[i] == null ) {
+
+				for (int i = 0; i < addNutriArr.length; i++) {
+					if (addNutriArr[i] == null) {
 						query += ", " + null + " ";
 					} else {
 						query += ", '" + addNutriArr[i] + "' ";
@@ -315,9 +383,9 @@ public class MainDAO {
 				result = true;
 			}
 			System.out.println("SQL : " + query);
-			
+
 			stmt.execute(query);
-			
+
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
@@ -495,7 +563,7 @@ public class MainDAO {
 
 					System.out.println("[food_code = " + foodCode + "][food_name = " + foodName + "][detail_Ctg = "
 							+ detailCtg + "][manufacturer = " + manufacturer + "][kcal = " + kcal + "]");
-						
+
 					ProcessedFoodVo data = new ProcessedFoodVo(foodCode, foodName, detailCtg, manufacturer, kcal);
 					list.add(data);
 				}
@@ -552,13 +620,13 @@ public class MainDAO {
 		}
 		return list;
 	}
-	
+
 	// 검색창 단어로 조회
 	public ArrayList<ProcessedFoodVo> listSearch(String tfText) {
 		list = new ArrayList<ProcessedFoodVo>();
-		
+
 		try {
-			
+
 			String query = "SELECT pf.food_code, FOOD_NAME, pf.DETAIL_CTG, pf.MANUFACTURER, n.\"Kcal\" \n"
 					+ "FROM PROCESSED_FOOD pf, NUTRIENT n ";
 			if (tfText != null) {
@@ -566,25 +634,25 @@ public class MainDAO {
 						+ "ORDER BY FOOD_NAME";
 			}
 			System.out.println("SQL : " + query);
-			
+
 			rs = stmt.executeQuery(query);
 			rs.last();
 			System.out.println("list().rs1.getRow() : " + rs.getRow());
 			// big_ctg 항목이 몇개인지 rs.getRow() 를 통해 알 수 있음.
-			
+
 			slcCtgN = rs.getRow();
 			if (rs.getRow() == 0) {
-				
+
 			} else {
 				rs.beforeFirst(); // 커서를 처음으로 되돌리기
-				
+
 				while (rs.next()) { // 해당 결과가 있으면 조회해오는 것
 					String foodCode = rs.getString("FOOD_CODE");
 					String foodName = rs.getString("FOOD_NAME");
 					String detailCtg = rs.getString("DETAIL_ctg");
 					String manufacturer = rs.getString("MANUFACTURER");
 					int kcal = rs.getInt("Kcal");
-					
+
 					System.out.println("[food_code = " + foodCode + "][food_name = " + foodName + "][detail_Ctg = "
 							+ detailCtg + "][manufacturer = " + manufacturer + "][kcal = " + kcal + "]");
 //						
@@ -593,7 +661,7 @@ public class MainDAO {
 					list.add(data);
 				}
 			}
-			
+
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
@@ -637,10 +705,10 @@ public class MainDAO {
 
 //			int rowN = rs.getRow();
 			if (rs.getRow() == 0) {
-					
+
 			} else {
 				rs.beforeFirst(); // 커서를 처음으로 되돌리기
-					
+
 				while (rs.next()) { // 해당 결과가 있으면 조회해오는 것
 					String manufacturer = rs.getString("MANUFACTURER");
 					String foodName = rs.getString("FOOD_NAME");
@@ -816,7 +884,7 @@ public class MainDAO {
 		}
 		return nutriList;
 	}
-	
+
 	// Detail 식품 항목 조회DB
 	public String[] nutriList(String FoodCode) {
 		String query1 = "";
@@ -850,37 +918,35 @@ public class MainDAO {
 				}
 				k++;
 			}
-		} catch(Exception e) {
-			
+		} catch (Exception e) {
+
 		}
 		return nutri;
 	}
-	
+
 	// user NutrientDietaryReferenceVo 성별.연령별 권장 섭취량DB
 	// 해당 유저의 1일 섭취 kcal 반환
 	public int userKcal(String gender, String age) {
 		int kcal = 0;
 		try {
-			String query = "SELECT * \n"
-					+ "FROM NUTRIENT_DIETARY_REFERENCE\n"
-					+ "WHERE GENDER = '" + gender 
+			String query = "SELECT * \n" + "FROM NUTRIENT_DIETARY_REFERENCE\n" + "WHERE GENDER = '" + gender
 					+ "' AND AGE = '" + age + "'";
-			
+
 			rs = stmt.executeQuery(query);
 			rs.last();
 			System.out.println("rs.getRow : " + rs.getRow());
-			
-			if(rs.getRow() == 0) {
-				
-			}else {
+
+			if (rs.getRow() == 0) {
+
+			} else {
 				rs.beforeFirst();
 				rs.next();
 				kcal = rs.getInt("KCAL");
 			}
-		}catch(Exception e) {
-			
+		} catch (Exception e) {
+
 		}
-		
+
 		return kcal;
 	}
 
@@ -890,9 +956,8 @@ public class MainDAO {
 
 		try {
 			// foodCode1 의 영양소 내역 추출
-			query1 = "SELECT * \n"
-					+ "FROM NUTRIENT_DIETARY_REFERENCE\n"
-					+ "WHERE GENDER = '" + gender + "' AND AGE = '" + age + "'";
+			query1 = "SELECT * \n" + "FROM NUTRIENT_DIETARY_REFERENCE\n" + "WHERE GENDER = '" + gender + "' AND AGE = '"
+					+ age + "'";
 
 			rs = stmt.executeQuery(query1);
 			System.out.println("SQL 1 : " + query1);
@@ -923,7 +988,7 @@ public class MainDAO {
 		}
 		return nutri;
 	}
-	
+
 	public int getSlcCtgN() {
 		return slcCtgN;
 	}

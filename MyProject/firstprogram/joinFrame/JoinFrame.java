@@ -88,7 +88,7 @@ public class JoinFrame {
 		
 		lb1 = new JLabel("뉴트리베터에서 제공하는 ", JLabel.RIGHT);
 		lb2 = new JLabel(",", JLabel.CENTER);
-		lb3 = new JLabel("에 동합니다.", JLabel.LEFT);
+		lb3 = new JLabel("에 동의합니다.", JLabel.LEFT);
 		
 		agree = new JCheckBox("");
 		

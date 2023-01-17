@@ -36,6 +36,7 @@ import mainFrame.MyButton;
 import mainFrame.MyFont;
 import mainFrame.MyFrame;
 import mainFrame.MyTextField;
+import mypageDateFrame.MypageDateFrame;
 
 public class MypageFrame extends MouseAdapter {
 	private static final long serialVersionUID = 1L;
@@ -419,18 +420,10 @@ public class MypageFrame extends MouseAdapter {
 		nutriPane.setBorder(new LineBorder(Color.white));
 
 		// 달력 ------------------------------------------------------------------
-//		SimpleDateFormat format = new SimpleDateFormat("YYYYMMDD");
-//		String today = format.format(new Date()); // 현재날짜 가져오기
-//		String yyyy = today.substring(0, 4);
-//		String mm = today.substring(4, 6);
-//		String dd = today.substring(6, 8);
 		System.out.println(today);
 		System.out.println("yyyy = " + yyyyStr);
 		System.out.println("mm = " + mmStr);
 		System.out.println("dd = " + ddStr);
-//		todayYear = Integer.valueOf(yyyyStr);
-//		todayMonth = Integer.valueOf(mmStr);
-//		todayDate = Integer.valueOf(ddStr);
 
 		yearTf = new MyTextField(yyyyStr, 15);
 		monthTf = new MyTextField(mmStr, 15);
@@ -448,8 +441,6 @@ public class MypageFrame extends MouseAdapter {
 
 		setKcalInAllDayCal();
 		
-//		DefaultTableCellRenderer renderer = new MyDefaultTableCellRenderer();
-//		calTable.getColumn("12").setCellRenderer(renderer);
 		
 		photoP.add(btnPhoto);
 		northP.add(titleTf.getJTf());
@@ -519,15 +510,23 @@ public class MypageFrame extends MouseAdapter {
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				// TODO Auto-generated method stub
 				JComponent component = (JComponent) super.prepareRenderer(renderer, row, column);
-				
+//				component.setFocusable(false);
 				if (!isRowSelected(row)) {
 					component.setBackground(row == 0 ? new Color(240, 230, 140) : Color.WHITE);
 					component.setForeground(row == 0 ? Color.WHITE : Color.DARK_GRAY);
 					component.setFont(row == 0 ? mfont.setFont(20) : mfont.setFont(10));
 				} else {
 					Object value = getModel().getValueAt(row, column);
+					try {
 					if(value.equals(" ")) {
 //						component.setBackground(Color.green);
+					} else {
+						component.setBackground(row == 0 ? new Color(240, 230, 140) : Color.WHITE);
+						component.setForeground(row == 0 ? Color.WHITE : Color.DARK_GRAY);
+						component.setFont(row == 0 ? mfont.setFont(20) : mfont.setFont(10));
+					}
+					} catch(NullPointerException e) {
+						
 					}
 					
 				}
@@ -541,6 +540,12 @@ public class MypageFrame extends MouseAdapter {
 				return false;
 			}
 		};
+		// 칼로리 값이 있는 값 btn 넣어주기
+		DefaultTableCellRenderer renderer = new MyRenderer();
+		for(int i = 0; i < calTable.getColumnCount(); i++) {
+			calTable.getColumnModel().getColumn(i).setCellRenderer(renderer);
+		}
+		
 		// 테이블의 그리드 선 색상
 		calTable.setShowHorizontalLines(true); // 셀 수평선 유무
 		calTable.setShowVerticalLines(false); // 셀 수직선 유무
@@ -558,23 +563,30 @@ public class MypageFrame extends MouseAdapter {
 		calPane.setBounds(10, 45, 480, 290);
 		calPane.setBorder(new LineBorder(Color.white));
 		
-		DefaultTableCellRenderer renderer = new MyDefaultTableCellRenderer();
-//		((TableColumn) model2.getValueAt(3, 3)).setCellRenderer(renderer);
-		
 		eatP.add(calPane);
 	}
 
-//	public void mouseClicked(MouseEvent e) {
-//		int row = calTable.getSelectedRow();
-//		int col = calTable.getSelectedColumn();
-//		int date = Integer.valueOf(calTable.getModel().getValueAt(row, col)+"");
-//		System.out.println("클릭한 날짜 : " + calTable.getModel().getValueAt(row, col) + "\t");
-//	}
+	public void mouseClicked(MouseEvent e) {
+		int row = calTable.getSelectedRow();
+		int col = calTable.getSelectedColumn();
+		String str = calTable.getModel().getValueAt(row, col)+"";
+		String date = "";
+		if(str.length() == 1) {
+			date = "0" + str.substring(0, 1);
+		} else {
+			date = str.substring(0, 2);
+		}
+		String yyyymmdd = yearTf.getJTf().getText() + monthTf.getJTf().getText() + date;
+		System.out.println("클릭한 날짜 : " + yyyymmdd + "\t");
+		
+		MypageDateFrame f = new MypageDateFrame();
+		f.startFrame(userId, yyyymmdd);
+	}
 	
 	// 오늘 제외한 이전 날짜들 달력에 총 칼로리 표시
 	public void setKcalInAllDayCal() {
 		String[] ymdArr = DAO.listUserKcalIInCal(userId);
-
+		
 		for(int k = 0; k < ymdArr.length; k++) {
 			String Ymd = ymdArr[k];
 			int kcal = DAO.listTodayEat(Ymd, userId, 'k');
@@ -588,7 +600,10 @@ public class MypageFrame extends MouseAdapter {
 					for(int j = 0; j < calTable.getColumnCount(); j++) {
 						String dateStr = calTable.getModel().getValueAt(i, j) + "";
 						if(dateStr.equals(date + "")) {
-							calTable.getModel().setValueAt(dateStr + " [" + kcal + "]", i, j);
+							
+//							calTable.getModel().setValueAt(dateStr + " [" + kcal + "]", i, j);
+							calTable.getModel().setValueAt(dateStr + "  *", i, j);
+
 						}
 					}
 				}

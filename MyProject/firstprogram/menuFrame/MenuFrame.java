@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import calculationFrame.CalculationFrame;
 import clauseFrame.ClauseFrame;
 import individualInfoPolicyFrame.IndividualInfoPolicyFrame;
 import joinFrame.JoinFrame;
@@ -30,7 +31,7 @@ public class MenuFrame {
 	private MyButton myBtn;
 	private MyTextField mTfTitle, mTfLine;
 	private JButton btnLogin, btnJoin, btnLogout, btnMyPage, btnHome, btnList, btnClause, btnIndividual;
-//	private JButton btnCompare;
+	private JButton btnCalcul;
 	private String id, gender, age, nameLb;
 	
 	public MenuFrame() {
@@ -47,7 +48,7 @@ public class MenuFrame {
 		btnMyPage = new JButton("마이페이지");
 		btnHome = new JButton("홈");
 		btnList = new JButton("제품 리스트");
-//		btnCompare = new JButton("제품 비교");
+		btnCalcul = new JButton("성/연령별 권장 칼로리 계산");
 
 		btnClause = new JButton("서비스 이용약관 |");
 		btnIndividual = new JButton("개인정보 처리방침");
@@ -82,7 +83,7 @@ public class MenuFrame {
 		myBtn.nudeButtonOption(btnJoin, 20);
 		myBtn.nudeButtonOption(btnHome, 20);
 		myBtn.nudeButtonOption(btnList, 20);
-//		myBtn.nudeButtonOption(btnCompare, 20);
+		myBtn.nudeButtonOption(btnCalcul, 20);
 		myBtn.blueButtonOption(btnClause);
 		myBtn.blueButtonOption(btnIndividual);
 
@@ -92,7 +93,7 @@ public class MenuFrame {
 		btnJoin.setBounds(110, 190, 180, 40);
 		btnHome.setBounds(110, 230, 180, 40);
 		btnList.setBounds(110, 270, 180, 40);
-//		btnCompare.setBounds(110, 310, 180, 40);
+		btnCalcul.setBounds(55, 310, 280, 40);
 		btnClause.setBounds(110, 410, 100, 10);
 		btnIndividual.setBounds(205, 410, 100, 10);
 		
@@ -106,7 +107,7 @@ public class MenuFrame {
 		btnJoin.setFont(mfont.setFont(20));
 		btnHome.setFont(mfont.setFont(20));
 		btnList.setFont(mfont.setFont(20));
-//		btnCompare.setFont(mfont.setFont(20));
+		btnCalcul.setFont(mfont.setFont(20));
 		btnClause.setFont(mfont.setFont(11));
 		btnIndividual.setFont(mfont.setFont(11));
 		
@@ -192,19 +193,18 @@ public class MenuFrame {
 				}
 			}
 		});
-//		btnCompare.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				if(logOn == false) {
-//					JOptionPane.showMessageDialog(null, "로그인 후 이용해주세요.");
-//					
-//				} else {
-//					ProductCompareFrame pcf = new ProductCompareFrame();
-//					pcf.startFrame();
-//					f.getMyFrame().setVisible(false);
-//				}
-//			}
-//		});
+		btnCalcul.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(logOn == false) {
+					JOptionPane.showMessageDialog(null, "로그인 후 이용해주세요.");
+					
+				} else {
+					CalculationFrame cf = new CalculationFrame();
+					cf.startFrame();
+				}
+			}
+		});
 		btnClause.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -225,7 +225,7 @@ public class MenuFrame {
 
 		p.add(btnHome);
 		p.add(btnList);
-//		p.add(btnCompare);
+		p.add(btnCalcul);
 		p.add(btnClause);
 		p.add(btnIndividual);
 

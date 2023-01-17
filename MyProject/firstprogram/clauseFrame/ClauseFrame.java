@@ -27,7 +27,7 @@ public class ClauseFrame extends JoinFrame{
 	private JButton btnOk;
 	
 	public ClauseFrame() {
-		f = new MyFrame("제품 리스트_[뉴트리베터]");
+		f = new MyFrame("[뉴트리베터]_서비스 이용약관");
 		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
 		mfont = new MyFont();
 		mTf = new MyTextField("서비스 이용약관", 18);

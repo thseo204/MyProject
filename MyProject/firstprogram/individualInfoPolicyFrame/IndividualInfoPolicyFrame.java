@@ -26,7 +26,7 @@ public class IndividualInfoPolicyFrame {
 	private JButton btnOk;
 	
 	public IndividualInfoPolicyFrame() {
-		f = new MyFrame("제품 리스트_[뉴트리베터]");
+		f = new MyFrame("[뉴트리베터]_개인정보처리방침");
 		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
 		mfont = new MyFont();
 		mTf = new MyTextField("개인정보처리방침", 18);
