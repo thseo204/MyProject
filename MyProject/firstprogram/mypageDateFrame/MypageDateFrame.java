@@ -14,13 +14,12 @@ import mainFrame.MyFont;
 import mainFrame.MyFrame;
 import mainFrame.MyTextField;
 
-public class MypageDateFrame {
-	private MyFrame f;
+public class MypageDateFrame extends MyFrame{
+//	private MyFrame f;
 	private ImagePanel p;
-	private MyFont mfont;
-	private MyTextField mTf;
+//	private MyFont mfont;
+	private MyTextField mTf, yyyymmddTf;
 	private String id, yyyymmdd;
-	private MyTextField yyyymmddTf;
 	private MainDAO DAO;
 	private int index;
 	private DateListPanel[] listP;
@@ -28,9 +27,11 @@ public class MypageDateFrame {
 	private JScrollPane scrollP;
 
 	public MypageDateFrame() {
-		f = new MyFrame("[뉴트리베터]_나의 섭취 내역");
-		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
-		mfont = new MyFont();
+		super("[뉴트리베터]_나의 섭취 내역");
+//		f = new MyFrame("[뉴트리베터]_나의 섭취 내역");
+		p = new ImagePanel(new ImageIcon(imgBack).getImage());
+//		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
+//		mfont = new MyFont();
 		mTf = new MyTextField("나의 섭취 내역", 18);
 		scrollP = new JScrollPane();
 		scrollInPanel = new JPanel();
@@ -45,15 +46,18 @@ public class MypageDateFrame {
 
 		DAO = new MainDAO();
 
-		f.startMyFrmae();
-		f.startBackBtn();
-		f.backBtnDispose();
+//		f.startMyFrmae();
+//		f.startBackBtn();
+//		f.backBtnDispose();
+		startMyFrame();
+		startBackBtn();
+		backBtnDispose();
 		p.setLayout(null);
 		scrollP.setLayout(null);
 		scrollInPanel.setLayout(null);
 		scrollInPanel.setBackground(Color.white);
 
-		mTf.getJTf().setFont(mfont.setFont(18));
+		mTf.getJTf().setFont(setFont(18));
 		mTf.getJTf().setBounds(25, 80, 140, 20);
 
 		scrollP.setBounds(25, 140, 450, 400);
@@ -61,7 +65,7 @@ public class MypageDateFrame {
 		
 		yyyymmddTf = new MyTextField("[ " + yyyyStr + "." + mmStr + "." + ddStr + " ]", 15);
 
-		yyyymmddTf.getJTf().setFont(mfont.setFont(18));
+		yyyymmddTf.getJTf().setFont(setFont(18));
 		yyyymmddTf.getJTf().setForeground(new Color(210, 180, 140));
 		yyyymmddTf.getJTf().setBounds(170, 115, 160, 20);
 		yyyymmddTf.getJTf().setBackground(null);
@@ -73,9 +77,12 @@ public class MypageDateFrame {
 		p.add(mTf.getJTf());
 		scrollP.add(scrollInPanel);
 		p.add(scrollP);
-		p.add(f.getBackBtn());
-		f.getMyFrame().add(p);
-		f.getMyFrame().setVisible(true);
+		p.add(btnBefore);
+		getMyFrame().add(p);
+		getMyFrame().setVisible(true);
+//		p.add(f.getBackBtn());
+//		f.getMyFrame().add(p);
+//		f.getMyFrame().setVisible(true);
 	}
 
 	public void setList(String yyyymmdd) {
@@ -83,7 +90,7 @@ public class MypageDateFrame {
 
 		if (list == null) {
 			MyTextField nullTf = new MyTextField("저장된 섭취 내역이 없습니다.", 20);
-			nullTf.getJTf().setFont(mfont.setFont(20));
+			nullTf.getJTf().setFont(setFont(20));
 			nullTf.getJTf().setBounds(120, 180, 280, 30);
 			p.add(nullTf.getJTf());
 		} else {
@@ -114,9 +121,9 @@ public class MypageDateFrame {
 
 	}
 
-	public static void main(String[] args) {
-		MainDAO.connDB();
-		MypageDateFrame f = new MypageDateFrame();
-		f.startFrame("shg", "20230113");
-	}
+//	public static void main(String[] args) {
+//		MainDAO.connDB();
+//		MypageDateFrame f = new MypageDateFrame();
+//		f.startFrame("shg", "20230113");
+//	}
 }

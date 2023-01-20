@@ -1,26 +1,26 @@
 package listPanel;
 
 public class BigCtgVo {
-	private String big_ctg;
+	private String bigCtg;
 	
 	public BigCtgVo() {
 		
 	}
 	
-	public BigCtgVo(String big_ctg) {
-		this.big_ctg = big_ctg;
-	}
+//	public BigCtgVo(String big_ctg) {
+//		this.bigCtg = big_ctg;
+//	}
 	
 	public void setBigCtg(String big_ctg) {
-		this.big_ctg = big_ctg;
+		this.bigCtg = big_ctg;
 	}
 	
 	public String getBigCtg() {
-		return big_ctg;
+		return bigCtg;
 	}
 	
 	public String toString() {
-		String str = big_ctg.toString();
+		String str = bigCtg.toString();
 		return str;
 	}
 }

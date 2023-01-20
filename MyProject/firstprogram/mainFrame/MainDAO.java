@@ -22,13 +22,11 @@ public class MainDAO {
 
 	public static Connection con;
 	public static Statement stmt;
-	public static ResultSet rs;
-	public static ResultSet rs2;
+	public static ResultSet rs, rs2;
 
-	private int bigCtgN;
+	private int bigCtgN, slcCtgN;
 	private ArrayList<BigCtgVo> bigCtglist;
 
-	private int slcCtgN;
 	private ArrayList<ProcessedFoodVo> list;
 
 //	private ArrayList<NutrientVo> nutriList;
@@ -512,7 +510,8 @@ public class MainDAO {
 				while (rs.next()) { // 해당 결과가 있으면 조회해오는 것
 					String bigCtg = rs.getString("Big_CTG");
 
-					BigCtgVo data = new BigCtgVo(bigCtg);
+					BigCtgVo data = new BigCtgVo();
+					data.setBigCtg(bigCtg);
 					System.out.println(bigCtg);
 					bigCtglist.add(data);
 				}

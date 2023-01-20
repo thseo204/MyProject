@@ -2,25 +2,20 @@ package mypageFrame;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Label;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import clauseFrame.ClauseFrame;
 import mainFrame.MyButton;
 import mainFrame.MyFont;
 
 public class MyRenderer extends DefaultTableCellRenderer{
 	private static final long serialVersionUID = 1L;
 	private JLabel lb;
-	private JButton btn = new JButton();
+//	private JButton btn = new JButton();
 	private MyButton mBtn;
 	
 	public MyRenderer() {
@@ -76,8 +71,8 @@ public class MyRenderer extends DefaultTableCellRenderer{
 		return lb;
 	}
 	
-	public JButton getBtn() {
-		return btn;
-	}
+//	public JButton getBtn() {
+//		return btn;
+//	}
 
 }

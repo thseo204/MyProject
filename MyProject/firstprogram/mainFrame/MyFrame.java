@@ -9,15 +9,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class MyFrame {
-	private JFrame f;
-	private ImageIcon imgFrame, imgFrameNorth;
-	private Image imgBack, imgBackNorth;
-	private MyButton myBtn;
-	private ImageIcon imgBefore, imgBeforeC, cBefore;
-	private JButton btnBefore;
-
+public class MyFrame extends MyFont{
+	public static boolean LOGON;
+	
+	protected JFrame f;
+	protected ImageIcon imgFrame, imgFrameNorth, imgBefore, imgBeforeC, cBefore;
+	protected Image imgBack, imgBackNorth;
+	protected MyButton myBtn;
+	protected JButton btnBefore;
+	protected String id, name, gender, age;
+	
 	public MyFrame(String title) {
+		super();
 		f = new JFrame(title);
 		myBtn = new MyButton();
 		imgFrame = new ImageIcon("./Frame_image/Frame_Background.PNG");
@@ -34,7 +37,7 @@ public class MyFrame {
 
 	}
 
-	public void startMyFrmae() {
+	public void startMyFrame() {
 		f.setLayout(new BorderLayout());
 		f.setSize(500, 600);
 		f.setResizable(false); // 프레임 사이즈 고정
@@ -60,8 +63,13 @@ public class MyFrame {
 		btnBefore.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				getMyFrame().dispose();
-					MainFrame mf = new MainFrame();
+//				if(LOGON == false) {
+				MainFrame mf = new MainFrame();
 					mf.startFrame();
+//				} else if(LOGON == true) {
+//					MainFrame mf = new MainFrame(id, name, gender, age);
+//					mf.startFrame();
+//				}
 			}
 		});
 	}
@@ -73,15 +81,18 @@ public class MyFrame {
 	public JFrame getMyFrame() {
 		return f;
 	}
-
-	public Image getBackImg() {
-		return imgBack;
-	}
 	public Image getBackNorthImg() {
 		return imgBackNorth;
 	}
+	
+	
+	
 
-	public JButton getBackBtn() {
-		return btnBefore;
-	}
+//	public Image getBackImg() {
+//		return imgBack;
+//	}
+//
+//	public JButton getBackBtn() {
+//		return btnBefore;
+//	}
 }

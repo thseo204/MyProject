@@ -1,12 +1,7 @@
 package joinFrame;
 
 public class JoinVo {
-	private String id;
-	private String pwd;
-	private String email;
-	private String name;
-	private String gender;
-	private String barth;
+	private String id, pwd, email, name, gender, birth;
 	
 	public JoinVo(String id, String pwd, String email, String name, String gender, String barth) {
 		this.id = id;
@@ -14,7 +9,7 @@ public class JoinVo {
 		this.email = email;
 		this.name = name;
 		this.gender = gender;
-		this.barth = barth;
+		this.birth = barth;
 	}
 	
 	public String getId() {
@@ -32,7 +27,7 @@ public class JoinVo {
 	public String getGender() {
 		return gender;
 	}
-	public String getBarth() {
-		return barth;
+	public String getBirth() {
+		return birth;
 	}
 }

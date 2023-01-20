@@ -2,8 +2,8 @@ package mypageFrame;
 
 import java.util.Calendar;
 
-public class MyCalender {
-	Calendar cal = Calendar.getInstance();
+public class MyCalendar {
+	private Calendar cal = Calendar.getInstance();
 	
 	private String[] calHeader = {"S", "M", "T", "W", "T", "F", "S"};
 	private String[][] calDate = new String[6][7];
@@ -14,12 +14,12 @@ public class MyCalender {
 	private int inputDate = 1; // 입력날짜
 	private int year, month;
 	
-	public MyCalender(int year, int month) {
+	public MyCalendar(int year, int month) {
 		this.year = year;
 		this.month = month;
 	}
 	
-	public String[][] printMyCalender() {
+	public String[][] printMyCalendar() {
 		
 		cal.set(Calendar.YEAR, year);
 		cal.set(Calendar.MONTH, month-1);

@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -32,7 +31,7 @@ import mainFrame.MyFrame;
 import mainFrame.MyTextField;
 import menuFrame.MenuFrame;
 import productCompareFrame.ProductCompareFrame;
-import productDetailInfoFrame.ProducDetailFrame;
+import productDetailInfoFrame.ProductDetailFrame;
 
 // 해당 카테고리의 총 제품 갯수가 5 이하일때 갯수 이외의 CardListPBtn 은 나오지 않게 해야함!
 public class ProductListFrame extends JPanel implements ActionListener {
@@ -118,7 +117,7 @@ public class ProductListFrame extends JPanel implements ActionListener {
 	}
 
 	public void startFrame() {
-		f.startMyFrmae();
+		f.startMyFrame();
 		f.backBtnDispose();
 		f.getMyFrame().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -211,7 +210,7 @@ public class ProductListFrame extends JPanel implements ActionListener {
 				MenuFrame mf = new MenuFrame();
 				mf.setGenderAge(id, gender, age);
 				mf.setNameLb(name);
-				mf.startFrame(true);
+				mf.startFrame();
 			}
 		});
 
@@ -478,7 +477,7 @@ public class ProductListFrame extends JPanel implements ActionListener {
 			String foodCode = listPBtn[i].getBtnFoodCode();
 
 			System.out.println("선택된 푸드 코드 " + foodCode);
-			ProducDetailFrame df = new ProducDetailFrame();
+			ProductDetailFrame df = new ProductDetailFrame();
 			df.setFoodCode(foodCode);
 			df.setGenderAge(id, gender, age);
 			df.startFrame();

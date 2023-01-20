@@ -19,7 +19,7 @@ import mainFrame.MyFrame;
 import mainFrame.MyTextField;
 
 public class LoginFrame extends MainFrame {
-	private MyFrame f;
+//	private MyFrame f;
 	private MyButton myBtn;
 	private MyTextField mTfId, mTfPwd;
 	private JTextField resTf;
@@ -28,10 +28,13 @@ public class LoginFrame extends MainFrame {
 	private JButton btnHome, btnLogin, btnJoin;
 
 	public LoginFrame() throws ClassNotFoundException, SQLException {
-		f = new MyFrame("[뉴트리베터]_로그인");
+		super();
+//		f = new MyFrame("[뉴트리베터]_로그인");
+		super.f.setTitle("[뉴트리베터]_로그인");
+		
 		myBtn = new MyButton();
 
-		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
+		p = new ImagePanel(new ImageIcon(imgBack).getImage());
 
 		imgHome = new ImageIcon("./Button_image/NutriBetter_Title.PNG");
 
@@ -53,10 +56,10 @@ public class LoginFrame extends MainFrame {
 	}
 
 	public void startFrame() {
-		f.startMyFrmae();
-		f.setMyFrameSize(400, 500);
-		f.startBackBtn();
-		f.backBtnMainStart();
+		startMyFrame();
+		setMyFrameSize(400, 500);
+		startBackBtn();
+		backBtnMainStart();
 
 		mTfId.setTf("아이디 입력");
 		mTfPwd.setPTf("비밀번호 입력");
@@ -68,7 +71,7 @@ public class LoginFrame extends MainFrame {
 
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				f.getMyFrame().dispose();
+				getMyFrame().dispose();
 				MainFrame mf = new MainFrame();
 				mf.startFrame();
 			}
@@ -91,7 +94,7 @@ public class LoginFrame extends MainFrame {
 					String age = DAO.listAge(mTfId.getTf().getText());
 					MainFrame mf = new MainFrame(id, name, gender, age);
 					mf.startFrame();
-					f.getMyFrame().setVisible(false);
+					getMyFrame().setVisible(false);
 //					stopMain();
 				}
 			}
@@ -100,7 +103,7 @@ public class LoginFrame extends MainFrame {
 			public void actionPerformed(ActionEvent e) {
 				JoinFrame jf = new JoinFrame();
 				jf.startFrame();
-				f.getMyFrame().setVisible(false);
+				getMyFrame().setVisible(false);
 			}
 		});
 
@@ -112,20 +115,20 @@ public class LoginFrame extends MainFrame {
 		btnJoin.setBounds(150, 360, 200, 50);
 
 		myBtn.buttonOption(btnLogin);
-		myBtn.nudeButtonOption(btnJoin);
+		myBtn.nudeButtonOption(btnJoin, 8);
 
-		p.add(f.getBackBtn());
+		p.add(btnBefore);
 		p.add(btnHome);
 		p.add(mTfId.getTf());
 		p.add(mTfPwd.getTf());
 		p.add(resTf);
 		p.add(btnLogin);
 		p.add(btnJoin);
-		f.getMyFrame().add(p);
-		f.getMyFrame().setVisible(true);
+		getMyFrame().add(p);
+		getMyFrame().setVisible(true);
 	}
 
-	public void stopMain() {
-		super.getFrame().setVisible(false);
-	}
+//	public void stopMain() {
+//		super.getFrame().setVisible(false);
+//	}
 }

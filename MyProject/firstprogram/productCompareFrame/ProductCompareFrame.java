@@ -12,7 +12,6 @@ import java.util.Iterator;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -26,7 +25,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 
-//import listPanel.ProcessedFoodDAO;
 import listPanel.ProcessedFoodVo;
 import mainFrame.ImagePanel;
 import mainFrame.MainDAO;
@@ -34,40 +32,42 @@ import mainFrame.MyFont;
 import mainFrame.MyFrame;
 import mainFrame.MyTextField;
 
-public class ProductCompareFrame {
-	private MyFrame f;
+public class ProductCompareFrame extends MyFrame{
+//	private MyFrame f;
 	private ImagePanel p;
+//	private MyFont mfont;
+	private MyTextField manuTf1, manuTf2, nameTf1, nameTf2, vs, nutriCompareTf;
 	private JPanel northP, southP;
+	private JButton btnApply;
 	private JTable slcTable1, slcTable2, nutriTable;
 	private JScrollPane slcPane1, slcPane2, nutriPane;
-	private MyFont mfont;
 	private JTextField tf;
-	private JButton btnApply;
-	private MyTextField manuTf1, manuTf2, nameTf1, nameTf2, vs, nutriCompareTf;
 	private String codeStr1, codeStr2;
 	
 	private MainDAO DAO = new MainDAO();
 	private ProcessedFoodVo slcData1, slcData2;
 //	private JLabel lbTotal1, lbTotal2, lbKcal1, lbKcal2;
-	DefaultTableModel model1, model2, model3;
+	private DefaultTableModel model1, model2, model3;
 
 	private String[] header = { " ", " " };
 	private String[] header2 = { " ", " ", " ", " ", " " };
 	
 	private String[] colValue1, colValue2;
 	private String[] percentColValue1, percentColValue2;
-	String[] userKorNutriList;
-	String[] userNutriList;
+	private String[] userKorNutriList;
+	private String[] userNutriList;
 
 	private String gender, age;
 	private int userKcal, startCount;
 
 	public ProductCompareFrame() {
-		f = new MyFrame("제품 리스트_[뉴트리베터]");
-		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
+		super("[뉴트리베터]_제품 리스트");
+//		f = new MyFrame("제품 리스트_[뉴트리베터]");
+		p = new ImagePanel(new ImageIcon(imgBack).getImage());
+//		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
 		northP = new JPanel();
 		southP = new JPanel();
-		mfont = new MyFont();
+//		mfont = new MyFont();
 
 		vs = new MyTextField("VS", 20);
 
@@ -86,9 +86,12 @@ public class ProductCompareFrame {
 
 	public void startFrame() {
 		userKcal = DAO.userKcal(gender, age);
-		f.startMyFrmae();
-		f.startBackBtn();
-		f.backBtnDispose();
+		startMyFrame();
+		startBackBtn();
+		backBtnDispose();
+//		f.startMyFrmae();
+//		f.startBackBtn();
+//		f.backBtnDispose();
 		northP.setLayout(null);
 		northP.setBounds(0, 70, 500, 200);
 		northP.setBackground(Color.white);
@@ -98,10 +101,10 @@ public class ProductCompareFrame {
 
 		manuTf1 = new MyTextField(slcData1.getManufacturer(), 11);
 		nameTf1 = new MyTextField(slcData1.getFoodName(), 20);
-		nameTf1.getJTf().setFont(mfont.setFont(15));
+		nameTf1.getJTf().setFont(setFont(15));
 		manuTf2 = new MyTextField(slcData2.getManufacturer(), 11);
 		nameTf2 = new MyTextField(slcData2.getFoodName(), 20);
-		nameTf2.getJTf().setFont(mfont.setFont(15));
+		nameTf2.getJTf().setFont(setFont(15));
 //		gTf = new MyTextField(slcData1.getUnit(), 12);
 
 		manuTf1.getJTf().setForeground(Color.GRAY);
@@ -109,7 +112,7 @@ public class ProductCompareFrame {
 		nameTf1.getJTf().setBounds(85, 10, 150, 30);
 
 		vs.getJTf().setBounds(237, 100, 25, 20);
-		vs.getJTf().setFont(mfont.setFont(20));
+		vs.getJTf().setFont(setFont(20));
 
 		manuTf2.getJTf().setForeground(Color.GRAY);
 		manuTf2.getJTf().setBounds(270, 15, 60, 15);
@@ -121,7 +124,7 @@ public class ProductCompareFrame {
 //		lbKcal2.setBounds(450, 175, 50, 10);
 		
 		nutriCompareTf.getJTf().setBounds(20, 5, 180, 15);
-		nutriCompareTf.getJTf().setFont(mfont.setFont(15));
+		nutriCompareTf.getJTf().setFont(setFont(15));
 		nutriCompareTf.getJTf().setText(nutriCompareTf.getJTf().getText() + slcData1.getUnit());
 		tf.setBounds(130, 0, 50, 25);
 		tf.setBorder(new LineBorder(Color.LIGHT_GRAY, 2, true));
@@ -204,7 +207,7 @@ public class ProductCompareFrame {
 		slcTable1.getTableHeader().setResizingAllowed(false); // 컬럼의 사이즈 변경 불가.
 		// 행 높이 지정
 		slcTable1.setRowHeight(35);
-		slcTable1.setFont(mfont.setFont(12));
+		slcTable1.setFont(setFont(12));
 		slcTable1.setShowHorizontalLines(true); // 셀 수평선 유무
 		slcTable1.setShowVerticalLines(false); // 셀 수직선 유무
 		slcTable1.setGridColor(new Color(240, 230, 140));
@@ -250,7 +253,7 @@ public class ProductCompareFrame {
 		slcTable2.setBorder(border);
 		// 행 높이 지정
 		slcTable2.setRowHeight(35);
-		slcTable2.setFont(mfont.setFont(12));
+		slcTable2.setFont(setFont(12));
 		slcTable2.getTableHeader().setReorderingAllowed(false); //  컬럼의 이동 불가.
 		slcTable2.getTableHeader().setResizingAllowed(false); // 컬럼의 사이즈 변경 불가.
 
@@ -351,6 +354,7 @@ public class ProductCompareFrame {
 
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				// TODO Auto-generated method stub
+				MyFont mfont = new MyFont();
 				JComponent component = (JComponent) super.prepareRenderer(renderer, row, column);
 				if (!isRowSelected(row)) {
 					component.setBackground(row == 0 ? Color.LIGHT_GRAY : Color.WHITE);
@@ -417,7 +421,7 @@ public class ProductCompareFrame {
 		tableCellCenter(nutriTable);
 		// 행 높이 지정
 		nutriTable.setRowHeight(30);
-		nutriTable.setFont(mfont.setFont(13));
+		nutriTable.setFont(setFont(13));
 		nutriTable.setBorder(new LineBorder(Color.white));
 
 		nutriTable.getColumnModel().getColumn(0).setPreferredWidth(95);
@@ -500,9 +504,12 @@ public class ProductCompareFrame {
 
 		p.add(northP);
 		p.add(southP);
-		p.add(f.getBackBtn());
-		f.getMyFrame().add(p);
-		f.getMyFrame().setVisible(true);
+		p.add(btnBefore);
+		getMyFrame().add(p);
+		getMyFrame().setVisible(true);
+//		p.add(f.getBackBtn());
+//		f.getMyFrame().add(p);
+//		f.getMyFrame().setVisible(true);
 	}
 
 	public void setSlcStr(String codeStr1, String codeStr2) {

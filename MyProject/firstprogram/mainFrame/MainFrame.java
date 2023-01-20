@@ -19,13 +19,13 @@ import loginFrame.LoginFrame;
 import menuFrame.MenuFrame;
 import productListFrame.ProductListFrame;
 
-public class MainFrame {
-	public static boolean LOGON;
+public class MainFrame extends MyFrame{
+//	public static boolean LOGON;
 
-	private MyFrame f;
+//	private MyFrame f;
 	private JPanel listP;
 	private MyButton myBtn;
-	private MyFont mfont;
+//	private MyFont mfont;
 	private MyTextField mTf;
 	private TotalListPanel tlPanel;
 	private ImagePanel p;// listP;
@@ -37,10 +37,11 @@ public class MainFrame {
 	private String id, gender, age;
 	
 	public MainFrame() {
+		super("먹기 전에 비교하자! 식품비교프로그램 [뉴트리베터]");
 		myBtn = new MyButton();
-		f = new MyFrame("먹기 전에 비교하자! 식품비교프로그램 [뉴트리베터]");
+//		f = new MyFrame("먹기 전에 비교하자! 식품비교프로그램 [뉴트리베터]");
 		// 0 - 수평방향, 1 - 수직방향 / 바의 생성 위치, 바의 채워짐 정도, 최소값은0, 최댓값은 바가 생성되는 곳의 길이
-		mfont = new MyFont();
+//		mfont = new MyFont();
 		mTf = new MyTextField();
 		mTf.setTf("제품명을 검색하세요!");
 		imgMenu = new ImageIcon("./Button_image/Button_menu.PNG");
@@ -55,7 +56,8 @@ public class MainFrame {
 		imgHome = new ImageIcon("./Button_image/NutriBetter_Title.PNG");
 		imgHomeC = new ImageIcon("./Button_image/NutriBetterC_Title.PNG");
 
-		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
+		p = new ImagePanel(new ImageIcon(imgBack).getImage());
+//		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
 //		listP = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
 		listP = new JPanel();
 
@@ -73,12 +75,13 @@ public class MainFrame {
 
 	}
 	public MainFrame(String id, String name, String gender, String age){
-		f = new MyFrame("먹기 전에 비교하자! 식품비교프로그램 [뉴트리베터]");
+		super("먹기 전에 비교하자! 식품비교프로그램 [뉴트리베터]");
+//		f = new MyFrame("먹기 전에 비교하자! 식품비교프로그램 [뉴트리베터]");
 //		listP = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
 		listP = new JPanel();
 
 		myBtn = new MyButton();
-		mfont = new MyFont();
+//		mfont = new MyFont();
 		mTf = new MyTextField();
 		mTf.setTf("제품명을 검색하세요!");
 		nameLb = new JLabel(name);
@@ -88,6 +91,10 @@ public class MainFrame {
 		this.gender = gender;
 		this.age = age;
 		
+//		super.id = id;
+//		super.gender = gender;
+//		super.age = age;
+//		
 		imgMenu = new ImageIcon("./Button_image/Button_menu.PNG");
 		imgMenuC = new ImageIcon("./Button_image/ButtonC_img.PNG");
 		imgSearch = new ImageIcon("./Button_image/Search_img.PNG");
@@ -95,7 +102,8 @@ public class MainFrame {
 		imgHome = new ImageIcon("./Button_image/NutriBetter_Title.PNG");
 		imgHomeC = new ImageIcon("./Button_image/NutriBetterC_Title.PNG");
 		
-		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
+		p = new ImagePanel(new ImageIcon(imgBack).getImage());
+//		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
 	
 		cHome = myBtn.changeImageSize(imgHomeC, 200, 200);
 		cMenu = myBtn.changeImageSize(imgMenuC, 30, 30);
@@ -107,7 +115,8 @@ public class MainFrame {
 	}
 
 	public void startFrame() {
-		f.startMyFrmae();
+		startMyFrame();
+//		f.startMyFrmae();
 
 		p.setLayout(null);
 		p.setSize(500, 600);
@@ -124,8 +133,6 @@ public class MainFrame {
 		mTf.getTf().setBounds(110, 255, 280, 30);
 		btnSearch.setBounds(390, 255, 30, 30);
 		
-		
-
 		myBtn.buttonOption(btnMenu, cMenu);
 
 		myBtn.buttonOption(btnSearch, cSearch);
@@ -133,8 +140,10 @@ public class MainFrame {
 
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				f.getMyFrame().setVisible(false);
-				f.getMyFrame().setVisible(true);
+				getMyFrame().setVisible(false);
+				getMyFrame().setVisible(true);
+//				f.getMyFrame().setVisible(false);
+//				f.getMyFrame().setVisible(true);
 
 			}
 		});
@@ -166,7 +175,8 @@ public class MainFrame {
 				}else {
 					ProductListFrame plf = new ProductListFrame(nameLb.getText(), id, gender, age);
 					plf.startFrame();
-					
+					getMyFrame().setVisible(false);
+
 				}
 			}
 		});
@@ -187,8 +197,9 @@ public class MainFrame {
 				public void actionPerformed(ActionEvent e) {
 					MenuFrame mf = new MenuFrame();
 					mf.setGenderAge(id, gender, age);
-					mf.startFrame(LOGON);
-					f.getMyFrame().setVisible(false);
+					mf.startFrame();
+					getMyFrame().setVisible(false);
+//					f.getMyFrame().setVisible(false);
 				}
 			});
 			btnLogin.addActionListener(new ActionListener() {
@@ -196,7 +207,8 @@ public class MainFrame {
 					try {
 						LoginFrame lf = new LoginFrame();
 						lf.startFrame();
-						f.getMyFrame().setVisible(false);
+						getMyFrame().setVisible(false);
+//						f.getMyFrame().setVisible(false);
 					} catch (Exception e1) {
 
 					}
@@ -206,7 +218,8 @@ public class MainFrame {
 				public void actionPerformed(ActionEvent e) {
 					JoinFrame jf = new JoinFrame();
 					jf.startFrame();
-					f.getMyFrame().setVisible(false);
+					getMyFrame().setVisible(false);
+//					f.getMyFrame().setVisible(false);
 				}
 			});
 			btnSearch.addActionListener(new ActionListener() {
@@ -220,16 +233,17 @@ public class MainFrame {
 		} else if (LOGON == true){
 			nameLb.setBounds(360, 15, 40, 30);
 			welcomLb.setBounds(410, 15, 140, 30);
-			nameLb.setFont(mfont.setFont(15));
-			welcomLb.setFont(mfont.setPlainFont(12));
+			nameLb.setFont(setFont(15));
+			welcomLb.setFont(setPlainFont(12));
 			
 			btnMenu.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					MenuFrame mf = new MenuFrame();
 					mf.setNameLb(nameLb.getText());
 					mf.setGenderAge(id, gender, age);
-					mf.startFrame(LOGON);;
-					f.getMyFrame().setVisible(false);
+					mf.startFrame();;
+					getMyFrame().setVisible(false);
+//					f.getMyFrame().setVisible(false);
 				}
 			});
 			btnSearch.addActionListener(new ActionListener() {
@@ -240,6 +254,8 @@ public class MainFrame {
 						ProductListFrame plf = new ProductListFrame(nameLb.getText(), id, gender, age);
 						plf.setSearchTf(mTf.getTf().getText());
 						plf.startFrame();
+						getMyFrame().setVisible(false);
+
 					}
 				}
 			});
@@ -251,18 +267,22 @@ public class MainFrame {
 		p.add(mTf.getTf());
 		p.add(btnSearch);
 		p.add(listP);
-		f.getMyFrame().add(p);
-
-		f.getMyFrame().pack();
-
-		f.getMyFrame().setVisible(true);
+		
+		getMyFrame().add(p);
+		getMyFrame().pack();
+		getMyFrame().setVisible(true);
+//		f.getMyFrame().add(p);
+//		f.getMyFrame().pack();
+//		f.getMyFrame().setVisible(true);
 	}
 
-	public void stopFrame() {
-		f.getMyFrame().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	}
+//	public void stopFrame() {
+//		getMyFrame().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+////		f.getMyFrame().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//	}
 	
 	public JFrame getFrame() {
-		return f.getMyFrame();
+		return getMyFrame();
+//		return f.getMyFrame();
 	}
 }

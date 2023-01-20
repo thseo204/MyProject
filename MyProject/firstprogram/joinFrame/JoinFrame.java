@@ -29,13 +29,13 @@ import mainFrame.MyFont;
 import mainFrame.MyFrame;
 import mainFrame.MyTextField;
 
-public class JoinFrame {
-	private MyFrame f;
+public class JoinFrame extends MyFrame{
+//	private MyFrame f;
+	private ImagePanel p;
+//	private MyFont mfont;
 	private MyButton myBtn;
 	private JTextField resTfId, resTfPwd, resTfEmail;
-	private MyFont mfont;
 	private MyTextField tfId, tfPwd, tfRePwd, tfEmail, tfName, tfBarth;
-	private ImagePanel p;
 	private JLabel joinTitle, lbId, lbPwd, lbRePwd, lbEmail, lbName, lbGender, lbBarth, lb1, lb2, lb3;
 	private JButton btnCheckId, btnJoin, btnClause, btnIndividual;
 	private JRadioButton[] gender;
@@ -46,11 +46,12 @@ public class JoinFrame {
 	
 	
 	public JoinFrame() {
-		f = new MyFrame("[뉴트리베터]_회원가입");
+		super("[뉴트리베터]_회원가입");
+//		f = new MyFrame("[뉴트리베터]_회원가입");
 		myBtn = new MyButton();
-		mfont = new MyFont();
+//		mfont = new MyFont();
 
-		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
+		p = new ImagePanel(new ImageIcon(imgBack).getImage());
 		
 		
 		joinTitle = new JLabel("[뉴트리베터 회원가입]", JLabel.CENTER);
@@ -117,10 +118,14 @@ public class JoinFrame {
 	}
 	
 	public void startFrame() {
-		f.startMyFrmae();
-		f.setMyFrameSize(370, 700);
-		f.startBackBtn();
-		f.backBtnMainStart();
+		startMyFrame();
+		setMyFrameSize(370, 700);
+		startBackBtn();
+		backBtnMainStart();
+//		f.startMyFrmae();
+//		f.setMyFrameSize(370, 700);
+//		f.startBackBtn();
+//		f.backBtnMainStart();
 
 		String korExp = "^[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]$"; // 한글만 허용
 		String engExp = "^[a-zA-Z]$"; // 영문자만 허용(대.소문자 모두)
@@ -178,31 +183,31 @@ public class JoinFrame {
 //		lbId.setFont(mfont.setFont());
 		
 		lbId.setSize(50, 30);
-		lbId.setFont(mfont.setPlainFont(12));
+		lbId.setFont(setPlainFont(12));
 		lbPwd.setSize(50, 30);
-		lbPwd.setFont(mfont.setPlainFont(12));
+		lbPwd.setFont(setPlainFont(12));
 		lbRePwd.setSize(80, 30);
-		lbRePwd.setFont(mfont.setPlainFont(12));
+		lbRePwd.setFont(setPlainFont(12));
 		lbEmail.setSize(50, 30);
-		lbEmail.setFont(mfont.setPlainFont(12));
+		lbEmail.setFont(setPlainFont(12));
 		lbName.setSize(50, 30);
-		lbName.setFont(mfont.setPlainFont(12));
+		lbName.setFont(setPlainFont(12));
 		lbGender.setSize(50, 30);
-		lbGender.setFont(mfont.setPlainFont(12));
+		lbGender.setFont(setPlainFont(12));
 		lbBarth.setSize(50, 30);
 		
-		joinTitle.setFont(mfont.setFont(15));
-		btnClause.setFont(mfont.setFont(9));
-		btnIndividual.setFont(mfont.setFont(9));
-		lb1.setFont(mfont.setFont(8));
-		lb2.setFont(mfont.setFont(8));
-		lb3.setFont(mfont.setFont(8));
-		agree.setFont(mfont.setFont(8));
+		joinTitle.setFont(setFont(15));
+		btnClause.setFont(setFont(9));
+		btnIndividual.setFont(setFont(9));
+		lb1.setFont(setFont(8));
+		lb2.setFont(setFont(8));
+		lb3.setFont(setFont(8));
+		agree.setFont(setFont(8));
 		lb1.setSize(90, 10);
 		lb2.setSize(8, 10);
 		lb3.setSize(80, 10);
 		
-		lbBarth.setFont(mfont.setPlainFont(12));
+		lbBarth.setFont(setPlainFont(12));
 		myBtn.blueButtonOption(btnClause);
 		myBtn.blueButtonOption(btnIndividual);
 		
@@ -324,7 +329,7 @@ public class JoinFrame {
 						JOptionPane.showMessageDialog(null, "회원가입을 축하합니다.\n로그인페이지로 이동합니다.");
 						try {
 							LoginFrame lf = new LoginFrame();
-							f.getMyFrame().setVisible(false);
+							getMyFrame().setVisible(false);
 							lf.startFrame();
 						}catch(Exception e1) {
 							
@@ -380,7 +385,6 @@ public class JoinFrame {
 		
 		btnJoin.setBounds(110, 520, 160, 40);
 		
-		p.add(f.getBackBtn());
 		p.add(joinTitle);
 		p.add(lbId);
 		p.add(btnCheckId);
@@ -405,8 +409,9 @@ public class JoinFrame {
 		p.add(btnIndividual);
 		p.add(lb3);
 		p.add(btnJoin);
-		f.getMyFrame().add(p);
-		f.getMyFrame().setVisible(true);
+		p.add(btnBefore);
+		getMyFrame().add(p);
+		getMyFrame().setVisible(true);
 		
 	}
 	

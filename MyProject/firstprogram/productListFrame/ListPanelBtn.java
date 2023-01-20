@@ -13,9 +13,9 @@ import mainFrame.MyFont;
 public class ListPanelBtn {
 	private JPanel p, pInBtn, pInMiniBtn;
 	private JButton btn, btnTotal;
-	private JLabel lbName, lbManu, lbKcal, lbPercent1, lbPercent2, lbSelcet;
+	private JLabel lbName, lbManu, lbKcal, lbPercent1, lbPercent2, lbSelect;
 	private MyFont mfont;
-	private String manu, name, kcal, percent, foodCode;
+	private String foodCode; //manu, name, kcal, percent, 
 	private Border border;
 	
 //	private JFrame f;
@@ -68,7 +68,7 @@ public class ListPanelBtn {
 		lbKcal = new JLabel("", JLabel.RIGHT);
 		lbPercent1 = new JLabel("", JLabel.RIGHT);
 		lbPercent2 = new JLabel("", JLabel.RIGHT);
-		lbSelcet = new JLabel("선택", JLabel.CENTER);
+		lbSelect = new JLabel("선택", JLabel.CENTER);
 	}
 	
 	public void setListPanel(String manu, String name, String kcal, String percent, String foodCode) {
@@ -78,11 +78,11 @@ public class ListPanelBtn {
 		lbPercent1.setText("일일 권장량 대비 ");
 		lbPercent2.setText(percent + "%");
 		
-		this.manu = manu;
-		this.name = name;
-		this.kcal = kcal;
 		this.foodCode = foodCode;
-		this.percent = percent;
+//		this.manu = manu;
+//		this.name = name;
+//		this.kcal = kcal;
+//		this.percent = percent;
 		// 일일권장량 대비
 	}
 	
@@ -103,9 +103,9 @@ public class ListPanelBtn {
 		lbPercent2.setFont(mfont.setFont(11));
 		lbPercent2.setBounds(320, 42, 50, 11);
 		lbPercent2.setForeground(Color.orange);
-		lbSelcet.setFont(mfont.setFont(11));
-		lbSelcet.setBounds(0, 16, 50, 11);
-		lbSelcet.setForeground(Color.black);
+		lbSelect.setFont(mfont.setFont(11));
+		lbSelect.setBounds(0, 16, 50, 11);
+		lbSelect.setForeground(Color.black);
 		
 		btn.setBounds(385, 7, 55, 50);
 		
@@ -120,7 +120,7 @@ public class ListPanelBtn {
 //				}
 //			}
 //		});
-		pInMiniBtn.add(lbSelcet);
+		pInMiniBtn.add(lbSelect);
 		p.setBorder(border);
 		pInBtn.setBorder(border);
 		pInMiniBtn.setBorder(border);
@@ -169,10 +169,10 @@ public class ListPanelBtn {
 	}
 	
 	public void setLbSelect(String lbSelect) {
-		this.lbSelcet.setText(lbSelect);
+		this.lbSelect.setText(lbSelect);
 	}
 	public JLabel getLbSelect() {
-		return lbSelcet;
+		return lbSelect;
 	}
 	
 //	public static void main(String[] args) {

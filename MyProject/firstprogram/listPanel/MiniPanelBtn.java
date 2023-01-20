@@ -48,10 +48,7 @@ public class MiniPanelBtn {
 		lbName.setText(name);
 		lbCtg.setText(ctg);
 		lbManu.setText(manu);
-		lbKcal.setText(kcal + "Kcal");
-		if(kcal.equals(null)) {
-			lbKcal.setText(kcal);
-		}
+		lbKcal.setText(kcal);
 	}
 	
 	public void startMiniPanel() {

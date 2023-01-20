@@ -2,7 +2,6 @@ package productDetailInfoFrame;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -34,12 +33,12 @@ import mainFrame.MyFont;
 import mainFrame.MyFrame;
 import mainFrame.MyTextField;
 
-public class ProducDetailFrame {
-	private MyFrame f;
+public class ProductDetailFrame extends MyFrame{
+//	private MyFrame f;
 	private ImagePanel p;
-	private JPanel northP, southP;
+//	private MyFont mfont;
 	private MyTextField manuTf, nameTf, nutriListTf;
-	private MyFont mfont;
+	private JPanel northP, southP;
 	private JTable slcTable, nutriTable;
 	private JScrollPane slcPane, nutriPane;
 	private JTextField tf;
@@ -50,21 +49,22 @@ public class ProducDetailFrame {
 	private String[] nutri;
 	private String[] percentColValue;
 
-	DefaultTableModel model1, model2;
+	private DefaultTableModel model1, model2;
 	private String id, gender, age;
-	private int userKcal, startCount;
+	private int startCount; //userKcal,
 
 	private MainDAO DAO = new MainDAO();
 	private ProcessedFoodVo slcData;
 
-	public ProducDetailFrame() {
-
-		f = new MyFrame("제품 리스트_[뉴트리베터]");
-		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
+	public ProductDetailFrame() {
+		super("[뉴트리베터]_제품 상세정보");
+//		f = new MyFrame("제품 리스트_[뉴트리베터]");
+		p = new ImagePanel(new ImageIcon(imgBack).getImage());
+//		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
 
 		northP = new JPanel();
 		southP = new JPanel();
-		mfont = new MyFont();
+//		mfont = new MyFont();
 		tf = new JTextField();
 		btnApply = new JButton("적용");
 		btnAddEat = new JButton("오늘 섭취 음식 저장");
@@ -72,11 +72,14 @@ public class ProducDetailFrame {
 	}
 
 	public void startFrame() {
-		userKcal = DAO.userKcal(gender, age);
+//		int userKcal = DAO.userKcal(gender, age);
 
-		f.startMyFrmae();
-		f.startBackBtn();
-		f.backBtnDispose();
+		startMyFrame();
+		startBackBtn();
+		backBtnDispose();
+//		f.startMyFrmae();
+//		f.startBackBtn();
+//		f.backBtnDispose();
 
 		northP.setLayout(null);
 		northP.setBounds(0, 70, 500, 180);
@@ -89,19 +92,19 @@ public class ProducDetailFrame {
 		nameTf = new MyTextField(slcData.getFoodName(), 23);
 		nutriListTf = new MyTextField("영양성분별 분류        g/mL", 15);
 
-		nameTf.getJTf().setFont(mfont.setFont(23));
-		manuTf.getJTf().setFont(mfont.setFont(13));
+		nameTf.getJTf().setFont(setFont(23));
+		manuTf.getJTf().setFont(setFont(13));
 		manuTf.getJTf().setForeground(Color.GRAY);
 		manuTf.getJTf().setBounds(40, 4, 420, 15);
 		manuTf.getJTf().setHorizontalAlignment(JLabel.LEFT);
 		nameTf.getJTf().setBounds(40, 18, 420, 30);
 		nameTf.getJTf().setHorizontalAlignment(JLabel.CENTER);
-		nutriListTf.getJTf().setFont(mfont.setFont(15));
+		nutriListTf.getJTf().setFont(setFont(15));
 		nutriListTf.getJTf().setBounds(22, 5, 220, 17);
 
 //		tf.setBounds(245, 45, 50, 27);
 		tf.setBounds(140, 0, 50, 27);
-		tf.setFont(mfont.setFont(13));
+		tf.setFont(setFont(13));
 		tf.setBorder(new LineBorder(Color.LIGHT_GRAY, 2, true));
 
 //		btnApply.setBounds(315, 45, 30, 27);
@@ -168,7 +171,7 @@ public class ProducDetailFrame {
 		slcTable.getTableHeader().setResizingAllowed(false); // 컬럼의 사이즈 변경 불가.
 		// 행 높이 지정
 		slcTable.setRowHeight(45);
-		slcTable.setFont(mfont.setFont(12));
+		slcTable.setFont(setFont(12));
 		slcTable.setShowHorizontalLines(true); // 셀 수평선 유무
 		slcTable.setShowVerticalLines(false); // 셀 수직선 유무
 		slcTable.setGridColor(new Color(240, 230, 140));
@@ -228,6 +231,7 @@ public class ProducDetailFrame {
 
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				// TODO Auto-generated method stub
+				MyFont mfont = new MyFont();
 				JComponent component = (JComponent) super.prepareRenderer(renderer, row, column);
 				if (!isRowSelected(row)) {
 					component.setBackground(row == 0 ? new Color(240, 230, 140) : Color.WHITE);
@@ -303,7 +307,7 @@ public class ProducDetailFrame {
 		tableCellCenter(nutriTable);
 		// 행 높이 지정
 		nutriTable.setRowHeight(40);
-		nutriTable.setFont(mfont.setFont(13));
+		nutriTable.setFont(setFont(13));
 		nutriTable.setBorder(border);
 
 		nutriTable.getColumnModel().getColumn(0).setPreferredWidth(110);
@@ -404,9 +408,12 @@ public class ProducDetailFrame {
 
 		p.add(northP);
 		p.add(southP);
-		p.add(f.getBackBtn());
-		f.getMyFrame().add(p);
-		f.getMyFrame().setVisible(true);
+		p.add(btnBefore);
+		getMyFrame().add(p);
+		getMyFrame().setVisible(true);
+//		p.add(f.getBackBtn());
+//		f.getMyFrame().add(p);
+//		f.getMyFrame().setVisible(true);
 	}
 
 	private void tableCellCenter(JTable t) {

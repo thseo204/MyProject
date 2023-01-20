@@ -8,7 +8,7 @@ import mainFrame.MainDAO;
 import mainFrame.MyFont;
 
 public class BigCtgComboBox {
-	private JComboBox comboBox;
+	private JComboBox<Object> comboBox;
 	private ArrayList<BigCtgVo> list;
 	private MyFont mfont;
 	
@@ -19,7 +19,7 @@ public class BigCtgComboBox {
 		MainDAO DAO = new MainDAO(); //
 		list = DAO.listBigCtg();//
 		
-		comboBox = new JComboBox(list.toArray());
+		comboBox = new JComboBox<Object>(list.toArray());
 		
 		comboBox.setFont(mfont.setFont(15));
 		comboBox.setBounds(5, 10, 200, 30);

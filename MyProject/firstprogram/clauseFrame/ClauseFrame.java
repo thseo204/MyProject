@@ -11,25 +11,25 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
-import joinFrame.JoinFrame;
 import mainFrame.ImagePanel;
 import mainFrame.MyFont;
 import mainFrame.MyFrame;
 import mainFrame.MyTextField;
 
-public class ClauseFrame extends JoinFrame{
-	private MyFrame f;
+public class ClauseFrame extends MyFrame{
+//	private MyFrame f;
 	private ImagePanel p;
-	private MyFont mfont;
+//	private MyFont mfont;
 	private MyTextField mTf;
 	private JScrollPane scroll;
 	private JTextArea textArea;
 	private JButton btnOk;
 	
 	public ClauseFrame() {
-		f = new MyFrame("[뉴트리베터]_서비스 이용약관");
-		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
-		mfont = new MyFont();
+		super("[뉴트리베터]_서비스 이용약관");
+//		f = new MyFrame("[뉴트리베터]_서비스 이용약관");
+		p = new ImagePanel(new ImageIcon(imgBack).getImage());
+//		mfont = new MyFont();
 		mTf = new MyTextField("서비스 이용약관", 18);
 		btnOk = new JButton("확인");
 		
@@ -62,9 +62,9 @@ public class ClauseFrame extends JoinFrame{
 	}
 	
 	public void startFrame() {
-		f.startMyFrmae();
-		f.startBackBtn();
-		f.backBtnDispose();
+		startMyFrame();
+		startBackBtn();
+		backBtnDispose();
 		p.setLayout(null);
 		
 		textArea.setEditable(false); // 편집 불가능
@@ -86,22 +86,22 @@ public class ClauseFrame extends JoinFrame{
 		
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				f.getMyFrame().dispose();
+				getMyFrame().dispose();
 			}
 		});
 		
-		btnOk.setFont(mfont.setPlainFont(12));
+		btnOk.setFont(setPlainFont(12));
 		
-		mTf.getJTf().setFont(mfont.setFont(18));
+		mTf.getJTf().setFont(setFont(18));
 		mTf.getJTf().setBounds(25, 80, 140, 20);
 		btnOk.setBounds(400, 520, 80, 30);
 		
 		p.add(btnOk);
 		p.add(scroll);
 		p.add(mTf.getJTf());
-		p.add(f.getBackBtn());
-		f.getMyFrame().add(p);
-		f.getMyFrame().setVisible(true);
+		p.add(btnBefore);
+		getMyFrame().add(p);
+		getMyFrame().setVisible(true);
 	}
 	
 //	public static void main(String[] args) {

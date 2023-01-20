@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -14,7 +13,7 @@ import javax.swing.JPanel;
 
 import mainFrame.MainDAO;
 import mainFrame.MyFont;
-import productDetailInfoFrame.ProducDetailFrame;
+import productDetailInfoFrame.ProductDetailFrame;
 
 public class TotalListPanel extends BigCtgComboBox implements ActionListener{
 	private JPanel pCenter, pNorth, pTotal;
@@ -89,7 +88,7 @@ public class TotalListPanel extends BigCtgComboBox implements ActionListener{
 					System.out.print(ctg + "\t");
 					System.out.print(manu + "\t");
 					System.out.println(kcal + "\t");
-					mini[j].setMiniPanel(foodCode, name, ctg, manu, kcal);
+					mini[j].setMiniPanel(foodCode, name, ctg, manu, kcal + "Kcal");
 					mini[j].startMiniPanel();
 //					System.out.println("[" + n + "]");
 				} catch (Exception e) {
@@ -148,7 +147,7 @@ public class TotalListPanel extends BigCtgComboBox implements ActionListener{
 		
 		String foodCode = mini[Integer.valueOf(btnNum)].getBtnFoodCode();
 		
-		ProducDetailFrame df = new ProducDetailFrame();
+		ProductDetailFrame df = new ProductDetailFrame();
 		df.setFoodCode(foodCode);
 		df.setGenderAge(id, gender, age);
 		df.startFrame();

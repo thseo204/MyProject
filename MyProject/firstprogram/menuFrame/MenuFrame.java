@@ -21,25 +21,25 @@ import mainFrame.MyFont;
 import mainFrame.MyFrame;
 import mainFrame.MyTextField;
 import mypageFrame.MypageFrame;
-import productCompareFrame.ProductCompareFrame;
 import productListFrame.ProductListFrame;
 
-public class MenuFrame {
-	private MyFrame f;
+public class MenuFrame extends MyFrame{
+//	private MyFrame f;
 	private ImagePanel p;
-	private MyFont mfont;
+//	private MyFont mfont;
 	private MyButton myBtn;
 	private MyTextField mTfTitle, mTfLine;
-	private JButton btnLogin, btnJoin, btnLogout, btnMyPage, btnHome, btnList, btnClause, btnIndividual;
-	private JButton btnCalcul;
+	private JButton btnLogin, btnJoin, btnLogout, btnMyPage, btnHome, btnList, btnCalcul, btnClause, btnIndividual;
 	private String id, gender, age, nameLb;
 	
 	public MenuFrame() {
-		f = new MyFrame("[뉴트리베터]_메뉴");
-		mfont = new MyFont();
+		super("[뉴트리베터]_메뉴");
+//		f = new MyFrame("[뉴트리베터]_메뉴");
+//		mfont = new MyFont();
 		mTfTitle = new MyTextField("메 뉴", 40);
 		mTfLine = new MyTextField("------------", 30);
-		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
+		p = new ImagePanel(new ImageIcon(imgBack).getImage());
+//		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
 
 		myBtn = new MyButton();
 		btnLogin = new JButton("로그인");
@@ -55,21 +55,26 @@ public class MenuFrame {
 
 	}
 
-	public void startFrame(boolean logOn) {
-		f.startMyFrmae();
-		f.getMyFrame().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		f.setMyFrameSize(400, 500);
-		f.startBackBtn();
+	public void startFrame() {
+		startMyFrame();
+		getMyFrame().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setMyFrameSize(400, 500);
+		startBackBtn();
+//		f.startMyFrmae();
+//		f.getMyFrame().setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//		f.setMyFrameSize(400, 500);
+//		f.startBackBtn();
 //		f.backBtnDispose();
 		
-		f.getBackBtn().addActionListener(new ActionListener() {
+		btnBefore.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(logOn == false) {
-					f.backBtnMainStart();
+				if(LOGON == false) {
+//					backBtnMainStart();
+					getMyFrame().setVisible(false);
 				} else {
-					MainFrame mf = new MainFrame(id, nameLb, gender, age);
-					mf.startFrame();
-					f.getMyFrame().setVisible(false);
+//					MainFrame mf = new MainFrame(id, nameLb, gender, age);
+//					mf.startFrame();
+					getMyFrame().setVisible(false);
 				}
 			}
 		});
@@ -100,27 +105,28 @@ public class MenuFrame {
 		btnLogout.setBounds(110, 150, 180, 40);
 		btnMyPage.setBounds(110, 190, 180, 40);
 
-		mTfTitle.getJTf().setFont(mfont.setFont(30));
-		mTfLine.getJTf().setFont(mfont.setFont(30));
+		mTfTitle.getJTf().setFont(setFont(30));
+		mTfLine.getJTf().setFont(setFont(30));
 		mTfLine.setMTfColor(Color.LIGHT_GRAY);
-		btnLogin.setFont(mfont.setFont(20));
-		btnJoin.setFont(mfont.setFont(20));
-		btnHome.setFont(mfont.setFont(20));
-		btnList.setFont(mfont.setFont(20));
-		btnCalcul.setFont(mfont.setFont(20));
-		btnClause.setFont(mfont.setFont(11));
-		btnIndividual.setFont(mfont.setFont(11));
+		btnLogin.setFont(setFont(20));
+		btnJoin.setFont(setFont(20));
+		btnHome.setFont(setFont(20));
+		btnList.setFont(setFont(20));
+		btnCalcul.setFont(setFont(20));
+		btnClause.setFont(setFont(11));
+		btnIndividual.setFont(setFont(11));
 		
-		btnLogout.setFont(mfont.setFont(20));
-		btnMyPage.setFont(mfont.setFont(20));
+		btnLogout.setFont(setFont(20));
+		btnMyPage.setFont(setFont(20));
 		
-		if (logOn == false) {
+		if (LOGON == false) {
 			btnLogin.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					try {
 						LoginFrame lf = new LoginFrame();
 						lf.startFrame();
-						f.getMyFrame().setVisible(false);
+						getMyFrame().setVisible(false);
+//						f.getMyFrame().setVisible(false);
 					} catch (Exception e1) {
 
 					}
@@ -130,15 +136,16 @@ public class MenuFrame {
 				public void actionPerformed(ActionEvent e) {
 					JoinFrame jf = new JoinFrame();
 					jf.startFrame();
-					f.getMyFrame().setVisible(false);
+					getMyFrame().setVisible(false);
+					getMyFrame().setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				}
 			});
 			btnHome.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					MainFrame mf = new MainFrame();
-					mf.LOGON = logOn;
+//					mf.LOGON = logOn;
 					mf.startFrame();
-					f.getMyFrame().setVisible(false);
+					getMyFrame().setVisible(false);
 				}
 			});
 			
@@ -150,9 +157,9 @@ public class MenuFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					MainFrame mf = new MainFrame();
-					mf.LOGON = false;
+					LOGON = false;
 					mf.startFrame();
-					f.getMyFrame().setVisible(false);
+					getMyFrame().setVisible(false);
 				}
 			});
 			btnMyPage.addActionListener(new ActionListener() {
@@ -163,45 +170,46 @@ public class MenuFrame {
 					mf.startFrame();
 				}
 			});
+//			btnHome.addActionListener(new ActionListener() {
+//				public void actionPerformed(ActionEvent e) {
+//					getMyFrame().setVisible(false);
+//				}
+//			});
 			btnHome.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					f.getMyFrame().setVisible(false);
+					MainFrame mf = new MainFrame(id, nameLb, gender, age);
+					LOGON = true;
+					mf.startFrame();
+					getMyFrame().setVisible(false);
 				}
 			});
 			p.add(btnLogout);
 			p.add(btnMyPage);
 		}
 		// 로그인 후 메뉴에 있는 홈 버튼을 클릭하였을 때 로그인 된 사용자의 이름을 가지고 메인화면으로 가는것 구현 아직 못함.
-		btnHome.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				MainFrame mf = new MainFrame(id, nameLb, gender, age);
-				mf.LOGON = true;
-				mf.startFrame();
-				f.getMyFrame().setVisible(false);
-			}
-		});
 		btnList.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(logOn == false) {
+				if(LOGON == false) {
 					JOptionPane.showMessageDialog(null, "로그인 후 이용해주세요.");
 					
 				} else {
 					ProductListFrame plf = new ProductListFrame(nameLb, id, gender, age);
 					plf.startFrame();
-					f.getMyFrame().setVisible(false);
+					getMyFrame().setVisible(false);
 				}
 			}
 		});
 		btnCalcul.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(logOn == false) {
+				if(LOGON == false) {
 					JOptionPane.showMessageDialog(null, "로그인 후 이용해주세요.");
 					
 				} else {
-					CalculationFrame cf = new CalculationFrame();
+					CalculationFrame cf = new CalculationFrame(id, gender, age, nameLb);
 					cf.startFrame();
+//					getMyFrame().setVisible(false);
 				}
 			}
 		});
@@ -219,7 +227,6 @@ public class MenuFrame {
 				idf.startFrame();
 			}
 		});
-		p.add(f.getBackBtn());
 		p.add(mTfTitle.getJTf());
 		p.add(mTfLine.getJTf());
 
@@ -228,9 +235,10 @@ public class MenuFrame {
 		p.add(btnCalcul);
 		p.add(btnClause);
 		p.add(btnIndividual);
+		p.add(btnBefore);
 
-		f.getMyFrame().add(p);
-		f.getMyFrame().setVisible(true);
+		getMyFrame().add(p);
+		getMyFrame().setVisible(true);
 	}
 
 	public void setGenderAge(String id, String gender, String age) {

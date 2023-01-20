@@ -2,16 +2,12 @@ package mypageFrame;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,14 +16,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import mainFrame.ImagePanel;
@@ -38,12 +32,11 @@ import mainFrame.MyFrame;
 import mainFrame.MyTextField;
 import mypageDateFrame.MypageDateFrame;
 
-public class MypageFrame extends MouseAdapter {
-	private static final long serialVersionUID = 1L;
-	private MyFrame f;
+public class MypageFrame extends MyFrame implements MouseListener {
+//	private MyFrame f;
 	private ImagePanel p;// userPhotoP;
 	private MyButton mBtn;
-	private MyFont mfont;
+//	private MyFont mfont;
 	private JPanel northP, southP, nutriP, eatP, btnInP1, btnInP2, photoP;
 	private MyTextField titleTf, nameTf, ageGenderTf, nutriPTf, yearTf, monthTf;
 	private JButton btnNutriInfo, btnEatInfo, btnBefore, btnNext, btnPhoto;
@@ -55,18 +48,19 @@ public class MypageFrame extends MouseAdapter {
 	private String[] header = { " ", " ", " ", " " };
 	private String[] headerCal = { " ", " ", " ", " ", " ", " ", " " };
 	private DefaultTableModel model1, model2;
-	private MyCalender mCal;
+	private MyCalendar mCal;
 	private String[] calWeekName;
 	private String[][] calDate;
 	private String[] userNutriList;
 	private String[] userKorNutriList, eatNutriList;
-	private int todayYear, todayMonth, todayDate;
+	private int todayYear, todayMonth;// todayDate;
 	private MainDAO DAO;
 	private ImageIcon imgUser, imgUserC;
 
 	public MypageFrame() {
-		f = new MyFrame("제품 리스트_[뉴트리베터]");
-		p = new ImagePanel(new ImageIcon(f.getBackImg()).getImage());
+		super("[뉴트리베터]_마이페이지");
+//		f = new MyFrame("제품 리스트_[뉴트리베터]");
+		p = new ImagePanel(new ImageIcon(imgBack).getImage());
 		
 //		imgHomeC = new ImageIcon("./Button_image/NutriBetterC_Title.PNG");
 		imgUser = new ImageIcon("./Button_image/userPhotoImage.png");
@@ -88,7 +82,7 @@ public class MypageFrame extends MouseAdapter {
 		btnInP1 = new JPanel();
 		btnInP2 = new JPanel();
 
-		mfont = new MyFont();
+//		mfont = new MyFont();
 		titleTf = new MyTextField("마이페이지", 20);
 		btnNutriInfo = new JButton("");
 		btnEatInfo = new JButton("");
@@ -105,15 +99,18 @@ public class MypageFrame extends MouseAdapter {
 		ddStr = today.substring(6, 8);
 		todayYear = Integer.valueOf(yyyyStr);
 		todayMonth = Integer.valueOf(mmStr);
-		todayDate = Integer.valueOf(ddStr);
+//		todayDate = Integer.valueOf(ddStr);
 		
 		
 	}
 
 	public void startFrame() {
-		f.startMyFrmae();
-		f.startBackBtn();
-		f.backBtnDispose();
+		startMyFrame();
+		startBackBtn();
+		backBtnDispose();
+//		f.startMyFrmae();
+//		f.startBackBtn();
+//		f.backBtnDispose();
 
 		nameTf = new MyTextField(userName + " 님", 23);
 		ageGenderTf = new MyTextField("만 " + userAge + "세 (" + userGender + ")", 15);
@@ -137,9 +134,9 @@ public class MypageFrame extends MouseAdapter {
 //		eatP.setBackground(new Color(255,255,240));
 		eatP.setBackground(new Color(255, 255, 240));
 
-		titleTf.getJTf().setFont(mfont.setFont(20));
-		nameTf.getJTf().setFont(mfont.setFont(20));
-		ageGenderTf.getJTf().setFont(mfont.setFont(20));
+		titleTf.getJTf().setFont(setFont(20));
+		nameTf.getJTf().setFont(setFont(20));
+		ageGenderTf.getJTf().setFont(setFont(20));
 		titleTf.getJTf().setForeground(Color.GRAY);
 		titleTf.getJTf().setBounds(30, 10, 100, 17);
 		nameTf.getJTf().setBounds(180, 48, 120, 20);
@@ -149,7 +146,7 @@ public class MypageFrame extends MouseAdapter {
 		photoP.setLayout(null);
 		photoP.setBounds(70, 35, 80, 80);
 
-		nutriPTf.getJTf().setFont(mfont.setFont(13));
+		nutriPTf.getJTf().setFont(setFont(13));
 		nutriPTf.getJTf().setForeground(Color.GRAY);
 		nutriPTf.getJTf().setBounds(20, 10, 200, 15);
 		nutriPTf.getJTf().setBackground(null);
@@ -182,8 +179,8 @@ public class MypageFrame extends MouseAdapter {
 		JLabel lbInNextBtn =  new JLabel(">", JLabel.CENTER);
 		lbInBeforeBtn.setBounds(0, 0, 25, 15);
 		lbInNextBtn.setBounds(0, 0, 25, 15);
-		lbInBeforeBtn.setFont(mfont.setFont(20));
-		lbInNextBtn.setFont(mfont.setFont(20));
+		lbInBeforeBtn.setFont(setFont(20));
+		lbInNextBtn.setFont(setFont(20));
 		lbInBeforeBtn.setForeground(Color.white);
 		lbInNextBtn.setForeground(Color.white);
 		panelInBeforeBtn.add(lbInBeforeBtn);
@@ -198,8 +195,8 @@ public class MypageFrame extends MouseAdapter {
 		btnInP2.setBounds(0, 0, 245, 27);
 		btnInP2.setBackground(Color.WHITE);
 
-		lbInBtn1.setFont(mfont.setFont(13));
-		lbInBtn2.setFont(mfont.setFont(13));
+		lbInBtn1.setFont(setFont(13));
+		lbInBtn2.setFont(setFont(13));
 		lbInBtn1.setBounds(0, 0, 245, 20);
 		lbInBtn1.setForeground(Color.WHITE);
 		lbInBtn2.setBounds(0, 0, 245, 20);
@@ -274,7 +271,8 @@ public class MypageFrame extends MouseAdapter {
 				String monthStr = monthTf.getJTf().getText();
 				int year = Integer.valueOf(yearStr);
 				int month = Integer.valueOf(monthStr);
-
+				System.out.println("year : " + year + "\tmonth : " + month);
+				
 				if (month == 12) {
 					year++;
 					month = 1;
@@ -290,7 +288,7 @@ public class MypageFrame extends MouseAdapter {
 				}
 				setCal(year, month);
 //				setKcalInTodayCal();
-				setKcalInAllDayCal();
+//				setKcalInAllDayCal();
 			}
 		});
 
@@ -359,6 +357,7 @@ public class MypageFrame extends MouseAdapter {
 				}
 				if (!isCellSelected(row, column)) {
 					if (column == 0 && row != 0 && row != 1) {
+						MyFont mfont = new MyFont();
 						component.setFont(mfont.setFont(11));
 						component.setForeground(Color.BLACK);
 						component.setBackground(new Color(250, 235, 215));
@@ -405,7 +404,7 @@ public class MypageFrame extends MouseAdapter {
 //		getTableCellRendererComponent();
 		// 행 높이 지정
 		nutriTable.setRowHeight(40);
-		nutriTable.setFont(mfont.setFont(13));
+		nutriTable.setFont(setFont(13));
 		nutriTable.setBorder(border);
 		nutriTable.getTableHeader().setReorderingAllowed(false); //  컬럼의 이동 불가.
 		nutriTable.getTableHeader().setResizingAllowed(false); // 컬럼의 사이즈 변경 불가.
@@ -428,11 +427,11 @@ public class MypageFrame extends MouseAdapter {
 		yearTf = new MyTextField(yyyyStr, 15);
 		monthTf = new MyTextField(mmStr, 15);
 
-		yearTf.getJTf().setFont(mfont.setFont(18));
+		yearTf.getJTf().setFont(setFont(18));
 		yearTf.getJTf().setForeground(new Color(210, 180, 140));
 		yearTf.getJTf().setBounds(200, 15, 50, 20);
 		yearTf.getJTf().setBackground(null);
-		monthTf.getJTf().setFont(mfont.setFont(18));
+		monthTf.getJTf().setFont(setFont(18));
 		monthTf.getJTf().setForeground(new Color(210, 180, 140));
 		monthTf.getJTf().setBounds(260, 15, 30, 20);
 		monthTf.getJTf().setBackground(null);
@@ -458,9 +457,12 @@ public class MypageFrame extends MouseAdapter {
 
 		p.add(northP);
 		p.add(southP);
-		p.add(f.getBackBtn());
-		f.getMyFrame().add(p);
-		f.getMyFrame().setVisible(true);
+		p.add(super.btnBefore);
+		getMyFrame().add(p);
+		getMyFrame().setVisible(true);
+//		p.add(f.getBackBtn());
+//		f.getMyFrame().add(p);
+//		f.getMyFrame().setVisible(true);
 	}
 
 	public void setUserInfo(String id, String name, String gender, String age) {
@@ -468,6 +470,10 @@ public class MypageFrame extends MouseAdapter {
 		userName = name;
 		userGender = gender;
 		userAge = age;
+//		userId = id;
+//		userName = name;
+//		userGender = gender;
+//		userAge = age;
 		System.out.println("성별 : " + userGender + " 연령 : " + userAge);
 		userNutriList = DAO.userNutriList(userGender, userAge);
 		userKorNutriList = DAO.userNutriList("성별", "나이");
@@ -486,9 +492,9 @@ public class MypageFrame extends MouseAdapter {
 	}
 
 	public void setCal(int year, int month) {
-		mCal = new MyCalender(year, month);
+		mCal = new MyCalendar(year, month);
 		calWeekName = mCal.getWeekName();
-		calDate = mCal.printMyCalender();
+		calDate = mCal.printMyCalendar();
 
 		String[][] contents2 = new String[calDate.length + 1][calWeekName.length];
 		// 요일 이름 세팅
@@ -509,6 +515,7 @@ public class MypageFrame extends MouseAdapter {
 
 			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				// TODO Auto-generated method stub
+				MyFont mfont = new MyFont();
 				JComponent component = (JComponent) super.prepareRenderer(renderer, row, column);
 //				component.setFocusable(false);
 				if (!isRowSelected(row)) {
@@ -540,6 +547,7 @@ public class MypageFrame extends MouseAdapter {
 				return false;
 			}
 		};
+		
 		// 칼로리 값이 있는 값 btn 넣어주기
 		DefaultTableCellRenderer renderer = new MyRenderer();
 		for(int i = 0; i < calTable.getColumnCount(); i++) {
@@ -556,7 +564,7 @@ public class MypageFrame extends MouseAdapter {
 		calTable.getTableHeader().setResizingAllowed(false); // 컬럼의 사이즈 변경 불가.
 		calTable.setRowHeight(40);
 		calTable.setRowHeight(0, 32);
-		calTable.setFont(mfont.setFont(13));
+		calTable.setFont(setFont(13));
 		calTable.setBorder(new LineBorder(Color.white));
 		calTable.addMouseListener(this);
 		calPane = new JScrollPane(calTable);
@@ -583,13 +591,13 @@ public class MypageFrame extends MouseAdapter {
 		f.startFrame(userId, yyyymmdd);
 	}
 	
-	// 오늘 제외한 이전 날짜들 달력에 총 칼로리 표시
+	// 이전 날짜들 달력에 총 칼로리 표시
 	public void setKcalInAllDayCal() {
 		String[] ymdArr = DAO.listUserKcalIInCal(userId);
 		
 		for(int k = 0; k < ymdArr.length; k++) {
 			String Ymd = ymdArr[k];
-			int kcal = DAO.listTodayEat(Ymd, userId, 'k');
+//			int kcal = DAO.listTodayEat(Ymd, userId, 'k');
 			String yyyy = Ymd.substring(0, 4);
 			String mm = Ymd.substring(4, 6);
 			String dd = Ymd.substring(6, 8);
@@ -610,37 +618,33 @@ public class MypageFrame extends MouseAdapter {
 			}
 		}
 	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	
-//	public class MyDefaultTableCellRenderer extends DefaultTableCellRenderer{
-//		private static final long serialVersionUID = 1L;
-//		
-//		public MyDefaultTableCellRenderer() {
-//			setHorizontalTextPosition(JLabel.CENTER);
-//			setVerticalTextPosition(JLabel.BOTTOM);
-//			setHorizontalAlignment(JLabel.CENTER);
-//			setVerticalAlignment(JLabel.CENTER);
-//		}
-//		
-//		@Override
-//		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-//				int row, int col) {
-//			JLabel lb = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
-//			for(int i = 1; i < model1.getRowCount(); i++) {
-//				for(int j = 0; j < model1.getColumnCount(); j++) {
-//					Object res = model1.getValueAt(i, j);
-//					if(res != null) {
-//						int resInt = Integer.valueOf(res+"");
-//						if(todayDate == resInt) {
-//							setText(String.valueOf(model1.getValueAt(1, 2)));
-//						}
-//					}
-//				}
-//			}
-//			return lb;
-//		}
-//	}
 	
 //	public static void main(String[] args) {
 //		MypageFrame mf = new MypageFrame();
