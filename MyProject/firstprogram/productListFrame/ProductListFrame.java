@@ -199,6 +199,18 @@ public class ProductListFrame extends JPanel implements ActionListener {
 					pcf.setSlcStr(codeStr1, codeStr2);
 					pcf.setGenderAge(gender, age);
 					pcf.startFrame();
+					
+//					slcB1 = false;
+//					slcB2 = false;
+//					slcTf1.getJTf().setText("");
+//					slcTf2.getJTf().setText("");
+
+//					for (int i = 0; i < 5; i++) {
+//						listPBtn[i].getMiniBtn().setBorder(borderGray);
+//						listPBtn[i].setLbSelect("선택");
+//						listPBtn[i].getLbSelect().setForeground(Color.black);
+//					}
+					
 				} else {
 					JOptionPane.showMessageDialog(null, "2가지 제품을 선택하세요.");
 				}
@@ -229,7 +241,6 @@ public class ProductListFrame extends JPanel implements ActionListener {
 						listPBtn[i].getMiniBtn().setBorder(borderGray);
 						listPBtn[i].setLbSelect("선택");
 						listPBtn[i].getLbSelect().setForeground(Color.black);
-
 					}
 					try {
 						ctgStr = e.getItem().toString();
@@ -404,7 +415,7 @@ public class ProductListFrame extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		String eStr = e.getActionCommand();
-
+		System.out.println(eStr);
 		if (Character.isDigit(eStr.charAt(0))) {
 			for (int i = 0; i < listPBtn.length; i++) {
 //			listFood.get(i)
